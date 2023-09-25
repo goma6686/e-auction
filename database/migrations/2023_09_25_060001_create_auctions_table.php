@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Schema::enableForeignKeyConstraints();
-        Schema::create('auction', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('auctions', function (Blueprint $table) {
+            $table->uuid('uuid')->primary();
             $table->foreignUuid('item_id')->unique();
             $table->foreignUuid('user_id');
 
             $table->unsignedDecimal('current_price')->default(0.00);
-            $table->unsignedDecimal('next_price')->default(0.00);
+            $table->unsignedDecimal('next_price');
 
             $table->dateTime('start_time');
             $table->dateTime('end_time');
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('auction');
+        Schema::dropIfExists('auctions');
     }
 };

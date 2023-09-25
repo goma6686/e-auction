@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Schema::enableForeignKeyConstraints();
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->string('title');
@@ -22,8 +21,6 @@ return new class extends Migration
             $table->foreignUuid('user_id');
 
             $table->unsignedDecimal('current_price')->default(0.00)->nullable();//not all items are in an auction
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time')->nullable();
             $table->timestamps();
         });
     }

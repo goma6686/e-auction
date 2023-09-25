@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Schema::enableForeignKeyConstraints();
         Schema::create('winners', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id');

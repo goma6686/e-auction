@@ -10,7 +10,12 @@ class Item extends Model
     use HasFactory;
 
     public function categories()
-{
-    return $this->belongsToMany(Category::class);
-}
+    {
+        return $this->HasOne(Category::class);
+    }
+
+    public function auction()
+    {
+        return $this->hasOne(Auction::class, 'item_id');
+    }
 }
