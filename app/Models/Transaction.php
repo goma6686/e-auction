@@ -18,7 +18,11 @@ class Transaction extends Model
         'transaction_type'
     ];
 
-    public function user():BelongsTo{
-        return $this->belongsTo(User::class, 'foreign_key');
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function auction(){
+        return $this->belongsTo(Auction::class, 'item_id');
     }
 }

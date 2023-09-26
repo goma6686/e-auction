@@ -48,11 +48,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function transactions(): HasMany{
+    public function transactions(){
         return $this->hasMany(Transaction::class);
     }
 
-    public function items(): HasMany{
+    public function items(){
         return $this->hasMany(Item::class);
+    }
+
+    public function bids(){
+        return $this->hasMany(Bid::class);
+    }
+
+    public function auctions(){
+        return $this->hasMany(Auction::class);
     }
 }
