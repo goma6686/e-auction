@@ -1,9 +1,41 @@
+:root {
+    --custom-carousel-control-color: #000000; /* Your custom color here */
+}
+
+.container {
+    margin-bottom: 5em;
+    margin-top: 5em;
+}
+
+.carousel-control-prev,
+.carousel-control-next,
+.carousel-control-prev:hover,
+.carousel-control-next:hover  {
+    color: var(--custom-carousel-control-color);
+    opacity: 1;
+    font-size: larger;
+}
+
 h2 {
     text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 #categories {
-    margin-top: 5em;
+    justify-content: center;
+}
+
+#category-card {
+    width: 10rem;
+}
+
+#item-card {
+    width: 25rem;
+    margin: 1rem;
+}
+
+#see-all {
+    margin: 0 auto;
+    display:block;
 }

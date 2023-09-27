@@ -16,14 +16,14 @@ class CategorySeeder extends Seeder
         DB::table('categories')->delete();
 
         DB::table('categories')->insert([
-                ['id' => '1', 'category' => 'SPORTS'],
-                ['id' => '2', 'category' => 'JEWELRY'],
-                ['id' => '3', 'category' => 'WATCHES'],
-                ['id' => '4', 'category' => 'ELECTRONICS'],
-                ['id' => '5', 'category' => 'FASHION'],
-                ['id' => '6', 'category' => 'TOYS'],
-                ['id' => '7', 'category' => 'HOME'],
-                ['id' => '8', 'category' => 'OTHER'],
+                ['id' => '1', 'image' => 'sport.jpg', 'category' => 'SPORTS'],
+                ['id' => '2', 'image' => 'ring.jpg', 'category' => 'JEWELRY'],
+                ['id' => '3', 'image' => 'watch.jpg', 'category' => 'WATCHES'],
+                ['id' => '4', 'image' => 'technology.jpg', 'category' => 'ELECTRONICS'],
+                ['id' => '5', 'image' => 'hanger.jpg', 'category' => 'FASHION'],
+                ['id' => '6', 'image' => 'toy.jpg', 'category' => 'TOYS'],
+                ['id' => '7', 'image' => 'home.jpg', 'category' => 'HOME'],
+                ['id' => '8', 'image' => 'triangle.jpg', 'category' => 'OTHER'],
         ]);
     }
 }
