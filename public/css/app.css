@@ -35,6 +35,10 @@ h2 {
     margin: 1rem;
 }
 
+#card-footer {
+    color: red;
+}
+
 #see-all {
     margin: 0 auto;
     display:block;

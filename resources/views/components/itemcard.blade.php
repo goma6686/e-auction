@@ -23,8 +23,8 @@
                         <h6 class="card-subtitle mb-2">{{$item->bidder_count}}</h6>
                     </div>
                 </div>
-            </li>            
-            <li class="list-group-item">
+            </li>
+            <li class="list-group-item" id="card-footer">
                 <div class="row">
                     <div class="col text-center">
                         Ends at:
