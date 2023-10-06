@@ -34,6 +34,6 @@
                 </div>
             </li>
           </ul>
-        <a href="#" class="btn btn-outline-dark">BID</a>
+        <a href="#" class="btn btn-dark">BID</a>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
+            <a class="navbar-brand" href="/">
             <i class="fa fa-superpowers" aria-hidden="true"></i> <!-- Icon -->
                 GoAuction
             </a>

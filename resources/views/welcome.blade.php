@@ -29,5 +29,5 @@
             @include('components.itemcard')
         @endforeach
     </div>
-    <button type="button" id="see-all" class="btn btn-outline-dark">SEE ALL</button>
+    <button type="button" id="see-all" class="btn btn-dark">SEE ALL</button>
 @endsection

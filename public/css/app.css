@@ -2,6 +2,10 @@
     --custom-carousel-control-color: #000000; /* Your custom color here */
 }
 
+html, body {
+    background-color:rgb(229, 233, 233);
+}
+
 .container {
     margin-bottom: 5em;
     margin-top: 5em;
@@ -26,13 +30,14 @@ h2 {
     justify-content: center;
 }
 
-#category-card {
-    width: 10rem;
-}
-
 #item-card {
     width: 25rem;
     margin: 1rem;
+}
+
+.card {
+    color: #000000;
+    border: #000000 1px solid;
 }
 
 #card-footer {
@@ -43,38 +48,3 @@ h2 {
     margin: 0 auto;
     display:block;
 }
-
-.multi-item-carousel{
-    .carousel-inner{
-      > .item{
-        transition: 500ms ease-in-out left;
-      }
-      .active{
-        &.carousel-control-prev{
-          left:-33%;
-        }
-        &.carousel-control-next{
-          left:33%;
-        }
-      }
-      .next{
-        left: 33%;
-      }
-      .prev{
-        left: -33%;
-      }
-      @media all and (transform-3d), (-webkit-transform-3d) {
-        > .item{
-          transition: 500ms ease-in-out left;
-          transition: 500ms ease-in-out all;
-          backface-visibility: visible;
-          transform: none!important;
-        }
-      }
-    }
-    .carouse-control{
-      &.left, &.right{
-        background-image: none;
-      }
-    }
-  }
