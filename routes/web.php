@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::controller(RegisterController::class)->group(function() {
     Route::post('/store', 'store')->name('store');
@@ -26,5 +27,5 @@ Route::controller(RegisterController::class)->group(function() {
 Route::controller(LoginController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', 'logout')->name('logout');
 });

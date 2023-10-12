@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'uuid' => Uuid::uuid4()->toString(),
             'username' => 'admin',
-            'email' => 'goauction@gmail.com',
             'password' => Hash::make('password'),
         ]);
 

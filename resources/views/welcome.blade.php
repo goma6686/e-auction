@@ -24,10 +24,12 @@
         </button>
     </div>
     <h2>Featured Items</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3">
         @foreach ($auction_items as $item)
             @include('components.itemcard')
         @endforeach
     </div>
-    <button type="button" id="see-all" class="btn btn-dark">SEE ALL</button>
+    <div class="text-center">
+        <a class="btn btn-dark" id="see-all" href="{{ route('home') }}">SEE ALL</a>
+    </div>
 @endsection

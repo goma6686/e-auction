@@ -15,9 +15,9 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <form action="#" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                   @csrf
-                  <a style="color: black;" class="dropdown-item secondary" href="#"
+                  <a style="color: black;" class="dropdown-item secondary" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
                                   this.closest('form').submit();">
                   Logout

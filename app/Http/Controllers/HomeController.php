@@ -20,4 +20,8 @@ class HomeController extends Controller
         
         return view('welcome', compact('categories', 'auction_items'));
     }
+
+    public function home(){
+        return view('home');
+    }
 }
