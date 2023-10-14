@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Auction;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -22,6 +23,10 @@ class HomeController extends Controller
     }
 
     public function home(){
-        return view('home');
+        $all_items = Auction::where('is_active', true)
+            ->leftJoin('items', 'auctions.item_id', '=', 'items.uuid')
+            ->paginate(9);
+        $categories = Category::all();
+        return view ('home', compact('categories', 'all_items'));
     }
 }

@@ -7,7 +7,12 @@
     @include('layouts.header')
     <main>
         <div class="container">
-            @yield('content')
+            <div class="sidebar">
+                @yield('sidebar')
+            </div>
+            <div class="content">
+                @yield('content')
+            </div>
         </div>
     </main>
 </body>

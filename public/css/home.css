@@ -1,0 +1,31 @@
+.container {
+    margin-left: 2em;
+    margin-right: 2em;
+    max-width: fit-content;
+}
+
+.sidebar {
+    flex: 0 0 20%; /* Fixed width for the sidebar */
+    padding: 1em;
+}
+
+.content {
+    flex: 1; /* Take up all available space */
+    background-color: #ffffff; /* Content background color */
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 1em;
+    
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    flex: 0 0 calc(30% - 1em);
+    margin-bottom: 4em;
+    border-radius: 5px;
+}
