@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 use App\Models\User;
+use App\Models\Item;
 
 class UserSeeder extends Seeder
 {
@@ -18,9 +19,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'uuid' => Uuid::uuid4()->toString(),
             'username' => 'admin',
+            'is_admin' => true,
             'password' => Hash::make('password'),
         ]);
-
-        User::factory(5)->create();
     }
 }
