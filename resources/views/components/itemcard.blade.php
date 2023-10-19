@@ -9,6 +9,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <h5 class="card-title">{{$item->title}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{$item->category}}</h6>
             </li>
             <li class="list-group-item" id="price-bids">
                 <div class="row">
@@ -30,10 +31,13 @@
                 </div>
                 <div class="row">
                     <div class="col text-center">
-                    {{$item->end_time}}
+                        {{$item->end_time}}
+                    </div>
                 </div>
+                <div class="d-grid gap-2 col-3 mx-auto">
+                    <a class="btn btn-dark" role="button" href="/item/{{$item->item_uuid}}">BID</a>
+                </div>            
             </li>
           </ul>
-        <a href="#" class="btn btn-dark">BID</a>
     </div>
 </div>

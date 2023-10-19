@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::get('/item/{uuid}', [ItemController::class, 'show']);
+Route::get('/create', [ItemController::class, 'create'])->name('create');
 
 Route::controller(RegisterController::class)->group(function() {
     Route::post('/store', 'store')->name('store');

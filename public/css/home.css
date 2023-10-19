@@ -1,31 +1,37 @@
-.container {
-    margin-left: 2em;
-    margin-right: 2em;
-    max-width: fit-content;
-}
+#root {
+    height: 100vh;
+    width: 100vw;
+  }
 
-.sidebar {
-    flex: 0 0 20%; /* Fixed width for the sidebar */
-    padding: 1em;
+.container {
+    height: 100vh;
+    width: 100vw;
+    /*display: flex;
+    flex-direction: column;*/
 }
 
 .content {
-    flex: 1; /* Take up all available space */
-    background-color: #ffffff; /* Content background color */
+    /*flex: 1;*/
+    height: fit-content;
+    width: 100vw;
+    background-color: #ffffff;
     border: 1px solid #000000;
     border-radius: 5px;
     padding: 1em;
-    
 }
 
-.row {
+tab-content {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+}
+
+.tab-pane {
+    flex-grow: 1;
+    width: 100%;
 }
 
 .card {
-    flex: 0 0 calc(30% - 1em);
+    /*flex: 0 0 calc(23% - 1em);*/
     margin-bottom: 4em;
     border-radius: 5px;
 }
