@@ -11,17 +11,17 @@ class Transaction extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'user_id',
+        'user_uuid',
         'amount',
-        'transaction_id',
+        'transaction_uuid',
         'transaction_type'
     ];
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_uuid');
     }
 
     public function auction(){
-        return $this->belongsTo(Auction::class, 'item_id');
+        return $this->belongsTo(Auction::class, 'item_uuid');
     }
 }

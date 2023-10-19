@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->foreignUuid('user_id');
+            $table->uuid('uuid');
+            $table->foreignUuid('user_uuid');
             $table->integer('amount');           
-            $table->bigInteger('transaction_id')->unsigned();
+            $table->bigInteger('transaction_uuid')->unsigned();
             $table->enum('transaction_type', ['payin', 'payout']);
             $table->timestamps();
         });

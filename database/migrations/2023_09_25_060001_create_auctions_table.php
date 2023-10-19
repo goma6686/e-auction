@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('auctions', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
-            $table->foreignUuid('item_id')->unique();
-            $table->foreignUuid('user_id');
+            $table->foreignUuid('item_uuid')->unique();
+            $table->foreignUuid('user_uuid');
 
             $table->unsignedDecimal('current_price')->default(0.00);
             $table->unsignedDecimal('next_price');

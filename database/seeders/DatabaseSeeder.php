@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
                 $faker = Faker::create();
                 Item::create([
                     'uuid' => Uuid::uuid4()->toString(),
-                    'user_id' => $user->uuid,
+                    'user_uuid' => $user->uuid,
                     'title' => $faker->sentence(3),
                     'description' => $faker->paragraph(),
                     'condition_id' => $faker->numberBetween(1, 6),

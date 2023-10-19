@@ -20,8 +20,8 @@ class AuctionSeeder extends Seeder
         foreach (Item::all() as $item) {
             Auction::create([
                 'uuid' => Uuid::uuid4()->toString(),
-                'item_id' => $item->uuid,
-                'user_id' => $item->user_id,
+                'item_uuid' => $item->uuid,
+                'user_uuid' => $item->user_uuid,
                 'current_price' => $item->current_price,
                 'next_price' => $item->current_price + $faker->randomFloat(2, 1, 100), //TODO: prieaugiai pagal kainą
                 'start_time' => $faker->dateTimeBetween('-1 month', '+1 month'),

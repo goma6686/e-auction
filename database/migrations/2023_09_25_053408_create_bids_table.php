@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bids', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('user_id');
-            $table->foreignUuid('item_id');
+            $table->uuid('uuid')->primary();
+            $table->foreignUuid('user_uuid');
+            $table->foreignUuid('item_uuid');
             $table->decimal('amount')->unsigned();
             $table->boolean('is_winning')->default(false);
             $table->DateTime('created_at');

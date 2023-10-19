@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreignUuid('condition_id');
             $table->foreignUuid('category_id')->nullable();
-            $table->foreignUuid('user_id');
+            $table->foreignUuid('user_uuid');
 
             $table->unsignedDecimal('current_price')->default(0.00)->nullable();//not all items are in an auction
             $table->timestamps();
@@ -31,8 +31,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['condition_id']);
-            $table->dropForeign(['category_id']);
+            $table->dropForeign(['condition_uuid']);
+            $table->dropForeign(['category_uuid']);
         });
         Schema::dropIfExists('items');
     }

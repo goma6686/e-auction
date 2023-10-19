@@ -11,12 +11,12 @@ class Item extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function auctions()
     {
-        return $this->hasOne(Auction::class, 'item_id');
+        return $this->hasOne(Auction::class, 'item_uuid');
     }
 
     public function bids()
