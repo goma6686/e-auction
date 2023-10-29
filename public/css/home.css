@@ -8,6 +8,8 @@
     width: 100vw;
     /*display: flex;
     flex-direction: column;*/
+    display: flex;
+    align-items: flex-start;
 }
 
 .content {

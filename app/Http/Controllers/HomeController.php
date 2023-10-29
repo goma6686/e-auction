@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Auction;
+use Illuminate\Http\Request;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -29,5 +31,14 @@ class HomeController extends Controller
         $categories = Category::all();
 
         return view ('home', compact('categories', 'all_items'));
+    }
+
+    public function profile(Request $request, $uuid) {
+        $user = User::find($uuid);
+        $items = Auction::where('auctions.user_uuid', $uuid)
+            ->where('auctions.is_active', true)
+            ->get();
+
+        return view('profile.profile', compact('user', 'items'));
     }
 }

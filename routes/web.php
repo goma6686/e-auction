@@ -17,10 +17,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/home', [HomeController::class, 'home'])->name('home');
-Route::get('/item/{uuid}', [ItemController::class, 'show']);
-Route::get('/create', [ItemController::class, 'create'])->name('create');
+Route::controller(HomeController::class)->group(function() {
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
+    Route::get('/profile/{uuid}', [HomeController::class, 'profile']);
+});
+
+Route::controller(ItemController::class)->group(function() {
+    Route::get('/item/{uuid}', [ItemController::class, 'show']);
+    Route::get('/create', [ItemController::class, 'create'])->name('create');
+    Route::get('/items', [ItemController::class, 'index'])->name('items.categories');
+});
 
 Route::controller(RegisterController::class)->group(function() {
     Route::post('/store', 'store')->name('store');
