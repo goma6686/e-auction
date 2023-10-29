@@ -18,15 +18,19 @@ class DatabaseSeeder extends Seeder
         User::factory(20)->create()
             ->each(function ($user) {
                 $faker = Faker::create();
-                Item::create([
-                    'uuid' => Uuid::uuid4()->toString(),
-                    'user_uuid' => $user->uuid,
-                    'title' => $faker->sentence(3),
-                    'description' => $faker->paragraph(),
-                    'condition_id' => $faker->numberBetween(1, 6),
-                    'category_id' => $faker->numberBetween(1, 8),
-                    'current_price' => $faker->randomFloat(4, 0, 1000),
-                ]);
+                $numPosts = $faker->numberBetween(1, 10);
+
+                for($i = 0; $i < $numPosts; $i++){
+                    Item::create([
+                        'uuid' => Uuid::uuid4()->toString(),
+                        'user_uuid' => $user->uuid,
+                        'title' => $faker->sentence(3),
+                        'description' => $faker->paragraph(),
+                        'condition_id' => $faker->numberBetween(1, 6),
+                        'category_id' => $faker->numberBetween(1, 8),
+                        'current_price' => $faker->randomFloat(4, 0, 1000),
+                    ]);
+                }
             });
 
         $this->call([
