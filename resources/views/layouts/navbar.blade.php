@@ -15,6 +15,11 @@
             </button>
             <ul class="dropdown-menu">
               <li>
+                <a class="dropdown-item secondary" href="{{ route('profile', ['uuid' => Auth::user()->uuid]) }}">
+                  Profile
+                </a>
+              </li>
+              <li>
                 <form action="{{ route('logout') }}" method="POST">
                   @csrf
                   <a style="color: black;" class="dropdown-item secondary" href="{{ route('logout') }}"

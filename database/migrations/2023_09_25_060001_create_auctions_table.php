@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedDecimal('current_price')->default(0.00);
             $table->unsignedDecimal('next_price');
 
-            $table->dateTime('start_time');
+            $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time');
 
             $table->boolean('is_active')->default(false);

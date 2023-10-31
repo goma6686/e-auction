@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('uuid')->primary();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->string('image')->nullable();
 
             $table->foreignUuid('condition_id');
             $table->foreignUuid('category_id')->nullable();

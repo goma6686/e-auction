@@ -20,13 +20,14 @@ use Illuminate\Support\Facades\Route;
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/home', [HomeController::class, 'home'])->name('home');
-    Route::get('/profile/{uuid}', [HomeController::class, 'profile']);
+    Route::get('/profile/{uuid}', [HomeController::class, 'profile'])->name('profile');
 });
 
 Route::controller(ItemController::class)->group(function() {
     Route::get('/item/{uuid}', [ItemController::class, 'show']);
     Route::get('/create', [ItemController::class, 'create'])->name('create');
-    Route::get('/items', [ItemController::class, 'index'])->name('items.categories');
+    Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
+    Route::get('/items', [ItemController::class, 'index'])->name('items.categories'); //TO DO
 });
 
 Route::controller(RegisterController::class)->group(function() {
