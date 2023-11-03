@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Auction;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -35,11 +36,22 @@ class HomeController extends Controller
 
     public function profile(Request $request, $uuid) {
         $user = User::find($uuid);
-        $items = Auction::where('auctions.user_uuid', $uuid)
-            ->where('auctions.is_active', true)
-            ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
-            ->get();
 
-        return view('profile.profile', compact('user', 'items'));
+        $active_items = Auction::where('auctions.user_uuid', $uuid)
+                ->where('auctions.is_active', true)
+                ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
+                ->get();
+
+        if(Auth::check() && Auth::user()->uuid == $uuid) {
+            $all_items = Auction::where('auctions.user_uuid', $uuid)
+                ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
+                ->leftJoin('categories', 'categories.id', '=', 'items.category_id')
+                ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
+                ->get();
+
+            return view('profile.profile', compact('user', 'all_items', 'active_items'));
+        } else {
+            return view('profile.profile', compact('user', 'active_items'));
+        }
     }
 }
