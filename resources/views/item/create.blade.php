@@ -11,7 +11,7 @@
                 <input id="title" type="text" name="title" class="form-control @error('title') is-invalid @enderror" required>
             </div>
             <div class="form-group pt-4">
-                <input type="file" name="cover" placeholder="Choose image" id="image">
+                <input type="file" name="image" placeholder="Choose image" id="image">
             </div>
             <div class="form-group pt-4">
                 <label for="description">Description</label>

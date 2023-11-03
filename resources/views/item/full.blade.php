@@ -6,7 +6,7 @@
       <div class="col">
         <h3 class="mt-4 text-center">{{ $item->title }}</h3>
         <div class="card p-3 border-dark">
-            <img src="https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s580/placeholder-image.jpg" class="card-img-top" style="align-self: center;" width="23">
+            <img @if($item->image != null) src="/images/{{ $item->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top" style="align-self: center;" width="23">
           <div class="card-body">
             <h3 class="text-center">Description</h3>
             <h6 class="card-footer p-3">{{ $item->description }}</h5>

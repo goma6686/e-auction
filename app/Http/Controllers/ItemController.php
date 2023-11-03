@@ -24,7 +24,7 @@ class ItemController extends Controller
         ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
         ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
         ->first();
-
+        
         $seller = User::find($item->user_uuid);
 
         $count = $seller->loadCount(['auctions' => function ($query) {
@@ -52,7 +52,6 @@ class ItemController extends Controller
             'end_time' => 'required|date|after:today',
         ]);
         
-        //return dd($request->all());
         $item = new Item();
         $item->title = $request->input('title');
         $item->description = $request->input('description');
@@ -62,9 +61,11 @@ class ItemController extends Controller
         $item->user_uuid = $request->user()->uuid;
 
         if($request->hasFile('image')) {
-            $imageName = $item->uuid . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
+            $file = $request->file('image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
             $item->image = $imageName;
+
+            $request->image->move(public_path('images'), $imageName);
         }
 
         $item->save();

@@ -37,6 +37,7 @@ class HomeController extends Controller
         $user = User::find($uuid);
         $items = Auction::where('auctions.user_uuid', $uuid)
             ->where('auctions.is_active', true)
+            ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
             ->get();
 
         return view('profile.profile', compact('user', 'items'));

@@ -7,9 +7,9 @@
             @foreach ($categories->chunk(4) as $key => $category)
             <div class="carousel-item{{ $key === 0 ? ' active' : '' }}">
                 <div class="row" id="categories">
-                    @foreach ($category as $item)
+                    @foreach ($category as $c)
                         <div class="col-md-2">
-                            @include('components.categorycard', ['category' => $item])
+                            @include('components.categorycard', ['category' => $c])
                         </div>
                     @endforeach
                 </div>

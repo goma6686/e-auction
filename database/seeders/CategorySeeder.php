@@ -16,14 +16,14 @@ class CategorySeeder extends Seeder
         DB::table('categories')->delete();
 
         DB::table('categories')->insert([
-                ['id' => '1', 'image' => 'sport.jpg', 'category' => 'SPORTS'],
-                ['id' => '2', 'image' => 'ring.jpg', 'category' => 'JEWELRY'],
-                ['id' => '3', 'image' => 'watch.jpg', 'category' => 'WATCHES'],
-                ['id' => '4', 'image' => 'technology.jpg', 'category' => 'ELECTRONICS'],
-                ['id' => '5', 'image' => 'hanger.jpg', 'category' => 'FASHION'],
-                ['id' => '6', 'image' => 'toy.jpg', 'category' => 'TOYS'],
-                ['id' => '7', 'image' => 'home.jpg', 'category' => 'HOME'],
-                ['id' => '8', 'image' => 'triangle.jpg', 'category' => 'OTHER'],
+                ['id' => '1', 'categoryImage' => 'sport.jpg', 'category' => 'SPORTS'],
+                ['id' => '2', 'categoryImage' => 'ring.jpg', 'category' => 'JEWELRY'],
+                ['id' => '3', 'categoryImage' => 'watch.jpg', 'category' => 'WATCHES'],
+                ['id' => '4', 'categoryImage' => 'technology.jpg', 'category' => 'ELECTRONICS'],
+                ['id' => '5', 'categoryImage' => 'hanger.jpg', 'category' => 'FASHION'],
+                ['id' => '6', 'categoryImage' => 'toy.jpg', 'category' => 'TOYS'],
+                ['id' => '7', 'categoryImage' => 'home.jpg', 'category' => 'HOME'],
+                ['id' => '8', 'categoryImage' => 'triangle.jpg', 'category' => 'OTHER'],
         ]);
     }
 }
