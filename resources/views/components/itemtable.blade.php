@@ -60,7 +60,7 @@
                     <a href="#" class="btn btn-sm btn-dark " role="button">Edit</a>
                 </td>
                 <td>
-                    <form action="#" method="POST">
+                    <form action="/delete-item/{{$item->uuid}}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>

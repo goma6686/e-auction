@@ -27,6 +27,7 @@ Route::controller(ItemController::class)->group(function() {
     Route::get('/item/{uuid}', [ItemController::class, 'show']);
     Route::get('/create', [ItemController::class, 'create'])->name('create');
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
+    Route::delete('/delete-item/{uuid}', [ItemController::class, 'destroy']);
     Route::get('/items', [ItemController::class, 'index'])->name('items.categories'); //TO DO
 });
 

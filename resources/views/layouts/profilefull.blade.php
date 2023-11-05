@@ -17,7 +17,7 @@
         <div class="container mt-2">
             <div class="container px-4 px-lg-5 mt-5">
             @if(count($all_items) > 0)
-                @include('layouts.itemtable')
+                @include('components.itemtable')
             @else
                 <h3 style="text-align: center;">No items found :(</h3>
             @endif

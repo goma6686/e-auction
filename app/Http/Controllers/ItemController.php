@@ -85,6 +85,17 @@ class ItemController extends Controller
         }
         $auction->bidder_count = 0;
         $auction->save();
-        return redirect('/');
+        return redirect()->back();
+    }
+
+    public function destroy($uuid){
+        $item = Item::find($uuid);
+        if(isset($item->image)){
+            unlink(public_path('/images/' . $item->image));
+        }
+        $item->auctions()->delete();
+        $item->delete();
+        
+        return redirect()->back();
     }
 }
