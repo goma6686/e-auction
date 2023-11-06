@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/home', [HomeController::class, 'home'])->name('home');
-    Route::get('/profile/{uuid}', [HomeController::class, 'profile'])->name('profile');
+    Route::get('/home/{category}', [HomeController::class, 'category'])->name('items.categories'); //TO DO
+});
+
+Route::controller(ProfileController::class)->group(function() {
+    Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
 });
 
 Route::controller(ItemController::class)->group(function() {
@@ -28,7 +33,6 @@ Route::controller(ItemController::class)->group(function() {
     Route::get('/create', [ItemController::class, 'create'])->name('create');
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
     Route::delete('/delete-item/{uuid}', [ItemController::class, 'destroy']);
-    Route::get('/items', [ItemController::class, 'index'])->name('items.categories'); //TO DO
 });
 
 Route::controller(RegisterController::class)->group(function() {
