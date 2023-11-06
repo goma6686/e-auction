@@ -39,6 +39,7 @@ h2 {
 .card {
     color: #000000;
     border: #000000 1px solid;
+    word-wrap: break-word;
 }
 
 #card-footer {
@@ -48,4 +49,9 @@ h2 {
 
 #home {
   width: 100%;
+}
+
+img {
+    margin: auto;
+    display: block;
 }

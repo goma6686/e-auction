@@ -8,7 +8,7 @@
     <div class="col-md-10">
       <div class="row">
           @foreach ($all_items as $item)
-          <div class="col-6">
+          <div class="col-6 card-group">
               @include('components.itemcard')
           </div>
           @endforeach
