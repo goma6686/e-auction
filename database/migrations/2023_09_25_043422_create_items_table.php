@@ -17,11 +17,13 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
 
+            $table->foreignUuid('auction_uuid')->nullable();
             $table->foreignUuid('condition_id');
             $table->foreignUuid('category_id')->nullable();
             $table->foreignUuid('user_uuid');
 
             $table->unsignedDecimal('current_price')->default(0.00)->nullable();//not all items are in an auction
+            $table->unsignedDecimal('next_price');
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@ class Item extends Model
 
     public function auctions()
     {
-        return $this->hasOne(Auction::class, 'item_uuid');
+        return $this->belongsTo(Auction::class, 'item_uuid');
     }
 
     public function bids()

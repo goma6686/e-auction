@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Auction;
-use App\Models\Item;
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use Faker\Factory as Faker;
 
@@ -15,20 +15,21 @@ class AuctionSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
+        User::factory(20)->create()
+            ->each(function ($user) {
+                $faker = Faker::create();
+                $numAuctions = $faker->numberBetween(1, 10);
 
-        foreach (Item::all() as $item) {
-            Auction::create([
-                'uuid' => Uuid::uuid4()->toString(),
-                'item_uuid' => $item->uuid,
-                'user_uuid' => $item->user_uuid,
-                'current_price' => $item->current_price,
-                'next_price' => $item->current_price + $faker->randomFloat(2, 1, 100), //TODO: prieaugiai pagal kainą
-                'start_time' => $faker->dateTimeBetween('-1 month', '+1 month'),
-                'end_time' => $faker->dateTimeBetween('+1 week', '+1 month'),
-                'is_active' => $faker->boolean(75), // 75% chance of being active
-                'bidder_count' => $faker->numberBetween(0,123),
-            ]);
-        }
+                for($i = 0; $i < $numAuctions; $i++){
+                    Auction::create([
+                        'uuid' => Uuid::uuid4()->toString(),
+                        'start_time' => $faker->dateTimeBetween('-1 month', '+1 month'),
+                        'end_time' => $faker->dateTimeBetween('+1 week', '+1 month'),
+                        'is_active' => $faker->boolean(75), // 75% chance of being active
+                        'bidder_count' => $faker->numberBetween(0,123),
+                        'user_uuid' => $user->uuid,
+                    ]);
+                }
+            });
     }
 }

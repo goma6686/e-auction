@@ -13,14 +13,10 @@ return new class extends Migration
     {
         Schema::create('auctions', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
-            $table->foreignUuid('item_uuid')->unique();
-            $table->foreignUuid('user_uuid');
-
-            $table->unsignedDecimal('current_price')->default(0.00);
-            $table->unsignedDecimal('next_price');
 
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time');
+            $table->foreignUuid('user_uuid');
 
             $table->boolean('is_active')->default(false);
             $table->unsignedInteger('bidder_count')->unsigned()->default(0);

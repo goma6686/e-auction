@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'uuid' => Uuid::uuid4()->toString(),
             'username' => 'admin',
             'is_admin' => true,
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123'),
         ]);
     }
 }
