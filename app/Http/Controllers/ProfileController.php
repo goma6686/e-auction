@@ -12,14 +12,16 @@ class ProfileController extends Controller
     public function profile(Request $request, $uuid) {
         $user = User::find($uuid);
 
-        $active_items = Auction::where('auctions.user_uuid', $uuid)
-                ->where('auctions.is_active', true)
-                ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
+        $active_items = $user->auctions()
+                ->where('is_active', true)
+                ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
+                ->leftJoin('categories', 'categories.id', '=', 'items.category_id')
+                ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
                 ->get();
 
         if(Auth::check() && Auth::user()->uuid == $uuid) {
-            $all_items = Auction::where('auctions.user_uuid', $uuid)
-                ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
+            $all_items = $user->auctions()
+                ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
                 ->leftJoin('categories', 'categories.id', '=', 'items.category_id')
                 ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
                 ->get();

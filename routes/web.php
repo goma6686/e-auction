@@ -32,7 +32,11 @@ Route::controller(ItemController::class)->group(function() {
     Route::get('/item/{uuid}', [ItemController::class, 'show']);
     Route::get('/create', [ItemController::class, 'create'])->name('create');
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
+    Route::get('/edit-item/{uuid}', [ItemController::class, 'edit'])->name('edit-item');
+    Route::post('/update-item/{uuid}', [ItemController::class, 'update'])->name('update-item');
     Route::delete('/delete-item/{uuid}', [ItemController::class, 'destroy']);
+    Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage']);
+    Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage']);
 });
 
 Route::controller(RegisterController::class)->group(function() {

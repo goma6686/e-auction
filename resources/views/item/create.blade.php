@@ -27,7 +27,7 @@
             </div>
             <div class="form-group pt-4">
                 <div class="col-md-2">
-                <label for="condition">Category</label>
+                <label for="category">Category</label>
                 <select class="form-control" name="category" type="category" required>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" selected > {{$category->category}} </option>

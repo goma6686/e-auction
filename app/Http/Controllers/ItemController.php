@@ -20,7 +20,7 @@ class ItemController extends Controller
 
     public function show(Request $request, $uuid) {
         $item = Auction::where('item_uuid', $uuid)
-        ->leftJoin('items', 'auctions.item_uuid', '=', 'items.uuid')
+        ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
         ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
         ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
         ->first();
@@ -48,7 +48,6 @@ class ItemController extends Controller
             'category' => 'required',
             'condition' => 'required',
             'price' => 'required|numeric|min:0.01',
-            'image' => 'image|mimes:jpeg,png,jpg|max:5120',
             'end_time' => 'required|date|after:today',
         ]);
         
@@ -61,11 +60,7 @@ class ItemController extends Controller
         $item->user_uuid = $request->user()->uuid;
 
         if($request->hasFile('image')) {
-            $file = $request->file('image');
-            $imageName = time() . '_' . $file->getClientOriginalName();
-            $item->image = $imageName;
-
-            $request->image->move(public_path('images'), $imageName);
+            $this->uploadImage($request, $item);
         }
 
         $item->save();
@@ -88,6 +83,55 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
+    public function edit($uuid){
+        $categories = Category::all();
+        $conditions = Condition::all();
+
+        $auction_item = Auction::where('item_uuid', $uuid)
+        ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
+        ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
+        ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
+        ->first();
+
+        return view('item.edit', compact('auction_item', 'categories', 'conditions'));
+    }
+
+    public function update(Request $request, $uuid){
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'category' => 'required',
+            'condition' => 'required',
+            'price' => 'required|numeric|min:0.01',
+            'end_time' => 'required|date|after:today',
+        ]);
+
+        $item = Item::find($uuid);
+        $item->title = $request->input('title');
+        $item->description = $request->input('description');
+        $item->condition_id = $request->input('condition');
+        $item->category_id = $request->input('category');
+        $item->current_price = $request->input('price');
+        $item->save();
+
+        $auction = Auction::where('item_uuid', $uuid)->first();
+        $auction->end_time = $request->input('end_time');
+        $auction->is_active = $request->input('is_active') != null ? true : false;
+        $auction->save();
+
+        /*$item = new Item(['title' => $request->input('title')],
+        ['description' => $request->input('description')],
+        ['condition_id' => $request->input('condition')],
+        ['category_id' => $request->input('category')],
+        ['current_price' => $request->input('price')]);
+
+        $auction = Auction::where('item_uuid', $uuid)->first();
+
+        $item->auctions()->save($auction);*/
+
+        return redirect()->back();
+    }
+
     public function destroy($uuid){
         $item = Item::find($uuid);
         if(isset($item->image)){
@@ -96,6 +140,29 @@ class ItemController extends Controller
         $item->auctions()->delete();
         $item->delete();
         
+        return redirect()->back();
+    }
+
+    public function destroyImage($uuid){
+        $item = Item::find($uuid);
+        unlink(public_path('/images/' . $item->image));
+        $item->image = null;
+        $item->save();
+
+        return redirect()->back();
+    }
+
+    public function uploadImage(Request $request, $uuid){
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg|max:5120',
+        ]);
+        $item = Item::find($uuid);
+        $file = $request->file('image');
+        $imageName = time() . '_' . $file->getClientOriginalName();
+        $item->image = $imageName;
+        $request->image->move(public_path('images'), $imageName);
+        $item->save();
+
         return redirect()->back();
     }
 }

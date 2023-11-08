@@ -57,7 +57,7 @@
                     {{$item->end_time}}
                 </td>
                 <td style="text-align: right;">
-                    <a href="#" class="btn btn-sm btn-dark " role="button">Edit</a>
+                    <a href="/edit-item/{{$item->uuid}}" class="btn btn-sm btn-dark " role="button">Edit</a>
                 </td>
                 <td>
                     <form action="/delete-item/{{$item->uuid}}" method="POST">

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -46,19 +47,23 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function transactions(){
+    public function transactions(): HasMany
+    {
         return $this->hasMany(Transaction::class);
     }
 
-    public function items(){
+    public function items(): HasMany
+    {
         return $this->hasMany(Item::class);
     }
 
-    public function bids(){
+    public function bids(): HasMany
+    {
         return $this->hasMany(Bid::class);
     }
 
-    public function auctions(){
+    public function auctions(): HasMany
+    {
         return $this->hasMany(Auction::class);
     }
 }
