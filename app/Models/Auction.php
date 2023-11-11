@@ -16,9 +16,9 @@ class Auction extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function item(): HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(Item::class, 'item_uuid');
+        return $this->hasMany(Item::class, 'auction_uuid');
     }
 
     public function user(): BelongsTo

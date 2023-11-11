@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
 
+            $table->string('title');
+            $table->text('description')->nullable();
+
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time');
+
             $table->foreignUuid('user_uuid');
+            $table->foreignUuid('type_id');
+            $table->foreignUuid('category_id');
 
             $table->boolean('is_active')->default(false);
             $table->unsignedInteger('bidder_count')->unsigned()->default(0);

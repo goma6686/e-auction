@@ -15,6 +15,15 @@ class Item extends Model
     protected $primaryKey = 'uuid';
     protected $keyType = 'string';
     public $incrementing = false;
+    protected $table = 'items';
+
+    protected $fillable = [
+        'title', 
+        'description',
+        'condition_id',
+        'category_id',
+        'current_price',
+    ];
 
     public function categories(): BelongsTo
     {
@@ -23,7 +32,7 @@ class Item extends Model
 
     public function auctions(): BelongsTo
     {
-        return $this->belongsTo(Auction::class, 'auction_uuid');
+        return $this->belongsTo(Auction::class);
     }
 
     public function bids(): HasMany

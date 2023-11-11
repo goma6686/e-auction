@@ -23,11 +23,15 @@ class AuctionSeeder extends Seeder
                 for($i = 0; $i < $numAuctions; $i++){
                     Auction::create([
                         'uuid' => Uuid::uuid4()->toString(),
+                        'title' => $faker->sentence(3),
+                        'description' => $faker->paragraph(),
                         'start_time' => $faker->dateTimeBetween('-1 month', '+1 month'),
                         'end_time' => $faker->dateTimeBetween('+1 week', '+1 month'),
+                        'category_id' => $faker->numberBetween(1, 8),
                         'is_active' => $faker->boolean(75), // 75% chance of being active
                         'bidder_count' => $faker->numberBetween(0,123),
                         'user_uuid' => $user->uuid,
+                        'type_id' => $faker->numberBetween(1,2),
                     ]);
                 }
             });
