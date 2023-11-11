@@ -13,12 +13,24 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         $auction_items = Auction::where('is_active', true)
             ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
             ->leftJoin('categories', 'categories.id', '=', 'auctions.category_id')
-            ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
+            ->with(['items' => function ($query) {
+                $query->select('auction_uuid', 'image')
+                ->first();
+            }])
+            ->select(
+                'auctions.*',
+                'categories.category',
+            DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
+            DB::raw('(SELECT MIN(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
+            DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as price'),
+            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
+            )
             ->orderByDesc('auctions.bidder_count')
-            ->distinct('items.category_uuid')
+            ->groupBy('auctions.category_id', 'auctions.uuid')
             ->take(3)
             ->get();
 
