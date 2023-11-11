@@ -24,12 +24,12 @@
                         </div>
                     @else
                         @guest
-                            @include('layouts.profileactive')
+                            @include('profile.profileactive')
                         @else
                             @if(Auth::user()->uuid == $user->uuid)
-                                @include('layouts.profilefull')
+                                @include('profile.profilefull')
                             @else
-                                @include('layouts.profileactive')
+                                @include('profile.profileactive')
                             @endif
                         @endguest
                     @endif
