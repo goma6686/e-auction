@@ -67,7 +67,19 @@ class HomeController extends Controller
             ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
             ->leftJoin('categories', 'categories.id', '=', 'auctions.category_id')
             ->where('categories.category', $category)
+            ->with(['items' => function ($query) {
+                $query->select('auction_uuid', 'image')
+                ->first();
+            }])
+            ->select(
+                '*',
+            DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
+            DB::raw('(SELECT MIN(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
+            DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as price'),
+            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
+            )
             ->paginate(10);
+            
             $categories = Category::all();
 
             return view ('home', compact('categories', 'all_items'));

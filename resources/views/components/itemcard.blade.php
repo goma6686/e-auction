@@ -14,7 +14,7 @@
             <li class="list-group-item" id="price-bids">
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        @if ($item->type_id == 1)
+                        @if ($item->count == 1)
                             <h6 class="card-subtitle mb-2">Current price:</h6>
                             <h6 class="card-subtitle mb-2">{{$item->current_price}} Eur</h6>
                         @else
