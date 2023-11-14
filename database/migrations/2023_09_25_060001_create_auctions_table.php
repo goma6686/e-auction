@@ -21,7 +21,6 @@ return new class extends Migration
             $table->dateTime('end_time');
 
             $table->foreignUuid('user_uuid');
-            $table->foreignUuid('type_id');
             $table->foreignUuid('category_id');
 
             $table->boolean('is_active')->default(false);

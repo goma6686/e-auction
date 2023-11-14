@@ -8,7 +8,7 @@
             <div class="carousel-item{{ $key === 0 ? ' active' : '' }}">
                 <div class="row" id="categories">
                     @foreach ($category as $c)
-                        <div class="col-md-2">
+                        <div class="col-sm-2">
                             @include('components.categorycard', ['category' => $c])
                         </div>
                     @endforeach
@@ -25,7 +25,7 @@
     </div>
     <h2>Featured Items</h2>
     <div class="row row-cols-1 row-cols-md-3">
-        @foreach ($auction_items as $item)
+        @foreach ($auction_items as $auction)
             @include('components.itemcard')
         @endforeach
     </div>

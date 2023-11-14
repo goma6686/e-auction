@@ -16,6 +16,18 @@ class Auction extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'title', 
+        'description',
+        'category_id',
+        'user_uuid',
+        'type_id',
+        'is_active',
+        'start_time',
+        'end_time',
+        'bidder_count',
+    ];
+
     public function items(): HasMany
     {
         return $this->hasMany(Item::class, 'auction_uuid');
@@ -24,5 +36,15 @@ class Auction extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_uuid');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function bids(): HasMany
+    {
+        return $this->hasMany(Bid::class);
     }
 }

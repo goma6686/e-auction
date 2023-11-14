@@ -31,7 +31,6 @@ class AuctionSeeder extends Seeder
                         'is_active' => $faker->boolean(75), // 75% chance of being active
                         'bidder_count' => $faker->numberBetween(0,123),
                         'user_uuid' => $user->uuid,
-                        'type_id' => $faker->numberBetween(1,2),
                     ]);
                 }
             });

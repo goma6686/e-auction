@@ -36,6 +36,10 @@ h2 {
     margin: 1rem;
 }
 
+#category-card {
+    width: 10rem;
+}
+
 .card {
     color: #000000;
     border: #000000 1px solid;
@@ -51,7 +55,8 @@ h2 {
   width: 100%;
 }
 
-img {
-    margin: auto;
-    display: block;
+#item-image {
+    width: 100%;
+    height: 20vw;
+    object-fit: cover;
 }

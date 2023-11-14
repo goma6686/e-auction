@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\CreateAuction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/home', [HomeController::class, 'home'])->name('home');
-    Route::get('/home/{category}', [HomeController::class, 'category'])->name('items.categories'); //TO DO
+    Route::get('/home/{category}', [HomeController::class, 'category'])->name('items.categories');
 });
 
 Route::controller(ProfileController::class)->group(function() {
@@ -29,14 +31,19 @@ Route::controller(ProfileController::class)->group(function() {
 });
 
 Route::controller(ItemController::class)->group(function() {
-    Route::get('/item/{uuid}', [ItemController::class, 'show']);
-    Route::get('/create', [ItemController::class, 'create'])->name('create');
+    Route::get('/create-items/{uuid}/{quantity}', [ItemController::class, 'create'])->name('create-items');
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
     Route::get('/edit-item/{uuid}', [ItemController::class, 'edit'])->name('edit-item');
     Route::post('/update-item/{uuid}', [ItemController::class, 'update'])->name('update-item');
-    Route::delete('/delete-item/{uuid}', [ItemController::class, 'destroy']);
-    Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage']);
-    Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage']);
+    /*Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage']);
+    Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage']);*/
+});
+
+Route::controller(AuctionController::class)->group(function() {
+    Route::get('/create-auction', [AuctionController::class, 'create'])->name('create-auction');
+    Route::post('/store-auction', [AuctionController::class, 'store'])->name('store-auction');
+    Route::get('/auction/{uuid}', [AuctionController::class, 'show'])->name('show-auction');
+    Route::delete('/delete-auction/{uuid}', [AuctionController::class, 'destroy']);
 });
 
 Route::controller(RegisterController::class)->group(function() {
@@ -49,3 +56,5 @@ Route::controller(LoginController::class)->group(function() {
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::post('/logout', 'logout')->name('logout');
 });
+
+Route::get('/auction', CreateAuction::class)->name('auction');

@@ -25,24 +25,14 @@ class Item extends Model
         'current_price',
     ];
 
-    public function categories(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
-
     public function auctions(): BelongsTo
     {
         return $this->belongsTo(Auction::class);
     }
 
-    public function bids(): HasMany
-    {
-        return $this->hasMany(Bid::class);
-    }
-
     public function condition(): BelongsTo
     {
-        return $this->belongsTo(Condition::class);
+        return $this->belongsTo(Condition::class, 'condition_id');
     }
 
     public function user(): BelongsTo

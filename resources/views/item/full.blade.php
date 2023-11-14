@@ -2,38 +2,58 @@
 
 @section('content')
 <div class="container-xxl">
+  <h2 class="mt-2 text-center"> {{$auction->title}} </h2>
     <div class="row">
       <div class="col">
-        <h3 class="mt-4 text-center">{{ $item->title }}</h3>
         <div class="card p-3 border-dark">
-            <img @if($item->image != null) src="/images/{{ $item->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top" style="align-self: center;" width="23">
-          <div class="card-body">
+              @include('components.carousel')
+            <div class="card-body">
             <h3 class="text-center">Description</h3>
-            <h6 class="card-footer p-3">{{ $item->description }}</h5>
+            <h6 class="card-footer p-3">{{ $auction->description }}</h5>
           </div>
         </div>
       </div>
       <div class="col-7">
-      <h3 class="mt-4 text-center">About</h3>
+      <h3 class="mt-2 text-center">About</h3>
         <div class="card p-3 border-dark">
           <div class="card-body">
             <div class="row">
+              
+            @if ($auction->count == 1)
               <h5 class="row">
-                <div class="col-3">Current bids:</div>
-                <div class="col-7 text-start" id="p1">{{ $item->bidder_count }}</div>
-              </h5></div>
+                <div class="col-3">Condition:</div>
+                <div class="col-7 text-start">{{ $auction->items[0]->condition->condition }}</div>
+              </h5>
               <h5 class="row">
-                <div class="col-3">Category:</div>
-                <div class="col-7 text-start">{{ $item->category }}</div>
+                <div class="col-3">Current Price, €:</div>
+                <div class="col-7 text-start" id="price">{{$auction->items[0]->current_price}}</div>
+              </h5>
+            @else
+              <h5 class="row">
+                <div class="col-3">Item:</div>
+                <div class="col-7 text-start">
+                  <div class="dropdown">
+                    <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Select
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      @foreach ($auction->items as $item)
+                        <li><a class="dropdown-item" href="#">{{$item->title}}</a></li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
+              </h5>
+            @endif
+            <hr>
+            <h5 class="row">
+              <div class="col-3">Current bids:</div>
+              <div class="col-7 text-start" id="p1">{{ $auction->bidder_count }}</div>
+            </h5></div>
+            <h5 class="row">
+              <div class="col-3">Category:</div>
+              <div class="col-7 text-start">{{ $auction->category->category }}</div>
             </h5>
-              <h5 class="row">
-                  <div class="col-3">Condition:</div>
-                  <div class="col-7 text-start">{{ $item->condition }}</div>
-              </h5>
-              <h5 class="row">
-                  <div class="col-3">Current Price, €:</div>
-                  <div class="col-7 text-start" id="price">{{$item->current_price}}</div>
-              </h5>
           </div>
           <form enctype="multipart/form-data" method="POST" action="#">
             @csrf
@@ -45,7 +65,7 @@
                   @if(Auth::user()->is_active)
                     @if(Auth::user()->uuid != $seller->uuid)
                         <h5>Place a bid, €:</h5>
-                        <input id="bid_amount"  type="number" name="bid_amount" placeholder="Bid amount" step="0.01" min="{{$item->next_price}}">
+                        <input id="bid_amount"  type="number" name="bid_amount" placeholder="Bid amount" step="0.01" min="{{$auction->next_price}}">
                         <button id="bid" " class="button btn-sm btn-dark text-right" type="submit">Place bid</button>
                     @else
                         <h5>You can't bid on your own items</h5>
@@ -62,18 +82,18 @@
                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                   </svg>
                 </span> 
-                <a href="/profile/{{$seller->uuid}}" class="link-dark">{{$seller->username}} ( {{$count}} )</a>
+                <a href="/profile/{{$seller->uuid}}" class="link-dark">{{$seller->username}} ( {{$auction_count}} )</a>
               </div>
             </div>
           </form>
           <h6 class="pt-3 text-center">
-            @if (new DateTime($item->end_time) <= new DateTime(\Carbon\Carbon::now()))
+            @if (new DateTime($auction->end_time) <= new DateTime(\Carbon\Carbon::now()))
                 <b id="status">Auction Has Ended</b>
-            @elseif (round((strtotime($item->end_time) - time()) / 3600) < 12)
-                <div id="timer" class="wrap-countdown time-countdown" data-expire="{{ Carbon\Carbon::parse($item->end_time) }}"></div>
+            @elseif (round((strtotime($auction->end_time) - time()) / 3600) < 12)
+                <div id="timer" class="wrap-countdown time-countdown" data-expire="{{ Carbon\Carbon::parse($auction->end_time) }}"></div>
             @else
-                {{ (new DateTime($item->end_time))->diff(new DateTime(\Carbon\Carbon::now()))->format("Ends in %dD %hH %iM"); }}
-            |   {{ Carbon\Carbon::parse($item->end_time)->format('l H:i') }}
+                {{ (new DateTime($auction->end_time))->diff(new DateTime(\Carbon\Carbon::now()))->format("Ends in %dD %hH %iM"); }}
+            |   {{ Carbon\Carbon::parse($auction->end_time)->format('l H:i') }}
             @endif
           </h6>
           </div>
