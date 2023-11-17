@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +36,6 @@ Route::controller(ItemController::class)->group(function() {
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
     Route::get('/edit-item/{uuid}', [ItemController::class, 'edit'])->name('edit-item');
     Route::post('/update-item/{uuid}', [ItemController::class, 'update'])->name('update-item');
-    /*Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage']);
-    Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage']);*/
 });
 
 Route::controller(AuctionController::class)->group(function() {
@@ -58,3 +57,4 @@ Route::controller(LoginController::class)->group(function() {
 });
 
 Route::get('/auction', CreateAuction::class)->name('auction');
+Route::get('/choose-item', ChooseItem::class)->name('choose-item');
