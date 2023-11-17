@@ -7,12 +7,12 @@
    
     <div class="col-md-10">
       <div class="row">
-          @foreach ($all_auctions as $auction)
+          @foreach ($auctions as $auction)
           <div class="col-6 card-group">
               @include('components.itemcard')
           </div>
           @endforeach
-        {!! $all_auctions->links() !!}
+        {!! $auctions->links() !!}
       </div>
     </div>
   @endsection

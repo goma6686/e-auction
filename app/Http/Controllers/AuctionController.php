@@ -81,6 +81,7 @@ class AuctionController extends Controller
             $query->where('is_active', true);
         }])->auctions_count;
 
+        //return dd($auction);
         return view('item.full', compact('auction', 'seller', 'auction_count'));
     }
 

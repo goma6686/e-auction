@@ -29,21 +29,7 @@
                 <div class="col-7 text-start" id="price">{{$auction->items[0]->current_price}}</div>
               </h5>
             @else
-              <h5 class="row">
-                <div class="col-3">Item:</div>
-                <div class="col-7 text-start">
-                  <div class="dropdown">
-                    <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                      Select
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      @foreach ($auction->items as $item)
-                        <li><a class="dropdown-item" href="#">{{$item->title}}</a></li>
-                      @endforeach
-                    </ul>
-                  </div>
-                </div>
-              </h5>
+              @livewire('choose-item', ['auction' => $auction->uuid, 'items' => $auction->items])
             @endif
             <hr>
             <h5 class="row">
