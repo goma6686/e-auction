@@ -79,7 +79,7 @@ class AuctionController extends Controller
         $seller = User::find($auction->user_uuid);
 
         $auction_count = $seller->loadCount(['auctions' => function ($query) {
-            $query->where('is_active', true);
+            $query->where('is_active', true)->where('end_time', '>', now());
         }])->auctions_count;
 
         return view('item.full', compact('auction', 'seller', 'auction_count'));

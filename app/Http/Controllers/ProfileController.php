@@ -15,6 +15,7 @@ class ProfileController extends Controller
 
         $active_auctions = $user->auctions()
                 ->where('is_active', true)
+                ->where('end_time', '>', now())
                 ->with(['items', 'category', 'items.condition'])
                 ->select(
                     '*',
