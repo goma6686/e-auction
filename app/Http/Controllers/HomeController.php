@@ -14,7 +14,8 @@ class HomeController extends Controller
         $categories = Category::all();
 
         $auction_items = Auction::where('is_active', true)
-           ->with(['items', 'category', 'items.condition'])
+            ->where('end_time', '>', now())
+            ->with(['items', 'category', 'items.condition'])
             ->select(
                 '*',
             DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
@@ -33,7 +34,8 @@ class HomeController extends Controller
     public function home(){
         $categories = Category::all();
 
-        $all_auctions = Auction::where('is_active', true)
+        $auctions = Auction::where('is_active', true)
+            ->where('end_time', '>', now())
             ->with(['items', 'category', 'items.condition'])
             ->select(
                 '*',
@@ -45,21 +47,16 @@ class HomeController extends Controller
             ->orderByDesc('auctions.created_at')
             ->paginate(10);
 
-        return view ('home', compact('categories', 'all_auctions'));
+        return view ('home', compact('categories', 'auctions'));
     }
 
     public function category(Request $request, $category){
         if($category == 'all')
             return redirect()->route('home');
         else {
-            $active_auctions = Auction::where('is_active', true)
-            ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-            ->leftJoin('categories', 'categories.id', '=', 'auctions.category_id')
-            ->where('categories.category', $category)
-            ->with(['items' => function ($query) {
-                $query->select('auction_uuid', 'image')
-                ->first();
-            }])
+            $auctions = Auction::where('is_active', true)
+            ->where('end_time', '>', now())
+            ->with(['items', 'category'])
             ->select(
                 '*',
             DB::raw('(SELECT MAX(current_price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
@@ -71,7 +68,7 @@ class HomeController extends Controller
 
             $categories = Category::all();
 
-            return view ('home', compact('categories', 'active_auctions'));
+            return view ('home', compact('categories', 'auctions'));
         }
         
     }
