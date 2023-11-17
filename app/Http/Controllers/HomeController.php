@@ -51,11 +51,14 @@ class HomeController extends Controller
     }
 
     public function category(Request $request, $category){
-        if($category == 'all')
+        $categories = Category::all();
+
+        if($category === 'all')
             return redirect()->route('home');
         else {
             $auctions = Auction::where('is_active', true)
             ->where('end_time', '>', now())
+            ->where('category_id', Category::where('category', $category)->first()->id)
             ->with(['items', 'category'])
             ->select(
                 '*',
@@ -65,8 +68,6 @@ class HomeController extends Controller
             DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
             )
             ->paginate(10);
-
-            $categories = Category::all();
 
             return view ('home', compact('categories', 'auctions'));
         }

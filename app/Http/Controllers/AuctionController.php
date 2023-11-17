@@ -64,7 +64,8 @@ class AuctionController extends Controller
                 'current_price' => $item['price'],
                 'auction_uuid' => $auction->uuid,
             ]);
-            if($item['image'] != null) {
+
+            if(isset($item['image'])){
                 $this->imageService->uploadImage($item['image'], $newItem->uuid);
             }
         }
@@ -81,7 +82,6 @@ class AuctionController extends Controller
             $query->where('is_active', true);
         }])->auctions_count;
 
-        //return dd($auction);
         return view('item.full', compact('auction', 'seller', 'auction_count'));
     }
 

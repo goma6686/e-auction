@@ -35,10 +35,6 @@ class CreateAuction extends Component
         'price' => 'required|numeric|min:0.01',
     ];
 
-    public function updated($propertyName){
-        $this->validateOnly($propertyName);
-    }
-
     public function mount(){
         $this->categories = Category::all();
         $this->conditions = Condition::all();
