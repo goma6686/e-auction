@@ -22,7 +22,9 @@ class Item extends Model
         'description',
         'condition_id',
         'category_id',
-        'current_price',
+        'price',
+        'quantity',
+        'reserve_price',
     ];
 
     public function auctions(): BelongsTo

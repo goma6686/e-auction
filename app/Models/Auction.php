@@ -26,6 +26,7 @@ class Auction extends Model
         'start_time',
         'end_time',
         'bidder_count',
+        'buy_now_price',
     ];
 
     public function items(): HasMany
@@ -46,5 +47,10 @@ class Auction extends Model
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class, 'type_id');
     }
 }
