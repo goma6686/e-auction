@@ -25,7 +25,11 @@ class ImageService
 
     public function destroyImage($uuid){
         $item = Item::find($uuid);
-        unlink(public_path('/images/' . $item->image));
+
+        if(file_exists(public_path('/images/' . $item->image))){
+            unlink(public_path('/images/' . $item->image));
+        }
+
         $item->image = null;
         $item->save();
 

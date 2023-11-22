@@ -29,6 +29,7 @@ Route::controller(HomeController::class)->group(function() {
 
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('/profile/{uuid}#all', [ProfileController::class, 'profile'])->name('profile.all');
 });
 
 Route::controller(ItemController::class)->group(function() {

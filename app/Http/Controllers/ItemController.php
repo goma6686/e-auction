@@ -66,12 +66,22 @@ class ItemController extends Controller
     }
 
     public function destroy($uuid){
-        $item = Item::find($uuid);
-        $this->destroyImage($uuid);
-        //$this->imageService->destroyImage($uuid);
-        $item->delete();
-        
-        return redirect()->back();
+        $item = Item::with('auctions')->where('uuid', $uuid)->first();
+
+        $auction = Auction::withCount('items')->where('uuid', $item->auction_uuid)->first();
+        $user_id = $auction['user_uuid'];
+
+        if($auction->items_count == 1){
+            $this->imageService->destroyImage($item->uuid);
+            $auction->items()->delete();
+            $auction->delete();
+        }else{
+            if($item->image)
+            $this->destroyImage($uuid);
+            $item->delete();
+        }
+
+        return redirect()->route('profile.all', ['uuid' => $user_id]);
     }
 
     public function destroyImage($uuid){

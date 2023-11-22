@@ -8,7 +8,6 @@ use App\Services\ImageService;
 use App\Models\Auction;
 use App\Models\Condition;
 use App\Models\Category;
-use App\Models\Item;
 use App\Models\User;
 
 class AuctionController extends Controller
@@ -83,13 +82,14 @@ class AuctionController extends Controller
 
     public function destroy($uuid){
         $auction = Auction::find($uuid);
+        $user_id = $auction->user_uuid;
         foreach($auction->items as $item) {
             $this->imageService->destroyImage($item->uuid);
         }
         $auction->items()->delete();
         $auction->delete();
         
-        return redirect()->back();
+        return redirect()->route('profile.all', ['uuid' => $user_id]);
     }
 
     public function edit($uuid){
@@ -111,6 +111,7 @@ class AuctionController extends Controller
         ]);
 
         $auction = Auction::find($uuid);
+        $user_id = $auction->user_uuid;
         $auction->title = $request->input('title');
         $auction->description = $request->input('description');
         $auction->is_active = $request->input('is_active') != null ? true : false;
@@ -121,7 +122,7 @@ class AuctionController extends Controller
         }
         $auction->save();
 
-        return redirect()->back();
+        return redirect()->route('profile.all', ['uuid' => $user_id]);
     }
 
 }
