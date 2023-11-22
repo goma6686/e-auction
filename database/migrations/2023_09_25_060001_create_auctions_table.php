@@ -18,10 +18,13 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time');
+            $table->dateTime('end_time')->nullable();
 
             $table->foreignUuid('user_uuid');
             $table->foreignUuid('category_id');
+            $table->foreignUuid('type_id');
+
+            $table->unsignedDecimal('buy_now_price')->nullable();//for Auction with Buy Now
 
             $table->boolean('is_active')->default(false);
             $table->unsignedInteger('bidder_count')->unsigned()->default(0);

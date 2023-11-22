@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
 
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->string('image')->nullable();
+            $table->unsignedInteger('quantity')->default(1);
 
             $table->foreignUuid('auction_uuid');
             $table->foreignUuid('condition_id');
 
-            $table->unsignedDecimal('current_price')->default(0.00)->nullable();//not all items are in an auction
+            $table->unsignedDecimal('price');
+            $table->unsignedDecimal('reserve_price')->nullable();
             $table->timestamps();
         });
     }

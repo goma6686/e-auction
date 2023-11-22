@@ -21,14 +21,26 @@ class AuctionSeeder extends Seeder
                 $numAuctions = $faker->numberBetween(1, 10);
 
                 for($i = 0; $i < $numAuctions; $i++){
+                    $type_id = $faker->numberBetween(1, 2);
+                    if ($type_id !== 1){
+                        $start_time = null;
+                        $end_time = null;
+                    }
+                    else{
+                        $start_time = $faker->dateTimeBetween('-1 month', '+1 month');
+                        $end_time = $faker->dateTimeBetween($start_time, '+1 month');
+                    }
+
                     Auction::create([
                         'uuid' => Uuid::uuid4()->toString(),
                         'title' => $faker->sentence(3),
                         'description' => $faker->paragraph(),
-                        'start_time' => $faker->dateTimeBetween('-1 month', '+1 month'),
-                        'end_time' => $faker->dateTimeBetween('+1 week', '+1 month'),
+                        'start_time' => $start_time,
+                        'end_time' => $end_time,
                         'category_id' => $faker->numberBetween(1, 8),
                         'is_active' => $faker->boolean(75), // 75% chance of being active
+                        'type_id' => $type_id,
+                        'buy_now_price' => $type_id === 2 ? $faker->numberBetween(1, 1000) : null,
                         'bidder_count' => $faker->numberBetween(0,123),
                         'user_uuid' => $user->uuid,
                     ]);

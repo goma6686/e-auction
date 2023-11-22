@@ -19,11 +19,19 @@ class ItemSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (Auction::all() as $auction) {
+
             $faker = Faker::create();
-            if($auction->type_id == 1)
-                $numItems = 1;
-            else
-                $numItems = $faker->numberBetween(1, 10);
+
+            $numItems = $faker->numberBetween(1, 10);
+
+            if ($auction->type_id === 1){ // Buy Now.
+                $quantity = $faker->numberBetween(1, 10);
+                $reserve = null;
+
+            } else {
+                $quantity = 1;
+                $reserve = $faker->numberBetween(10, 100);
+            }
 
             for($i = 0; $i < $numItems; $i++){
                 Item::create([
@@ -32,11 +40,11 @@ class ItemSeeder extends Seeder
     
                     'auction_uuid' => $auction->uuid,
                     'condition_id' => $faker->numberBetween(1, 6),
-    
-                    'current_price' => $faker->randomFloat(4, 0, 1000),
+                    'quantity' => $quantity,
+                    'price' => $faker->randomFloat(4, 0, 1000),
+                    'reserve_price' => $reserve,
                 ]);
             }
-            
         }
     }
 }
