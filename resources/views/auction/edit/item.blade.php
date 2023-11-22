@@ -21,7 +21,7 @@
             <label for="image">No image uploaded</label><br>
             <form enctype="multipart/form-data" method="POST" action="/upload-image/{{ $auction_item->uuid }}">
                 @csrf
-                <div class="form-group pt-2">
+                <div class="form-group py-2">
                     <input type="file" name="image" id="image">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -35,28 +35,22 @@
                 <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ $auction_item->title }}" required>
             </div>
             <div class="form-group pt-4">
-                <label for="description">Description</label>
-                <textarea name="description" type="text" rows="5" class="form-control @error('description') is-invalid @enderror">{{ $auction_item->description }}</textarea>
-            </div>
-            <div class="form-group pt-4">
                 <label for="price">Price:</label><br>
-                <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction_item->current_price }}">
+                <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction_item->price }}">
             </div>
-            <div class="form-group pt-4">
-                <label for="end_time">Enter auction end date and time: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
-                <input id="end_time" type="datetime-local" name="end_time" class=" @error('end_time') is-invalid @enderror" value="{{ $auction_item->end_time }}" required>
-            </div>
-            <div class="form-group pt-4">
-                <div class="col-md-2">
-                <label for="category">Category</label>
-                <select class="form-control" name="category" type="category" required>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}"  @if ($auction_item->category_id == $category->id) selected @endif> {{$category->category}} </option>
-                        @endforeach
-                </select>
+            @if ($auction_type->type_id === '2')
+                <div class="form-group pt-4">
+                    <label for="reserve_price">Reserve Price:</label><br>
+                    <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" min="0.1" class="@error('reserve_price') is-invalid @enderror" value="{{ $auction_item->reserve_price }}">
                 </div>
-            </div>
-            <div class="form-group pt-4">
+            @endif
+            @if ($auction_type->type_id === '1')
+                <div class="form-group pt-4">
+                    <label for="quantity">Quantity:</label><br>
+                    <input id="quantity" type="number" name="quantity" step="1" min="1" class="@error('quantity') is-invalid @enderror" value="{{ $auction_item->quantity }}">
+                </div>
+            @endif
+            <div class="form-group py-4">
                 <div class="col-md-2">
                 <label for="condition">Condition</label>
                 <select class="form-control" name="condition" type="condition" required>
@@ -66,11 +60,7 @@
                 </select>
                 </div>
             </div>
-            <div class="form-check pt-4">
-                <label for="is_active">Active?</label>
-                <input class="form-check-input" type="checkbox"  @if ($auction_item->is_active == 1) @checked(true) @endif value="{{$auction_item->is_active}}" name="is_active">
-            </div>
-            @error('title', 'description', 'price', 'end_time')
+            @error('title', 'description', 'price')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <button type="submit" class="btn btn-primary">Submit</button>
