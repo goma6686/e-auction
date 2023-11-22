@@ -4,7 +4,15 @@
         <button class="nav-link" id="nav-all-items-tab" data-bs-toggle="tab" data-bs-target="#nav-all-items" type="button" role="tab" aria-controls="nav-all-items" aria-selected="false">Edit Auctions</button>
         <button class="nav-link" id="nav-active-bids-tab" data-bs-toggle="tab" data-bs-target="#nav-active-bids" type="button" role="tab" aria-controls="nav-active-bids" aria-selected="false">Active Bids</button>
         <button class="nav-link" id="nav-won-auctions-tab" data-bs-toggle="tab" data-bs-target="#nav-won-auctions" type="button" role="tab" aria-controls="nav-won-auctions" aria-selected="false">Won Auctions</button>
-        <a class="btn" role="button" href="{{ route('create-auction') }}">Add Auction</a>
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Sell
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="{{ route('create-auction', ['type' => 1]) }}">Buy Now</a></li>
+                <li><a class="dropdown-item" href="{{ route('create-auction', ['type' => 2]) }}">Auction</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -13,15 +21,11 @@
         @include('profile.profileactive')
     </div>
     <div class="tab-pane fade" id="nav-all-items" role="tabpanel" aria-labelledby="nav-all-items-tab">
-        <div class="container mt-2">
-            <div class="container px-4 px-lg-5 mt-5">
-            @if(count($all_auctions) > 0)
-                @include('auction.auctiontable')
-            @else
-                <h3 style="text-align: center;">No items found :(</h3>
-            @endif
-            </div>
-        </div>
+    @if(count($all_auctions) > 0)
+        @include('components.auctiontable')
+    @else
+        <h3 style="text-align: center;">No items found :(</h3>
+    @endif
     </div>
     <div class="tab-pane fade" id="nav-active-bids" role="tabpanel" aria-labelledby="nav-active-bids-tab">
         active bids

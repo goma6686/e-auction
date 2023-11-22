@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     @if($user->is_active == 0)
-                        <div class="container px-4 px-lg-5 mt-5">
+                        <div class="container">
                             <h3 style="text-align: center;">This account has been deactivated:(</h3>
                         </div>
                     @else
