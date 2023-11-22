@@ -20,14 +20,14 @@ class AuctionController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function create(Request $request) {
+    public function create(Request $request, $type) {
         $categories = Category::all();
         $conditions = Condition::all();
 
-        return view('auction.create', compact('categories', 'conditions'));
+        return view('auction.create', compact('categories', 'conditions', 'type'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, $type) {
 
         /*$request->validate([
             'title' => 'required',
@@ -37,31 +37,27 @@ class AuctionController extends Controller
             'condition' => 'required',
             'price' => 'required|numeric|min:0.01',
         ]);*/
-        if ($request->is_active != null) {
-            $is_active = true;
-            $start_time = now();
-        }
-        else {
-            $is_active = false;
-            $start_time = null;
-        }
 
         $auction = Auction::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category,
             'user_uuid' => $request->user()->uuid,
-            'end_time' => $request->end_time,
+            'start_time' => $request->start_time ?? null,
+            'end_time' => $request->end_time ?? null,
             'bidder_count' => 0,
-            'is_active' => $is_active,
-            'start_time' => $start_time,
+            'is_active' => $request->is_active === '1' ? true : false,
+            'type_id' => $type,
         ]);
 
         foreach($request->items as $item) {
             $newItem = $auction->items()->create([
                 'title' => $item['item_title'],
                 'condition_id' => $item['condition'],
-                'current_price' => $item['price'],
+                'price' => $item['price'],
+                'quantity' => $item['quantity'] ?? 1,
+                'buy_now_price' => $item['buy_now_price'] ?? null,
+                'reserve_price' => $item['reserve_price'] ?? null,
                 'auction_uuid' => $auction->uuid,
             ]);
 
@@ -79,10 +75,10 @@ class AuctionController extends Controller
         $seller = User::find($auction->user_uuid);
 
         $auction_count = $seller->loadCount(['auctions' => function ($query) {
-            $query->where('is_active', true)->where('end_time', '>', now());
+            $query->where('is_active', true);
         }])->auctions_count;
 
-        return view('item.full', compact('auction', 'seller', 'auction_count'));
+        return view('auction.full', compact('auction', 'seller', 'auction_count'));
     }
 
     public function destroy($uuid){
@@ -95,4 +91,37 @@ class AuctionController extends Controller
         
         return redirect()->back();
     }
+
+    public function edit($uuid){
+        $categories = Category::all();
+
+        $auction = Auction::where('uuid', $uuid)
+        ->with('category')
+        ->first();
+        
+        return view('auction.edit.auction', compact('auction', 'categories'));
+    }
+
+    public function update(Request $request, $uuid){
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'category' => 'required',
+            'end_time' => 'date|after:today',
+        ]);
+
+        $auction = Auction::find($uuid);
+        $auction->title = $request->input('title');
+        $auction->description = $request->input('description');
+        $auction->is_active = $request->input('is_active') != null ? true : false;
+        $auction->category_id = $request->input('category');
+        if($request->input('end_time')){
+            $auction->end_time = $request->input('end_time');
+            $auction->start_time = $request->input('start_time');
+        }
+        $auction->save();
+
+        return redirect()->back();
+    }
+
 }

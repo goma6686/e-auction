@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\ImageService;
 
 use App\Models\Category;
 use App\Models\Auction;
@@ -11,6 +12,13 @@ use App\Models\Condition;
 
 class ItemController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     public function index(Request $request){
         $category = Category::find($request->input('category'));
         $items = $category ? $category->items : Item::all();
@@ -18,49 +26,66 @@ class ItemController extends Controller
         return view('home', compact('items'));
     }
 
-    public function create($uuid, $quantity) {
-        $conditions = Condition::all();
-
-        return view('item.itemform', compact('conditions', 'uuid', 'quantity'));
-    }
-
     public function edit($uuid){
-        $categories = Category::all();
         $conditions = Condition::all();
 
-        $auction_item = Auction::where('item_uuid', $uuid)
-        ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-        ->leftJoin('categories', 'auctions.category_id', '=', 'categories.id')
-        ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
+        $auction_item = Item::where('uuid', $uuid)
+        ->with('condition')
         ->first();
 
-        return view('item.edit', compact('auction_item', 'categories', 'conditions'));
+        $auction_type = Auction::where('uuid', $auction_item->auction_uuid)
+            ->select('type_id')
+            ->first();
+            
+        return view('auction.edit.item', compact('auction_item', 'conditions', 'auction_type'));
     }
 
     public function update(Request $request, $uuid){
         $request->validate([
             'title' => 'required|max:255',
-            'description' => 'required',
-            'category' => 'required',
             'condition' => 'required',
             'price' => 'required|numeric|min:0.01',
-            'end_time' => 'required|date|after:today',
         ]);
 
         $item = Item::find($uuid);
         $item->title = $request->input('title');
-        $item->description = $request->input('description');
-
+        $item->price = $request->input('price');
         $item->condition_id = $request->input('condition');
-        $item->category_id = $request->input('category');
-        $item->current_price = $request->input('price');
+
+        if($request->input('quantity')){
+            $item->quantity = $request->input('quantity');
+        }
+
+        if($request->input('reserve_price')){
+            $item->reserve_price = $request->input('reserve_price');
+        }
+
         $item->save();
 
-        $auction = Auction::where('item_uuid', $uuid)->first();
-        $auction->end_time = $request->input('end_time');
-        $auction->is_active = $request->input('is_active') != null ? true : false;
-        $auction->save();
+        return redirect()->back();
+    }
 
+    public function destroy($uuid){
+        $item = Item::find($uuid);
+        $this->destroyImage($uuid);
+        //$this->imageService->destroyImage($uuid);
+        $item->delete();
+        
+        return redirect()->back();
+    }
+
+    public function destroyImage($uuid){
+        $this->imageService->destroyImage($uuid);
+        return redirect()->back();
+    }
+
+    public function uploadImage(Request $request, $uuid){
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg',
+        ]);
+
+        $this->imageService->uploadImage($request->file('image'), $uuid);
+        
         return redirect()->back();
     }
 }
