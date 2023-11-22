@@ -22,6 +22,10 @@ class CreateAuction extends Component
     public $condition;
     public $is_active;
     public $price;
+    public $buy_now_price;
+    public $reserve_price;
+    public $type;
+    public $quantity;
 
     public $items = [];
     public $conditions;
@@ -35,15 +39,17 @@ class CreateAuction extends Component
         'price' => 'required|numeric|min:0.01',
     ];
 
-    public function mount(){
+    public function mount($type){
         $this->categories = Category::all();
+        $this->type = $type;
         $this->conditions = Condition::all();
         $this->items = [[
             'item_title' => '',
             'condition' => '',
             'image' => '',
-            'starting_price' => '',
             'price' => '',
+            'reserve_price' => '',
+            'quantity' => '',
             ]];
     }
 
@@ -53,6 +59,8 @@ class CreateAuction extends Component
         'condition' => '',
         'image' => '',
         'price' => '',
+        'reserve_price' => '',
+        'quantity' => '',
         ];
     }
 
