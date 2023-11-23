@@ -1,13 +1,26 @@
 {
     "private": true,
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "yarn run development",
+        "build": "webpack --config webpack.config.js",
+        "development": "mix"
     },
     "devDependencies": {
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.8.0",
-        "vite": "^4.0.0"
+        "axios": "^1.1.2"
+    },
+    "name": "e-auction",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/goma6686/e-auction.git",
+    "author": "goma6686 <goda.maciuolyte@mif.stud.vu.lt>",
+    "license": "MIT",
+    "dependencies": {
+        "@babel/preset-env": "^7.23.3",
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.2",
+        "jquery": "^3.7.1",
+        "laravel-mix": "^6.0.49",
+        "popper.js": "^1.16.1"
     }
 }
