@@ -1,8 +1,16 @@
 <div class="card" id="item-card">
     <div class="h-100 text-center">
-        <div class="card-img-overlay h-50 text-end">
-            @include('components.heart')    
+
+        <div
+            class="iconAuctionContainer mr-3 my-1 px-2 rounded-circle @if ( App\Models\User::auctionInFavourites($auction->uuid)) favouriteActive @else favouriteNotActive @endif  "
+            id="favouriteIconContainer" data-auction-icon-id="{{ $auction -> uuid }}">
+
+            <a class="toggleauctionInFavourites @if ( App\Models\User::auctionInFavourites($auction->uuid)) favouriteIconActive @else favouriteIconNotActive @endif "
+                href="#" data-auction-Uuid="{{$auction -> uuid}}">
+                <i class="bi bi-bookmark-heart"></i>
+            </a>
         </div>
+
         <img id="item-image" @if($auction->items[0]->image != null) src="/images/{{ $auction->items[0]->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top mx-auto d-block" alt="{{$auction->title}}">
     </div>
     
@@ -51,3 +59,56 @@
         </div> 
     </div>
 </div>
+
+@section('scripts')
+<script src="{{asset('js/favourites.js')}}">
+
+</script>
+    <script>
+        $(document).on('click', '.toggleAuctioninFavourite', function (e) {
+
+            e.preventDefault();
+
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            let auctionUuid = $(this).attr('data-auction-Uuid');
+
+            $.ajax({
+                type: 'GET',
+                url: "favourite/" + $(this).attr('data-auction-Uuid'),
+                data: {
+                    'auctionUuid': $(this).attr('data-auction-Uuid'),
+                },
+                success: function (data) {
+                    $("div[data-auction-icon-id=" + auctionUuid + "]").toggleClass("favouriteNotActive favouriteActive");
+                    $("a[data-auction-Uuid=" + auctionUuid + "]").toggleClass("favouriteIconNotActive favouriteIconActive");
+                    let count = Number($('#FavouriteCount').text())
+                    /*if ((data.wished) && (data.status)) {
+                        toastr.success(data.message);
+                        count++;
+                        $('#FavouriteCount').text(count)
+                    } else {
+                        toastr.error(data.message);
+                        count--;
+                        $('#FavouriteCount').text(count)
+                    }*/
+                },
+                error: function (jqXHR) {
+                    Swal.fire({
+                        title: 'ERORR!',
+                        text: jqXHR.responseJSON.message,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+
+            });
+        });
+    </script>
+@endsection
