@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Item extends Model
 {
@@ -29,16 +28,11 @@ class Item extends Model
 
     public function auctions(): BelongsTo
     {
-        return $this->belongsTo(Auction::class);
+        return $this->belongsTo(Auction::class, 'auction_uuid');
     }
 
     public function condition(): BelongsTo
     {
         return $this->belongsTo(Condition::class, 'condition_id');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

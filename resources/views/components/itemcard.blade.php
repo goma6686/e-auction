@@ -1,16 +1,11 @@
 <div class="card" id="item-card">
     <div class="h-100 text-center">
-
-        <div
-            class="iconAuctionContainer mr-3 my-1 px-2 rounded-circle @if ( App\Models\User::auctionInFavourites($auction->uuid)) favouriteActive @else favouriteNotActive @endif  "
-            id="favouriteIconContainer" data-auction-icon-id="{{ $auction -> uuid }}">
-
-            <a class="toggleauctionInFavourites @if ( App\Models\User::auctionInFavourites($auction->uuid)) favouriteIconActive @else favouriteIconNotActive @endif "
-                href="#" data-auction-Uuid="{{$auction -> uuid}}">
-                <i class="bi bi-bookmark-heart"></i>
-            </a>
-        </div>
-
+        @auth
+            <button class="@if (Auth::user()->favourites->contains('auction_uuid', $auction->uuid)) 
+                icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{ $auction->uuid }}">
+                <i class="bi bi-heart-fill" ></i>
+            </button>
+        @endauth
         <img id="item-image" @if($auction->items[0]->image != null) src="/images/{{ $auction->items[0]->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top mx-auto d-block" alt="{{$auction->title}}">
     </div>
     
@@ -61,54 +56,6 @@
 </div>
 
 @section('scripts')
-<script src="{{asset('js/favourites.js')}}">
-
-</script>
-    <script>
-        $(document).on('click', '.toggleAuctioninFavourite', function (e) {
-
-            e.preventDefault();
-
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            let auctionUuid = $(this).attr('data-auction-Uuid');
-
-            $.ajax({
-                type: 'GET',
-                url: "favourite/" + $(this).attr('data-auction-Uuid'),
-                data: {
-                    'auctionUuid': $(this).attr('data-auction-Uuid'),
-                },
-                success: function (data) {
-                    $("div[data-auction-icon-id=" + auctionUuid + "]").toggleClass("favouriteNotActive favouriteActive");
-                    $("a[data-auction-Uuid=" + auctionUuid + "]").toggleClass("favouriteIconNotActive favouriteIconActive");
-                    let count = Number($('#FavouriteCount').text())
-                    /*if ((data.wished) && (data.status)) {
-                        toastr.success(data.message);
-                        count++;
-                        $('#FavouriteCount').text(count)
-                    } else {
-                        toastr.error(data.message);
-                        count--;
-                        $('#FavouriteCount').text(count)
-                    }*/
-                },
-                error: function (jqXHR) {
-                    Swal.fire({
-                        title: 'ERORR!',
-                        text: jqXHR.responseJSON.message,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-
-            });
-        });
-    </script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{asset('js/favourites.js')}}"></script>
 @endsection

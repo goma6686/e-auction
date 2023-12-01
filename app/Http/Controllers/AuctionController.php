@@ -65,6 +65,8 @@ class AuctionController extends Controller
             }
         }
 
+        $auction->refresh();
+
         return redirect()->route('show-auction', $auction->uuid);
     }
 
@@ -121,6 +123,8 @@ class AuctionController extends Controller
             $auction->start_time = $request->input('start_time');
         }
         $auction->save();
+
+        $auction->refresh();
 
         return redirect()->route('profile.all', ['uuid' => $user_id]);
     }

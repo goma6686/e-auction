@@ -29,6 +29,11 @@ class Auction extends Model
         'buy_now_price',
     ];
 
+    public function favourites(): HasMany
+    {
+        return $this->hasMany(Favourite::class, 'auction_uuid');
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(Item::class, 'auction_uuid');

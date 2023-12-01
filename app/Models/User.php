@@ -52,11 +52,6 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
@@ -64,6 +59,11 @@ class User extends Authenticatable
 
     public function auctions(): HasMany
     {
-        return $this->hasMany(Auction::class);
+        return $this->hasMany(Auction::class, 'user_uuid');
+    }
+
+    public function favourites(): HasMany
+    {
+        return $this->hasMany(Favourite::class, 'user_uuid');
     }
 }

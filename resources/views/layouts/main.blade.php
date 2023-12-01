@@ -19,7 +19,5 @@
     </main>
 
     @livewireScripts
-    @yield('scripts')
-
 </body>
 </html>

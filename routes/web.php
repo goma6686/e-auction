@@ -4,6 +4,7 @@ use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\ChooseItem;
@@ -61,6 +62,8 @@ Route::controller(LoginController::class)->group(function() {
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::post('/logout', 'logout')->name('logout');
 });
+
+Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'toggleAuctionInFavourite'])->name('wishlistToggle');
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
