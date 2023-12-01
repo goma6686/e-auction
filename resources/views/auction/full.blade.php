@@ -8,10 +8,12 @@
     <div class="col">
       <div class="card p-3 border-dark">
         @auth
+          @if (!Auth::user()->auctions->contains('uuid', $auction->uuid))
             <button class="@if (Auth::user()->favourites->contains('auction_uuid', $auction->uuid)) 
                 icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{ $auction->uuid }}">
                 <i class="bi bi-heart-fill" ></i>
             </button>
+          @endif
         @endauth
           @include('components.carousel')
           <div class="card-body">

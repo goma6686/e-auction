@@ -1,10 +1,12 @@
 <div class="card" id="item-card">
     <div class="h-100 text-center">
         @auth
-            <button class="@if (Auth::user()->favourites->contains('auction_uuid', $auction->uuid)) 
-                icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{ $auction->uuid }}">
-                <i class="bi bi-heart-fill" ></i>
-            </button>
+            @if (!Auth::user()->auctions->contains('uuid', $auction->uuid))
+                <button class="@if (Auth::user()->favourites->contains('auction_uuid', $auction->uuid)) 
+                    icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{ $auction->uuid }}">
+                    <i class="bi bi-heart-fill" ></i>
+                </button>
+            @endif
         @endauth
         <img id="item-image" @if($auction->items[0]->image != null) src="/images/{{ $auction->items[0]->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top mx-auto d-block" alt="{{$auction->title}}">
     </div>
