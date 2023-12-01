@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Auction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -25,6 +26,9 @@ class ProfileController extends Controller
                 ->get();
 
         if(Auth::check() && Auth::user()->uuid == $uuid) {
+
+            $favourites = Auth::user()->favourites->pluck('auction_uuid')->toArray();
+            $favourited = Auction::whereIn('uuid', $favourites)->with(['items', 'category', 'items.condition', 'type'])->get();
             
             $all_auctions = 
                 $user->auctions()->with(['items', 'category', 'items.condition', 'type'])
@@ -37,7 +41,7 @@ class ProfileController extends Controller
                 )
                 ->get();
 
-            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions'));
+            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited'));
         } else {
             return view('profile.profile', compact('user', 'active_auctions'));
         }

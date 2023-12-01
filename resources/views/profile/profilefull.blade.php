@@ -43,7 +43,7 @@
         won auctions
     </div>
     <div class="tab-pane fade" id="favourite" role="tabpanel" aria-labelledby="favourite-tab">
-        favourite auctions
+        @include('components.favourites')
     </div>
 </div>
 
