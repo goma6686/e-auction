@@ -21,8 +21,7 @@ return new class extends Migration
             $table->foreignUuid('auction_uuid');
             $table->foreignUuid('condition_id');
 
-            $table->unsignedDecimal('price');
-            $table->unsignedDecimal('reserve_price')->nullable();
+            $table->unsignedDecimal('price')->nullable();//null for auctions
             $table->timestamps();
         });
     }

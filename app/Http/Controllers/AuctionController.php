@@ -36,7 +36,6 @@ class AuctionController extends Controller
             'condition' => 'required',
             'price' => 'required|numeric|min:0.01',
         ]);*/
-
         $auction = Auction::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -47,16 +46,17 @@ class AuctionController extends Controller
             'bidder_count' => 0,
             'is_active' => $request->is_active === '1' ? true : false,
             'type_id' => $type,
+            'reserve_price' => $request->reserve_price ?? null,
+            'price' => $request->price ?? null,
+            'buy_now_price' => $request->buy_now_price ?? null,
         ]);
 
         foreach($request->items as $item) {
             $newItem = $auction->items()->create([
                 'title' => $item['item_title'],
                 'condition_id' => $item['condition'],
-                'price' => $item['price'],
+                'price' => $item['price'] ?? null,
                 'quantity' => $item['quantity'] ?? 1,
-                'buy_now_price' => $item['buy_now_price'] ?? null,
-                'reserve_price' => $item['reserve_price'] ?? null,
                 'auction_uuid' => $auction->uuid,
             ]);
 
@@ -121,6 +121,15 @@ class AuctionController extends Controller
         if($request->input('end_time')){
             $auction->end_time = $request->input('end_time');
             $auction->start_time = $request->input('start_time');
+        }
+        if($request->input('reserve_price')){
+            $auction->reserve_price = $request->input('reserve_price');
+        }
+        if($request->input('buy_now_price')){
+            $auction->buy_now_price = $request->input('buy_now_price');
+        }
+        if($request->input('price')){
+            $auction->price = $request->input('price');
         }
         $auction->save();
 

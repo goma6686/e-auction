@@ -26,11 +26,9 @@ class ItemSeeder extends Seeder
 
             if ($auction->type_id === 1){ // Buy Now.
                 $quantity = $faker->numberBetween(1, 10);
-                $reserve = null;
 
             } else {
                 $quantity = 1;
-                $reserve = $faker->numberBetween(10, 100);
             }
 
             for($i = 0; $i < $numItems; $i++){
@@ -42,7 +40,6 @@ class ItemSeeder extends Seeder
                     'condition_id' => $faker->numberBetween(1, 6),
                     'quantity' => $quantity,
                     'price' => $faker->randomFloat(4, 0, 1000),
-                    'reserve_price' => $reserve,
                 ]);
             }
         }

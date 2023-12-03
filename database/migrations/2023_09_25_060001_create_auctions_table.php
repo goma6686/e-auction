@@ -24,10 +24,12 @@ return new class extends Migration
             $table->foreignUuid('category_id');
             $table->foreignUuid('type_id');
 
-            $table->unsignedDecimal('buy_now_price')->nullable();//for Auction with Buy Now
+            $table->unsignedDecimal('buy_now_price')->nullable();//for Auction
+            $table->unsignedDecimal('price')->nullable();//for Auction with multiple items
+            $table->unsignedDecimal('reserve_price')->nullable();
 
             $table->boolean('is_active')->default(false);
-            $table->unsignedInteger('bidder_count')->unsigned()->default(0);
+            $table->unsignedInteger('bidder_count')->unsigned()->default(0)->nullable();
             $table->timestamps();
         });
     }

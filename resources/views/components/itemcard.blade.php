@@ -52,7 +52,13 @@
             </div>
         @endif
         <div class="d-grid gap-2 col-3 mx-auto">
-            <a class="btn btn-dark" role="button" href="/auction/{{ $auction->uuid }}">BID</a>
+            <a class="btn btn-dark" role="button" href="/auction/{{ $auction->uuid }}">
+                @if ($auction->type_id === '2')
+                BID
+                @else
+                BUY
+                @endif
+            </a>
         </div> 
     </div>
 </div>

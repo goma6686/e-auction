@@ -18,14 +18,20 @@ class ChooseItem extends Component
     public $quantity;
 
     public $selectedItem;
+    public $seller;
+    public $type;
+    public $auction_count;
+    public $selected_uuid;
 
-    
-
-    public function mount(Auction $auction, $items){
+    public function mount(Auction $auction, $items, $seller, $type, $auction_count){
+        $this->auction_count = $auction_count;
+        $this->seller = $seller;
+        $this->type = $type;
         $this->auction = $auction;
         $this->items = $items;
         $this->item = $this->items[0];
         $this->selectedItem = $this->items[0];
+        $this->selected_uuid = $this->items[0]['uuid'];
         $this->price = $this->item['price'];
         $this->condition = $this->item['condition']['condition'];
         $this->quantity = $this->item['quantity'];
@@ -35,6 +41,7 @@ class ChooseItem extends Component
         $selectedItemData = json_decode($selectedItem, true);
         $this->selectedItem = $selectedItem;
         $this->item = $selectedItem;
+        $this->selected_uuid = $selectedItemData['uuid'];
         $this->price = $selectedItemData['price'];
         $this->quantity = $selectedItemData['quantity'];
         foreach (Condition::all() as $condition){

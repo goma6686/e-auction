@@ -10,6 +10,7 @@
                 <th scope="col">Items</th>
                 <th scope="col">Price</th>
                 <th scope="col">Reserve</th>
+                <th scope="col">Buy Now price</th>
                 <th scope="col">Bidders</th>
                 <th scope="col">Category</th>
                 <th scope="col">Start date</th>
@@ -44,9 +45,13 @@
                     <td>
                         {{$auction->count}}
                     </td>
-                    @if ($auction->count === 1)
+                    @if ($auction->price)
                         <td>
                             {{$auction->price}}
+                        </td>
+                    @elseif ($auction->buy_price)
+                        <td>
+                            {{$auction->buy_price}}
                         </td>
                     @else
                         <td>
@@ -59,6 +64,14 @@
                         @else
                             {{$auction->reserve_price}}
                         @endif
+                    </td>
+                    <td>
+                        @if ($auction->buy_now_price == NULL) 
+                            @include('components.no')
+                        @else
+                            {{$auction->buy_now_price}}
+                        @endif
+                    </td>
                     <td>
                         @if ($auction->type_id === '1')
                             @include('components.no')
@@ -104,8 +117,6 @@
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Condition</th>
-                                <th scope="col">Reserve</th>
-                                <th scope="col">Buy Now price</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                               </tr>
@@ -125,27 +136,17 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{$item->price}}
+                                    @if($item->price)
+                                        {{$item->price}}
+                                    @else
+                                        @include('components.no')
+                                    @endif
                                 </td>
                                 <td>
                                     {{$item->quantity}}
                                 </td>
                                 <td>
                                     {{$item->condition->condition}}
-                                </td>
-                                <td>
-                                    @if ($item->reserve_price == NULL) 
-                                        @include('components.no')
-                                    @else
-                                        {{$item->reserve_price}}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($item->buy_now_price == NULL) 
-                                        @include('components.no')
-                                    @else
-                                        {{$item->buy_now_price}}
-                                    @endif
                                 </td>
                                 <td style="text-align: right;">
                                     <a href="/edit-item/{{$item->uuid}}" class="btn btn-sm btn-dark " role="button">Edit</a>

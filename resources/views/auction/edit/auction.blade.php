@@ -17,6 +17,18 @@
 
             @if ($auction->type_id === '2')
                 <div class="form-group pt-4">
+                    <label for="buy_now_price">Price:</label><br>
+                    <input id="buy_now_price" type="number" name="buy_now_price" placeholder="1.0" step="0.01" min="0.1" class="@error('buy_now_price') is-invalid @enderror" value="{{ $auction->buy_now_price }}">
+                </div>
+                <div class="form-group pt-4">
+                    <label for="price">Price:</label><br>
+                    <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction->price }}">
+                </div>
+                <div class="form-group pt-4">
+                    <label for="reserve_price">Reserve Price:</label><br>
+                    <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" min="0.1" class="@error('reserve_price') is-invalid @enderror" value="{{ $auction->reserve_price }}">
+                </div>
+                <div class="form-group pt-4">
                     <label for="start_time">Enter auction end date and time: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
                     <input id="start_time" type="datetime-local" name="start_time" class=" @error('start_time') is-invalid @enderror" value="{{ $auction->start_time }}" required>
                 </div>

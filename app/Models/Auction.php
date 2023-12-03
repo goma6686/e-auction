@@ -27,6 +27,8 @@ class Auction extends Model
         'end_time',
         'bidder_count',
         'buy_now_price',
+        'price',
+        'reserve_price',
     ];
 
     public function favourites(): HasMany

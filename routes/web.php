@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,11 @@ Route::controller(LoginController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::post('/logout', 'logout')->name('logout');
+});
+
+Route::controller(TransactionController::class)->group(function() {
+    Route::post('/bid/{uuid}', [TransactionController::class, 'bid'])->name('bid');
+    Route::post('/buy/{uuid}', [TransactionController::class, 'buy'])->name('buy');
 });
 
 Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'toggleAuctionInFavourite'])->name('wishlistToggle');

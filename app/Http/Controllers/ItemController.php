@@ -49,15 +49,13 @@ class ItemController extends Controller
 
         $item = Item::find($uuid);
         $item->title = $request->input('title');
-        $item->price = $request->input('price');
         $item->condition_id = $request->input('condition');
 
         if($request->input('quantity')){
             $item->quantity = $request->input('quantity');
         }
-
-        if($request->input('reserve_price')){
-            $item->reserve_price = $request->input('reserve_price');
+        if($request->input('quantity')){
+            $item->price = $request->input('price');
         }
 
         $item->save();

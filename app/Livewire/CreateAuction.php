@@ -48,7 +48,6 @@ class CreateAuction extends Component
             'condition' => '',
             'image' => '',
             'price' => '',
-            'reserve_price' => '',
             'quantity' => '',
             ]];
     }
@@ -59,7 +58,6 @@ class CreateAuction extends Component
         'condition' => '',
         'image' => '',
         'price' => '',
-        'reserve_price' => '',
         'quantity' => '',
         ];
     }

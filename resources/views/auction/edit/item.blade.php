@@ -34,20 +34,14 @@
                 <label for="title">Title</label>
                 <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ $auction_item->title }}" required>
             </div>
-            <div class="form-group pt-4">
-                <label for="price">Price:</label><br>
-                <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction_item->price }}">
-            </div>
-            @if ($auction_type->type_id === '2')
-                <div class="form-group pt-4">
-                    <label for="reserve_price">Reserve Price:</label><br>
-                    <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" min="0.1" class="@error('reserve_price') is-invalid @enderror" value="{{ $auction_item->reserve_price }}">
-                </div>
-            @endif
             @if ($auction_type->type_id === '1')
                 <div class="form-group pt-4">
                     <label for="quantity">Quantity:</label><br>
                     <input id="quantity" type="number" name="quantity" step="1" min="1" class="@error('quantity') is-invalid @enderror" value="{{ $auction_item->quantity }}">
+                </div>
+                <div class="form-group pt-4">
+                    <label for="price">Price:</label><br>
+                    <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction_item->price }}">
                 </div>
             @endif
             <div class="form-group py-4">
