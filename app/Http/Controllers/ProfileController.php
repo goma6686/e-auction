@@ -20,7 +20,7 @@ class ProfileController extends Controller
                     '*',
                 DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
                 DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as price'),
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
                 DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
                 )
                 ->get();
@@ -28,7 +28,6 @@ class ProfileController extends Controller
         if(Auth::check() && Auth::user()->uuid == $uuid) {
 
             $favourites = Auth::user()->favourites->pluck('auction_uuid')->toArray();
-            $favourited = Auction::whereIn('uuid', $favourites)->with(['items', 'category', 'items.condition', 'type'])->get();
             
             $all_auctions = 
                 $user->auctions()->with(['items', 'category', 'items.condition', 'type'])
@@ -36,7 +35,18 @@ class ProfileController extends Controller
                     '*',
                 DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
                 DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as price'),
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
+                DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
+                )
+                ->get();
+
+            $favourited = Auction::whereIn('uuid', $favourites)
+                ->with(['items', 'category', 'items.condition', 'type'])
+                ->select(
+                    '*',
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
+                DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
                 DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
                 )
                 ->get();
