@@ -11,6 +11,10 @@ class Transaction extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
         'user_uuid',
         'amount',

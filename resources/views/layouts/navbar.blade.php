@@ -11,7 +11,7 @@
               {{Auth::user()->username }}
             </button>
             <button type="button" class="btn btn-secondary balance" data-id="{{Auth::user()->id}}" data-bs-toggle="modal" data-bs-target="#balance">
-              {{Auth::user()->balance/100}} €
+              {{Auth::user()->balance}} €
             </button>
             <ul class="dropdown-menu">
               <li>

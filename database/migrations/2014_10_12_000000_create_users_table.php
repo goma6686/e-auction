@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_active')->default(1);
             $table->boolean('is_admin')->default(0);
-            $table->integer('balance')->unsigned()->default(0);
+            $table->unsignedDecimal('balance', 10, 2)->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -20,9 +20,12 @@
             <li class="list-group-item">
                 <div class="row">
                     <div class="col">
-                        @if ($auction->price != null)
+                        @if ($auction->price)
                             <h6 class="card-subtitle mb-2">Price:</h6>
                             <h6 class="card-subtitle mb-2">{{$auction->price}} Eur</h6>
+                        @elseif($auction->buy_price)
+                            <h6 class="card-subtitle mb-2">Price:</h6>
+                            <h6 class="card-subtitle mb-2">{{$auction->buy_price}} Eur</h6>
                         @else
                             <h6 class="card-subtitle mb-2">From:</h6>
                             <h6 class="card-subtitle mb-2">{{$auction->min_price}} Eur</h6>
