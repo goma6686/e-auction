@@ -53,9 +53,7 @@
                 <label for="is_active">Active?</label>
                 <input class="form-check-input" type="checkbox"  @if ($auction->is_active == 1) @checked(true) @endif value="{{$auction->is_active}}" name="is_active">
             </div>
-            @error('title', 'description', 'price', 'end_time')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            @include('components.sessionmessage')
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

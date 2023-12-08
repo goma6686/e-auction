@@ -54,9 +54,7 @@
                 </select>
                 </div>
             </div>
-            @error('title', 'description', 'price')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            @include('components.sessionmessage')
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

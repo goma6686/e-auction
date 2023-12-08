@@ -60,7 +60,7 @@ class ItemController extends Controller
 
         $item->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Changes saved successfully');
     }
 
     public function destroy($uuid){

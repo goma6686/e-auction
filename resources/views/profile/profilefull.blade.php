@@ -31,6 +31,7 @@
     </div>
     <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
     @if(count($all_auctions) > 0)
+        @include('components.sessionmessage')
         @include('components.auctiontable')
     @else
         <h3 style="text-align: center;">No items found :(</h3>

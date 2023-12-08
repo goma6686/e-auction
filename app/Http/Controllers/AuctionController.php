@@ -67,7 +67,7 @@ class AuctionController extends Controller
 
         $auction->refresh();
 
-        return redirect()->route('show-auction', $auction->uuid);
+        return redirect()->route('show-auction', $auction->uuid)->with('success', 'Auction created successfully');
     }
 
     public function show(Request $request, $uuid) {
@@ -154,7 +154,7 @@ class AuctionController extends Controller
 
         $auction->refresh();
 
-        return redirect()->route('profile.all', ['uuid' => $user_id]);
+        return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
     }
 
 }

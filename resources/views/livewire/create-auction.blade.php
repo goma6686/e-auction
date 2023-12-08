@@ -146,10 +146,7 @@
                 </div>
             </div>
         </div>
-        
-        @error('title', 'price')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+        @include('components.sessionmessage')
         <div class="pt-4">
             <button type="submit" class="btn btn-primary">Next</button>
         </div>
