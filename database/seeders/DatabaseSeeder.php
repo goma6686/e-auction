@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AuctionSeeder::class,
             ItemSeeder::class,
+            BidSeeder::class,
         ]);
 
         $this->command->info('All tables seeded successfully!');
