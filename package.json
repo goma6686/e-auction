@@ -7,6 +7,7 @@
         "development": "mix"
     },
     "devDependencies": {
+        "autoprefixer": "^10.4.16",
         "axios": "^1.1.2"
     },
     "name": "e-auction",
