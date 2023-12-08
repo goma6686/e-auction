@@ -76,7 +76,7 @@
                         @if ($auction->type_id === '1')
                             @include('components.no')
                         @else
-                            {{$auction->bidder_count}}
+                            {{ $auction->bids()->count()}}
                         @endif
                     </td>
                     <td>

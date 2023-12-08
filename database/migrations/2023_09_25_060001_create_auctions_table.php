@@ -29,7 +29,6 @@ return new class extends Migration
             $table->unsignedDecimal('reserve_price')->nullable();
 
             $table->boolean('is_active')->default(false);
-            $table->unsignedInteger('bidder_count')->unsigned()->default(0)->nullable();
             $table->timestamps();
         });
     }

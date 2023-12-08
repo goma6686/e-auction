@@ -9,6 +9,7 @@ use App\Models\Auction;
 use App\Models\Condition;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Bid;
 
 class AuctionController extends Controller
 {
@@ -43,7 +44,6 @@ class AuctionController extends Controller
             'user_uuid' => $request->user()->uuid,
             'start_time' => $request->start_time ?? null,
             'end_time' => $request->end_time ?? null,
-            'bidder_count' => 0,
             'is_active' => $request->is_active === '1' ? true : false,
             'type_id' => $type,
             'reserve_price' => $request->reserve_price ?? null,
@@ -79,7 +79,26 @@ class AuctionController extends Controller
             $query->where('is_active', true);
         }])->auctions_count;
 
-        return view('auction.full', compact('auction', 'seller', 'auction_count'));
+        $bids = Bid::where('auction_uuid', $auction->uuid)->orderBy('amount', 'desc')->take(3)->get();
+        $max_bid = $auction->bids()->max('amount');
+        $buy_now_price = $auction->buy_now_price;
+
+        if($auction->type_id == 2){
+            if(!$max_bid){
+                $max_bid = $auction->price;
+            }
+            
+            $increment = Bid::incremets()->collect()->filter(function ($increment) use ($max_bid) {
+                return $max_bid >= $increment['from'] && $max_bid <= $increment['to'];
+            })->first();
+            
+            for($i = 0; $i < 3; $i++){
+                $bids[$i] = $max_bid + ($i+1)*$increment['increment'];
+            }
+            $bids = $bids->toArray();
+        }
+
+        return view('auction.full', compact('auction', 'seller', 'auction_count', 'bids', 'buy_now_price', 'max_bid'));
     }
 
     public function destroy($uuid){

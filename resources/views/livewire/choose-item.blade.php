@@ -50,16 +50,25 @@
                 <div class="col-3">Condition:</div>
                 <div class="col-7 text-start">{{ $condition }}</div>
             </h5>
-            <h5 class="row">
-                <div class="col-3">Price, €:</div>
-                <div class="col-7 text-start" name="price" id="price">{{ $price }}</div>
-            </h5>
             @if ($auction->type_id === '1')
+                <h5 class="row">
+                    <div class="col-3">Price, €:</div>
+                    <div class="col-7 text-start" name="price" id="price">{{ $price }}</div>
+                </h5>
                 <form enctype="multipart/form-data" method="POST" action="{{route('buy', ['uuid' => $selected_uuid])}}">
+                    @csrf
             @else
-                <form enctype="multipart/form-data" method="POST" action="{{route('bid', ['uuid' => $auction->uuid])}}">
+                <h5 class="row">
+                    <div class="col-3">
+                    @if (!$max_bid)
+                        Starting bid, €:
+                    @else
+                        Current bid, €:
+                    @endif 
+                    </div>
+                    <div class="col-7 text-start" name="price" id="price">{{ $auction->price }}</div>
+                </h5>
             @endif
-            @csrf
             @if ($auction->type_id === '1')
                 <h5 class="row">
                     <div class="col-3">Quantity:</div>

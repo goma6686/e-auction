@@ -22,8 +22,14 @@ class ChooseItem extends Component
     public $type;
     public $auction_count;
     public $selected_uuid;
+    public $bids;
+    public $buy_now_price;
+    public $max_bid;
 
-    public function mount(Auction $auction, $items, $seller, $type, $auction_count){
+    public function mount(Auction $auction, $items, $seller, $type, $auction_count, $bids, $buy_now_price, $max_bid){
+        $this->max_bid = $max_bid;
+        $this->buy_now_price = $buy_now_price;
+        $this->bids = $bids;
         $this->auction_count = $auction_count;
         $this->seller = $seller;
         $this->type = $type;

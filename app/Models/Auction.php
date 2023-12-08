@@ -25,7 +25,6 @@ class Auction extends Model
         'is_active',
         'start_time',
         'end_time',
-        'bidder_count',
         'buy_now_price',
         'price',
         'reserve_price',

@@ -18,13 +18,53 @@ class TransactionController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function bid(Request $request, $item_uuid){
-        $bid_amount = $request->input('bid_amount');
+    public function bid(Request $request, $auction_uuid, $bid_amount){
+        $auction = Auction::where('uuid', $auction_uuid)->firstOrFail();
+        $bid_amount = $bid_amount;
+        $user_balance = $request->user()->balance;
 
-        $increments = Bid::incremets();
+        if($auction->end_time < now()){
+            return back()->with('error', 'This auction has ended');
+        }
 
-        if(!is_numeric($bid_amount)){
-            return back()->with('error', 'Bid amount must be a number');
+        if($bid_amount < $auction->price){
+            return back()->with('error', 'Bid must be higher than the current price');
+        }
+
+        if($user_balance < $bid_amount){
+            return back()->with('error', 'You do not have enough balance to bid this amount');
+        }
+
+        if($auction->bids->count() > 0){
+            $highest_bid =  $auction->bids()->max('amount');
+        } else {
+            $highest_bid = $auction->price;
+        }
+
+        if($bid_amount <= $highest_bid){
+            return back()->with('error', 'Bid must be higher than the current price');
+        } else {
+            $request->user()->balance -= $bid_amount;
+            $request->user()->save();
+
+            $auction->price = $bid_amount;
+            $auction->save();
+
+            $this->createTransaction($request->user()->uuid, $bid_amount, 'payin');
+
+            $auction->bids()->create([
+                'user_uuid' => $request->user()->uuid,
+                'amount' => $bid_amount,
+                'created_at' => now()
+            ]);
+            /*Bid::create([
+                'user_uuid' => $request->user()->uuid,
+                'auction_uuid' => $auction->uuid,
+                'amount' => $bid_amount,
+                'created_at' => now()
+            ]);*/
+
+            return back()->with('success', 'You have successfully bid this item');
         }
     }
 
