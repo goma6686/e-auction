@@ -62,11 +62,13 @@
                     <div class="col-3">
                     @if (!$max_bid)
                         Starting bid, €:
+                    </div>
+                        <div class="col-7 text-start" name="price" id="price">{{ $auction->price }}</div>
                     @else
                         Current bid, €:
-                    @endif 
                     </div>
-                    <div class="col-7 text-start" name="price" id="price">{{ $auction->price }}</div>
+                        <div class="col-7 text-start" name="price" id="price"> {{ $auction->bids()->max('amount') }}</div>
+                    @endif
                 </h5>
             @endif
             @if ($auction->type_id === '1')
@@ -127,19 +129,6 @@
       |   {{ Carbon\Carbon::parse($auction->end_time)->format('l H:i') }}
       @endif
     </h6>
-    @if(Session::has('error'))
-        <div class="d-flex alert alert-danger">
-            <ul class="mx-auto justify-content-center">
-                <li>{{ session()->get('error') }}</li>
-            </ul>
-        </div>
-    @endif
-    @if(Session::has('success'))
-        <div class="d-flex alert alert-success">
-            <ul class="mx-auto justify-content-center">
-                <li>{{ session()->get('success') }}</li>
-            </ul>
-        </div>
-    @endif
+    @include('components.sessionmessage')
     </div>
   </div>
