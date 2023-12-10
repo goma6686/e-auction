@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/home', [HomeController::class, 'home'])->name('home');
+    Route::get('/auctions', [HomeController::class, 'auctions'])->name('auctions');
+    Route::get('/buy-now', [HomeController::class, 'buy'])->name('buy-now');
     Route::get('/home/{category}', [HomeController::class, 'category'])->name('items.categories');
 });
 
@@ -65,7 +67,7 @@ Route::controller(LoginController::class)->group(function() {
 });
 
 Route::controller(TransactionController::class)->group(function() {
-    Route::post('/bid/{uuid}', [TransactionController::class, 'bid'])->name('bid');
+    Route::post('/bid/{uuid}/{amount}', [TransactionController::class, 'bid'])->name('bid');
     Route::post('/buy/{uuid}', [TransactionController::class, 'buy'])->name('buy');
 });
 

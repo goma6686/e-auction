@@ -18,13 +18,14 @@
             @endfor
             </div>
             @if($buy_now_price)
-            <form method="post" action="{{route('bid', ['uuid' => $auction->uuid, 'amount' => $buy_now_price])}}">
+            <form method="post" action="{{route('buy', ['uuid' => $auction->items[0]->uuid])}}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <hr>
                 <h5>Or Buyout:</h5>
                 <div class="d-md-flex justify-content-md-center">
                     <button class="btn btn-dark" type="submit"  name='action'>Buyout for {{$buy_now_price}}€</button>
                 </div>
+            </form>
             @endif
         </div>
     </div>

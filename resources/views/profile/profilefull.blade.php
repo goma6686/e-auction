@@ -38,7 +38,7 @@
     @endif
     </div>
     <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bids-tab">
-        active bids
+        {{ Auth::user()->bids()->get() }}
     </div>
     <div class="tab-pane fade" id="won" role="tabpanel" aria-labelledby="won-tab">
         won auctions
