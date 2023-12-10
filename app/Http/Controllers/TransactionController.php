@@ -44,8 +44,6 @@ class TransactionController extends Controller
         if($bid_amount <= $highest_bid){
             return back()->with('error', 'Bid must be higher than the current price');
         } else {
-            $request->user()->balance -= $bid_amount;
-            $request->user()->save();
 
             $auction->price = $bid_amount;
             $auction->save();
@@ -57,12 +55,6 @@ class TransactionController extends Controller
                 'amount' => $bid_amount,
                 'created_at' => now()
             ]);
-            /*Bid::create([
-                'user_uuid' => $request->user()->uuid,
-                'auction_uuid' => $auction->uuid,
-                'amount' => $bid_amount,
-                'created_at' => now()
-            ]);*/
 
             return back()->with('success', 'You have successfully bid this item');
         }
@@ -72,20 +64,21 @@ class TransactionController extends Controller
         $item = Item::where('uuid', $item_uuid)->firstOrFail();
         $auction = Auction::where('uuid', $item->auction_uuid)->firstOrFail();
         $quantity = $request->input('quantity');
-        $item_price = $item->price;
+        
         $user_balance = $request->user()->balance;
 
-        if(!is_numeric($quantity)){
-            return back()->with('error', 'Quantity must be a number');
-        }
+        $auction->type_id == 1 ? $price = $item->price : $price = $auction->buy_now_price;
 
         if($item->quantity < $quantity){
             return back()->with('error', 'There are not enough items in stock');
-        } else {
-            if($user_balance < $item_price * $quantity){
+        } else if($auction->type_id == 1) {
+            if(!is_numeric($quantity)){
+                return back()->with('error', 'Quantity must be a number');
+            }
+            if($user_balance < $price * $quantity){
                 return back()->with('error', 'You do not have enough balance to buy this item');
             } else {
-                $request->user()->balance -= $item_price * $quantity;
+                $request->user()->balance -= $price * $quantity;
                 $request->user()->save();
     
                 $item->decrement('quantity', $quantity);
@@ -100,9 +93,25 @@ class TransactionController extends Controller
                     }
                 }
     
-                $this->createTransaction($request->user()->uuid, $item_price * $quantity, 'payin');
+                $this->createTransaction($request->user()->uuid, $price * $quantity, 'payin');
     
                 return back()->with('success', 'You have successfully bought this item');
+            }
+        } else {
+            if($user_balance < $price){
+                return back()->with('error', 'You do not have enough balance to buy this item');
+            } else {
+                $request->user()->balance -= $price;
+                $request->user()->save();
+
+                foreach($auction->items as $item) {
+                    if($item->image)
+                        $this->imageService->destroyImage($item->uuid);
+                    $item->delete();
+                }
+                $auction->delete();
+                $this->createTransaction($request->user()->uuid, $price, 'payin');
+                return redirect()->route('home')->with('success', 'You have successfully bought this item');
             }
         }
     }
