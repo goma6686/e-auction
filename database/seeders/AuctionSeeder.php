@@ -36,6 +36,7 @@ class AuctionSeeder extends Seeder
                         'buy_now_price' => $faker->numberBetween(1, 1000),
                         'user_uuid' => $user->uuid,
                         'reserve_price' => $faker->numberBetween(1, 1000),
+                        'price' => $faker->randomFloat(4, 0, 1000),
                     ]);
                 }
             });
@@ -58,6 +59,7 @@ class AuctionSeeder extends Seeder
                         'buy_now_price' => null,
                         'user_uuid' => $user->uuid,
                         'reserve_price' => null,
+                        'price' => null,
                     ]);
                 }
             });
