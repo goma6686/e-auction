@@ -2,7 +2,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
 
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+    
+        var pusher = new Pusher('a0706e146a7f37674961', {
+          cluster: 'eu'
+        });
+    
+        var channel = pusher.subscribe('Bids');
+        channel.bind('BidPlaced', function(data) {
+          alert(JSON.stringify(data));
+        });
+      </script>
     <title>GoAuction</title>
     @yield('scripts')
 

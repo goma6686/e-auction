@@ -8,7 +8,9 @@
     },
     "devDependencies": {
         "autoprefixer": "^10.4.16",
-        "axios": "^1.1.2"
+        "axios": "^1.1.2",
+        "laravel-echo": "^1.15.3",
+        "pusher-js": "^8.4.0-rc2"
     },
     "name": "e-auction",
     "version": "1.0.0",
