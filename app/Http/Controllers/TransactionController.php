@@ -56,6 +56,7 @@ class TransactionController extends Controller
                 'created_at' => now()
             ]);
 
+            //event(new BidPlaced($item));
             return back()->with('success', 'You have successfully bid this item');
         }
     }

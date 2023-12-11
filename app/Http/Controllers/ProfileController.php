@@ -26,8 +26,6 @@ class ProfileController extends Controller
                 ->get();
 
         if(Auth::check() && Auth::user()->uuid == $uuid) {
-
-            $favourites = Auth::user()->favourites->pluck('auction_uuid')->toArray();
             
             $all_auctions = 
                 $user->auctions()->with(['items', 'category', 'items.condition', 'type'])
@@ -40,7 +38,8 @@ class ProfileController extends Controller
                 )
                 ->get();
 
-            $favourited = Auction::whereIn('uuid', $favourites)
+            $favourited = Auction::whereIn('uuid', 
+                Auth::user()->favourites->pluck('auction_uuid')->toArray())
                 ->with(['items', 'category', 'items.condition', 'type'])
                 ->select(
                     '*',
@@ -51,7 +50,19 @@ class ProfileController extends Controller
                 )
                 ->get();
 
-            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited'));
+            $active_auctions = Auction::whereIn('uuid', 
+                Auth::user()->bids->pluck('auction_uuid')->toArray())
+                ->with(['items', 'category', 'items.condition', 'type'])
+                ->select(
+                    '*',
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
+                DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
+                DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
+                DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
+                )
+                ->get();
+
+            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited', 'active_auctions'));
         } else {
             return view('profile.profile', compact('user', 'active_auctions'));
         }

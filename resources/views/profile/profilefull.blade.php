@@ -12,7 +12,7 @@
         <a class="nav-link" id="won-tab" href="#active" data-bs-toggle="tab" data-bs-target="#won" role="tab" aria-controls="won" aria-selected="false">Won Auctions</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="favourite-tab" href="#favourite" data-bs-toggle="tab" data-bs-target="#favourite" role="tab" aria-controls="favourite" aria-selected="false">Favourite Auctions</a>
+        <a class="nav-link" id="favourite-tab" href="#favourite" data-bs-toggle="tab" data-bs-target="#favourite" role="tab" aria-controls="favourite" aria-selected="false">Favourites</a>
     </li>
     <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,13 +38,13 @@
     @endif
     </div>
     <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bids-tab">
-        {{ Auth::user()->bids()->get() }}
+        @include('components.list', ['list' => $active_auctions, 'word' => 'active'])
     </div>
     <div class="tab-pane fade" id="won" role="tabpanel" aria-labelledby="won-tab">
         won auctions
     </div>
     <div class="tab-pane fade" id="favourite" role="tabpanel" aria-labelledby="favourite-tab">
-        @include('components.favourites')
+        @include('components.list', ['list' => $favourited, 'word' => 'favourited'])
     </div>
 </div>
 <script type="text/javascript" src="{{asset('js/profile-tabs.js')}}"></script>

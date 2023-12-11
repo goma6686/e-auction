@@ -97,7 +97,7 @@ class AuctionController extends Controller
             }
             $bids = $bids->toArray();
         }
-
+    
         return view('auction.full', compact('auction', 'seller', 'auction_count', 'bids', 'buy_now_price', 'max_bid'));
     }
 
