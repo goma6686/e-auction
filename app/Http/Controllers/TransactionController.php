@@ -21,7 +21,6 @@ class TransactionController extends Controller
     public function bid(Request $request, $auction_uuid, $bid_amount){
         $auction = Auction::where('uuid', $auction_uuid)->firstOrFail();
         $bid_amount = $bid_amount;
-        $user_balance = $request->user()->balance;
 
         if($auction->end_time < now()){
             return back()->with('error', 'This auction has ended');
