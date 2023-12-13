@@ -53,7 +53,7 @@
             @if ($auction->type_id === '1')
                 <h5 class="row">
                     <div class="col-3">Price, €:</div>
-                    <div class="col-7 text-start" name="price" id="price">{{ $price }}</div>
+                    <div class="col-7 text-start" name="price">{{ $price }}</div>
                 </h5>
                 <form enctype="multipart/form-data" method="POST" action="{{route('buy', ['uuid' => $selected_uuid])}}">
                     @csrf
@@ -132,3 +132,31 @@
     @include('components.sessionmessage')
     </div>
   </div>
+  @section('scripts')
+  <script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('a0706e146a7f37674961', {
+      cluster: 'eu'
+    });
+    var channel = pusher.subscribe('auctions.{{{$auction->uuid}}}');
+
+    channel.bind('my-bids.{{{$auction->uuid}}}', function(data) {
+        const element = document.getElementById("p1");
+        const p_element = document.getElementById("price");
+        
+        var obj = data;
+        obj.toJSON = function(){
+            return {
+            bidder_count: data.bidder_count,
+            price: data.price
+            }
+        }
+        var bidder_count = obj.bidder_count;
+        var price = obj.price
+        element.innerHTML = "[" + JSON.stringify(obj.bidder_count) + "] bids";
+        p_element.innerHTML = obj.price;
+    });
+  </script>
+  @endsection

@@ -13,7 +13,7 @@
             @for ($i = 0; $i < 3; $i++)
                 <form method="post" action="{{route('bid', ['uuid' => $auction->uuid, 'amount' => $bids[$i]])}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <button type="submit" name='action' class="btn btn-dark"> €{{ $bids[$i] }} </button>
+                    <button id="price" type="submit" name='action' class="btn btn-dark"> €{{ $bids[$i] }} </button>
                 </form>
             @endfor
             </div>

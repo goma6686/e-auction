@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BidPlaced;
 use App\Models\Auction;
-use App\Models\Bid;
 use App\Models\Item;
 use App\Models\Transaction;
 use App\Services\ImageService;
@@ -31,10 +31,6 @@ class TransactionController extends Controller
             return back()->with('error', 'Bid must be higher than the current price');
         }
 
-        if($user_balance < $bid_amount){
-            return back()->with('error', 'You do not have enough balance to bid this amount');
-        }
-
         if($auction->bids->count() > 0){
             $highest_bid =  $auction->bids()->max('amount');
         } else {
@@ -56,7 +52,7 @@ class TransactionController extends Controller
                 'created_at' => now()
             ]);
 
-            //event(new BidPlaced($item));
+            BidPlaced::dispatch($auction);
             return back()->with('success', 'You have successfully bid this item');
         }
     }
