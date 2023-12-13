@@ -6,10 +6,11 @@ html, body {
     background-color:rgb(229, 233, 233);
 }
 
-.container {
+#root {
     margin-bottom: 2em;
     margin-top: 2em;
-    align-items: flex-start;
+    margin-left: 5em;
+    margin-right: 5em;
 }
 
 .carousel-control-prev,
@@ -68,4 +69,8 @@ h2 {
 
 .icon-not-active {
     color: rgb(143, 141, 141);
+}
+
+.sidebar {
+    margin: 1rem;
 }

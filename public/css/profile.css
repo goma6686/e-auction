@@ -1,3 +1,7 @@
+#root {
+    margin-right: 0 !important;
+}
+
 .profile-header {
     position: relative;
     overflow: hidden;
