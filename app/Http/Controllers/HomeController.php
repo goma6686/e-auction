@@ -51,7 +51,7 @@ class HomeController extends Controller
             DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
             )
             ->orderByDesc('auctions.created_at')
-            ->paginate(10);
+            ->paginate(12);
 
         return view ('home', compact('categories', 'auctions'));
     }
@@ -70,7 +70,7 @@ class HomeController extends Controller
             DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
             )
             ->orderByDesc('auctions.created_at')
-            ->paginate(10);
+            ->paginate(12);
 
         return view ('home', compact('categories', 'auctions'));
     }
