@@ -42,7 +42,6 @@ class AuctionController extends Controller
             'description' => $request->description,
             'category_id' => $request->category,
             'user_uuid' => $request->user()->uuid,
-            'start_time' => $request->start_time ?? null,
             'end_time' => $request->end_time ?? null,
             'is_active' => $request->is_active === '1' ? true : false,
             'type_id' => $type,
@@ -139,7 +138,6 @@ class AuctionController extends Controller
         $auction->category_id = $request->input('category');
         if($request->input('end_time')){
             $auction->end_time = $request->input('end_time');
-            $auction->start_time = $request->input('start_time');
         }
         if($request->input('reserve_price')){
             $auction->reserve_price = $request->input('reserve_price');

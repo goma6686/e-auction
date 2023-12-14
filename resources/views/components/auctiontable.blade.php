@@ -13,7 +13,6 @@
                 <th scope="col">Buy Now price</th>
                 <th scope="col">Bidders</th>
                 <th scope="col">Category</th>
-                <th scope="col">Start date</th>
                 <th scope="col">End date</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -82,13 +81,6 @@
                     <td>
                         {{$auction->category->category}}
                     </td>
-                    <td>
-                        @if ($auction->start_time == NULL) 
-                            @include('components.no')
-                        @else 
-                            {{$auction->start_time}}    
-                        @endif
-                    <td>
                         @if ($auction->end_time == NULL) 
                             @include('components.no')
                         @else 

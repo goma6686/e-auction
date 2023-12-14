@@ -28,10 +28,6 @@
                     <label for="reserve_price">Reserve Price:</label><br>
                     <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" min="0.1" class="@error('reserve_price') is-invalid @enderror" value="{{ $auction->reserve_price }}">
                 </div>
-                <div class="form-group pt-4">
-                    <label for="start_time">Enter auction end date and time: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
-                    <input id="start_time" type="datetime-local" name="start_time" class=" @error('start_time') is-invalid @enderror" value="{{ $auction->start_time }}" required>
-                </div>
                 
                 <div class="form-group pt-4">
                     <label for="end_time">Enter auction end date and time: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>

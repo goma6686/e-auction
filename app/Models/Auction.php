@@ -23,7 +23,6 @@ class Auction extends Model
         'user_uuid',
         'type_id',
         'is_active',
-        'start_time',
         'end_time',
         'buy_now_price',
         'price',

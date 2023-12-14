@@ -65,10 +65,6 @@
 
         @if ($type === '2')
             <div class="form-group pt-4">
-                <label for="start_time">Start date and time*: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
-                <input wire:model="start_time" type="datetime-local" name="start_time" class=" @error('start_time') is-invalid @enderror" required>
-            </div>
-            <div class="form-group pt-4">
                 <label for="end_time">End date and time*: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
                 <input wire:model="end_time" type="datetime-local" name="end_time" class=" @error('end_time') is-invalid @enderror" required>
             </div>

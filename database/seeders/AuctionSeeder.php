@@ -21,15 +21,12 @@ class AuctionSeeder extends Seeder
                 $numAuctions = $faker->numberBetween(1, 10);
 
                 for($i = 0; $i < $numAuctions; $i++){
-                   
-                        $start_time = $faker->dateTimeBetween('-1 month', '+1 month');
 
                     Auction::create([
                         'uuid' => Uuid::uuid4()->toString(),
                         'title' => $faker->sentence(3),
                         'description' => $faker->paragraph(),
-                        'start_time' => $start_time,
-                        'end_time' => $faker->dateTimeBetween($start_time, '+1 month'),
+                        'end_time' => $faker->dateTimeBetween(now(), '+1 month'),
                         'category_id' => $faker->numberBetween(1, 8),
                         'is_active' => $faker->boolean(75), // 75% chance of being active
                         'type_id' => 2,
@@ -51,7 +48,6 @@ class AuctionSeeder extends Seeder
                         'uuid' => Uuid::uuid4()->toString(),
                         'title' => $faker->sentence(3),
                         'description' => $faker->paragraph(),
-                        'start_time' => null,
                         'end_time' => null,
                         'category_id' => $faker->numberBetween(1, 8),
                         'is_active' => $faker->boolean(75), // 75% chance of being active
