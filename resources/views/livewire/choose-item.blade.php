@@ -123,13 +123,6 @@
         </div>
     </form>
         <h6 class="pt-3 text-center">
-            {{--@for ($i = 0; $i < 3; $i++)
-            {{$bids[$i]}}
-            @endfor--}}
-            @foreach ($bids as $bid)
-                {{$bid}}
-                <br>
-            @endforeach
             @if ($isAcceptingBids)
                 @if (round((strtotime($auction->end_time) - time()) / 3600) < 12)
                     <div id="timer" class="wrap-countdown time-countdown" 

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Events\EndAuction;
 use App\Models\Auction;
+use App\Models\Bid;
 use App\Models\Condition;
 use DateTime;
 use Livewire\Component;
@@ -25,14 +26,16 @@ class ChooseItem extends Component
     public $bids;
     public $buy_now_price;
     public $max_bid;
+    public $bidder_count;
 
     public $isAcceptingBids;
     public $showBidNotification = false;
 
     public function mount(Auction $auction, $seller, $bids){
-        $this->max_bid = $auction->bids()->max('amount');
+        $this->max_bid = $auction->bids()->max('amount') ?? $auction->price;
         $this->buy_now_price = $auction->buy_now_price;
         $this->bids = $bids;
+        $this->bidder_count = $auction->bids->count();
         $this->auction_count = $seller->auctions->where('is_active', true)->count();
         $this->seller = $seller;
         $this->type = $auction->type_id;
@@ -44,7 +47,7 @@ class ChooseItem extends Component
         $this->price = $this->item['price'];
         $this->condition = $this->item['condition']['condition'];
         $this->quantity = $this->item['quantity'];
-        $this->isAcceptingBids = $this->auction->is_active;
+        $this->isAcceptingBids = $this->auction->getIsAcceptingBidsAttribute();
 
         $now = new DateTime(\Carbon\Carbon::now());
         $end = new DateTime($this->auction->end_time);
@@ -52,8 +55,14 @@ class ChooseItem extends Component
             EndAuction::dispatch($auction);
         }
     }
+    public function updated(){
+        $this->bidder_count = $this->auction->bids->count();
+        $this->max_bid = $this->auction->getMaxBidAttribute();
+        $this->bids = $this->auction->getBids();
+    }
 
     public function bidPlaced(){
+        $this->updated();
         $this->showBidNotification = true;
     }
 
