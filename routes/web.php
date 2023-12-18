@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
+use App\Models\Auction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,11 @@ Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'tog
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
+
+Route::get('search', function() {
+    $query = ''; // <-- Change the query for testing.
+
+    $auctions = Auction::search($query)->get();
+
+    return $auctions;
+});

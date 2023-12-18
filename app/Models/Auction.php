@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Auction extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
     
     protected $primaryKey = 'uuid';
     protected $keyType = 'string';
@@ -32,6 +33,23 @@ class Auction extends Model
         'price',
         'reserve_price',
     ];
+
+    public function searchableAs(): string
+    {
+        return config('scout.prefix') . 'auctions_index';
+    }
+
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+
+        $array['category'] = $this->category->name;
+        $array['condition'] = $this->condition->name;
+        $array['type'] = $this->type->name;
+        $array['user'] = $this->user->name;
+
+        return $array;
+    }
 
     public function favourites(): HasMany
     {

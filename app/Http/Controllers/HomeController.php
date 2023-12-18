@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Auction;
-use App\Models\Item;
-use Illuminate\Support\Facades\DB;
+use Algolia\ScoutExtended\Facades\Algolia;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
