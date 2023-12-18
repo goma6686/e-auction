@@ -81,6 +81,7 @@
                     <td>
                         {{$auction->category->category}}
                     </td>
+                    <td>
                         @if ($auction->end_time == NULL) 
                             @include('components.no')
                         @else 

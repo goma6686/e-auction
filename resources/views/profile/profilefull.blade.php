@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="active-tab" href="#active" data-bs-toggle="tab" data-bs-target="#active" role="tab" aria-controls="active" aria-selected="true">All Auctions</a>
+        <a class="nav-link active" id="active-tab" href="#active" data-bs-toggle="tab" data-bs-target="#active" role="tab" aria-controls="active" aria-selected="true">My Auctions</a>
     </li>
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="all-tab" href="#all" data-bs-toggle="tab" data-bs-target="#all"role="tab" aria-controls="all" aria-selected="false">Edit Auctions</a>
@@ -38,7 +38,7 @@
     @endif
     </div>
     <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bids-tab">
-        @include('components.list', ['list' => $active_auctions, 'word' => 'active'])
+        @include('components.list', ['list' => $active_bids, 'word' => 'active'])
     </div>
     <div class="tab-pane fade" id="won" role="tabpanel" aria-labelledby="won-tab">
         won auctions

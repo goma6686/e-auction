@@ -50,7 +50,7 @@ class ProfileController extends Controller
                 )
                 ->get();
 
-            $active_auctions = Auction::whereIn('uuid', 
+            $active_bids = Auction::whereIn('uuid', 
                 Auth::user()->bids->pluck('auction_uuid')->toArray())
                 ->with(['items', 'category', 'items.condition', 'type'])
                 ->select(
@@ -62,7 +62,7 @@ class ProfileController extends Controller
                 )
                 ->get();
 
-            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited', 'active_auctions'));
+            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited', 'active_bids'));
         } else {
             return view('profile.profile', compact('user', 'active_auctions'));
         }

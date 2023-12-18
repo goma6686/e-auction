@@ -59,8 +59,10 @@ class ItemController extends Controller
         }
 
         $item->save();
-
-        return redirect()->back()->with('success', 'Changes saved successfully');
+        $item->refresh();
+        $user_id = (Auction::where('uuid', $item->auction_uuid)->first())->user_uuid;
+        
+        return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
     }
 
     public function destroy($uuid){

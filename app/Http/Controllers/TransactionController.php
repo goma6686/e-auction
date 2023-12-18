@@ -51,6 +51,8 @@ class TransactionController extends Controller
                 'created_at' => now()
             ]);
 
+            $auction->refresh();
+
             BidPlaced::dispatch($auction);
             return back()->with('success', 'You have successfully bid this item');
         }

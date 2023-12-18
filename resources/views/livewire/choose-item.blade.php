@@ -60,15 +60,13 @@
             @else
                 <h5 class="row">
                     <div class="col-3">
-                    @if (!$max_bid)
+                    @if ($bidder_count === 0)
                         Starting bid, €:
-                    </div>
-                        <div class="col-7 text-start" name="price">{{ $auction->price }}</div>
                     @else
                         Current bid, €:
-                    </div>
-                        <div class="col-7 text-start" name="price"> {{ $max_bid }}</div>
                     @endif
+                    </div>
+                    <div class="col-7 text-start" name="price" wire:model="max_bid"> {{ $max_bid }}</div>
                 </h5>
             @endif
             @if ($auction->type_id === '1')
@@ -103,7 +101,7 @@
                 @else
                     <h6 class="row">
                         <div class="col-7 text-start">
-                            [{{ $auction->bids()->count() }}] bids
+                            [{{ $bidder_count }}] bids
                         </div>
                     </h6>
                     <h5>This is your own listing</h5>
@@ -125,6 +123,13 @@
         </div>
     </form>
         <h6 class="pt-3 text-center">
+            {{--@for ($i = 0; $i < 3; $i++)
+            {{$bids[$i]}}
+            @endfor--}}
+            @foreach ($bids as $bid)
+                {{$bid}}
+                <br>
+            @endforeach
             @if ($isAcceptingBids)
                 @if (round((strtotime($auction->end_time) - time()) / 3600) < 12)
                     <div id="timer" class="wrap-countdown time-countdown" 

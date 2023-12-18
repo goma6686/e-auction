@@ -62,4 +62,35 @@ class Auction extends Model
     {
         return $this->belongsTo(Type::class, 'type_id');
     }
+
+    public function getMaxBidAttribute()
+    {
+        return $this->bids()->max('amount') ?? $this->price;
+    }
+
+    public function getBidIncrements($max_bid = null)
+    {
+        $max_bid ?? $this->getMaxBidAttribute();
+        return Bid::incremets()->collect()->filter(function ($increment) use ($max_bid) {
+            return $max_bid >= $increment['from'] && $max_bid <= $increment['to'];
+        })->first();
+    }
+
+    public function getBids(){
+        $bids = Bid::where('auction_uuid', $this->uuid)->orderBy('amount', 'desc')->take(3)->get();
+        $max_bid = $this->getMaxBidAttribute();
+        $increment = $this->getBidIncrements($max_bid);
+        for($i = 0; $i < 3; $i++){
+            $bids[$i] = $max_bid + ($i+1)*$increment['increment'];
+        }
+
+        return $bids->toArray();
+    }
+
+    public function getIsAcceptingBidsAttribute()
+    {
+        $now = new \DateTime(\Carbon\Carbon::now());
+        $end = new \DateTime($this->end_time);
+        return $now < $end && $this->is_active;
+    }
 }
