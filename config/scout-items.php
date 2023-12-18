@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'searchableAttributes' => ['category'],
+    'searchableAttributes' => ['uuid', 'title', 'quantity', 'auction_uuid', 'price', 'condition'],
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['category', 'categoryImage'],
+    'attributesForFaceting' => ['condition_id', 'condition'],
 
     /*
     |--------------------------------------------------------------------------

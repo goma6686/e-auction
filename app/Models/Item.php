@@ -28,6 +28,15 @@ class Item extends Model
         'quantity',
     ];
 
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+
+        $array['condition'] = $this->condition->condition;
+
+        return $array;
+    }
+
     public function auctions(): BelongsTo
     {
         return $this->belongsTo(Auction::class, 'auction_uuid');

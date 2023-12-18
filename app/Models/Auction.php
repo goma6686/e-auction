@@ -43,10 +43,9 @@ class Auction extends Model
     {
         $array = $this->toArray();
 
-        $array['category'] = $this->category->name;
-        $array['condition'] = $this->condition->name;
-        $array['type'] = $this->type->name;
-        $array['user'] = $this->user->name;
+        $array['category'] = $this->category->category;
+        $array['type'] = $this->type->type;
+        $array['user'] = $this->user->username;
 
         return $array;
     }

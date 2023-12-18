@@ -27,6 +27,7 @@ class HomeController extends Controller
 
     public function home(){
         $categories = Category::all();
+        $category = 'all';
 
         $auctions = Auction::withCount(['bids'])
             ->where('is_active', true)
@@ -35,7 +36,7 @@ class HomeController extends Controller
             ->orderByDesc('auctions.created_at')
             ->paginate(12);
 
-        return view ('home', compact('categories', 'auctions'));
+        return view ('home', compact('categories', 'auctions', 'category'));
     }
 
     public function auctions(){
@@ -80,7 +81,7 @@ class HomeController extends Controller
             ->orderByDesc('auctions.created_at')
             ->paginate(10);
 
-            return view ('home', compact('categories', 'auctions'));
+            return view ('home', compact('categories', 'auctions', 'category'));
         }
         
     }

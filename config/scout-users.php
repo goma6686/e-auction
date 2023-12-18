@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'searchableAttributes' => ['category'],
+    'searchableAttributes' => ['username'],
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['category', 'categoryImage'],
+    'attributesForFaceting' => null,
 
     /*
     |--------------------------------------------------------------------------
