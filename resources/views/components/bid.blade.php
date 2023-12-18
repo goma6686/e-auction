@@ -1,5 +1,5 @@
 <h6 class="row">
-    <div class="col-7 text-start" id="p1">
+    <div class="col-7 text-start">
        [{{ $auction->bids()->count() }}] bids
     </div>
 </h6>

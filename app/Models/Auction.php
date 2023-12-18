@@ -16,6 +16,10 @@ class Auction extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $casts = [
+        'end_time' => 'datetime'
+    ];
+
     protected $fillable = [
         'title', 
         'description',

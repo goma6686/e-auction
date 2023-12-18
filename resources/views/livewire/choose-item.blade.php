@@ -63,11 +63,11 @@
                     @if (!$max_bid)
                         Starting bid, €:
                     </div>
-                        <div class="col-7 text-start" name="price" id="price">{{ $auction->price }}</div>
+                        <div class="col-7 text-start" name="price">{{ $auction->price }}</div>
                     @else
                         Current bid, €:
                     </div>
-                        <div class="col-7 text-start" name="price" id="price"> {{ $auction->bids()->max('amount') }}</div>
+                        <div class="col-7 text-start" name="price"> {{ $max_bid }}</div>
                     @endif
                 </h5>
             @endif
@@ -101,6 +101,11 @@
                         @include('components.bid')
                     @endif
                 @else
+                    <h6 class="row">
+                        <div class="col-7 text-start">
+                            [{{ $auction->bids()->count() }}] bids
+                        </div>
+                    </h6>
                     <h5>This is your own listing</h5>
                 @endif
               @else
@@ -119,44 +124,22 @@
           </div>
         </div>
     </form>
-    <h6 class="pt-3 text-center">
-      @if (new DateTime($auction->end_time) <= new DateTime(\Carbon\Carbon::now()))
-          <b id="status">Auction Has Ended</b>
-      @elseif (round((strtotime($auction->end_time) - time()) / 3600) < 12)
-          <div id="timer" class="wrap-countdown time-countdown" data-expire="{{ Carbon\Carbon::parse($auction->end_time) }}"></div>
-      @else
-          {{ (new DateTime($auction->end_time))->diff(new DateTime(\Carbon\Carbon::now()))->format("Ends in %dD %hH %iM"); }}
-      |   {{ Carbon\Carbon::parse($auction->end_time)->format('l H:i') }}
-      @endif
-    </h6>
+        <h6 class="pt-3 text-center">
+            @if ($isAcceptingBids)
+                @if (round((strtotime($auction->end_time) - time()) / 3600) < 12)
+                    <div id="timer" class="wrap-countdown time-countdown" 
+                    data-expire="{{ Carbon\Carbon::parse($auction->end_time) }}"></div>
+                @else
+                    {{ $auction->end_time->toDayDateTimeString() }}
+                @endif
+            @else
+                <b id="status">Auction Has Ended</b>
+            @endif
+        </h6>
     @include('components.sessionmessage')
     </div>
   </div>
-  @section('scripts')
-  <script>
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+@if ($isAcceptingBids)
+    @include('scripts.timer')
+@endif
 
-    var pusher = new Pusher('a0706e146a7f37674961', {
-      cluster: 'eu'
-    });
-    var channel = pusher.subscribe('auctions.{{{$auction->uuid}}}');
-
-    channel.bind('my-bids.{{{$auction->uuid}}}', function(data) {
-        const element = document.getElementById("p1");
-        const p_element = document.getElementById("price");
-        
-        var obj = data;
-        obj.toJSON = function(){
-            return {
-            bidder_count: data.bidder_count,
-            price: data.price
-            }
-        }
-        var bidder_count = obj.bidder_count;
-        var price = obj.price
-        element.innerHTML = "[" + JSON.stringify(obj.bidder_count) + "] bids";
-        p_element.innerHTML = obj.price;
-    });
-  </script>
-  @endsection

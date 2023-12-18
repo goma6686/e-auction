@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-7">
-      @livewire('choose-item', ['auction' => $auction->uuid, 'items' => $auction->items, 'type' => $auction->type_id, 'seller' => $seller, 'auction_count' => $auction_count, 'bids' => $bids, 'buy_now_price' => $buy_now_price, 'max_bid' => $max_bid])
+      @livewire('choose-item', ['auction' => $auction->uuid, 'seller' => $seller, 'bids' => $bids])
     </div>
   </div>    
 </div>
@@ -32,4 +32,5 @@
 @section('scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{asset('js/favourites.js')}}"></script>
+@include('scripts.pusher')
 @endsection

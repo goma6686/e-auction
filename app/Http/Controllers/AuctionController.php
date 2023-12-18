@@ -83,7 +83,7 @@ class AuctionController extends Controller
         $buy_now_price = $auction->buy_now_price;
 
         if($auction->type_id == 2){
-            if(!$max_bid){
+            if(!$max_bid || $max_bid < $auction->price){
                 $max_bid = $auction->price;
             }
             

@@ -2,21 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Events\EndAuction;
 use App\Models\Auction;
 use App\Models\Condition;
+use DateTime;
 use Livewire\Component;
 
 class ChooseItem extends Component
 {
     public $auction;
     public $items = [];
-    
     public $item;
     public $condition;
     public $price;
     public $title;
     public $quantity;
-
     public $selectedItem;
     public $seller;
     public $type;
@@ -26,21 +26,39 @@ class ChooseItem extends Component
     public $buy_now_price;
     public $max_bid;
 
-    public function mount(Auction $auction, $items, $seller, $type, $auction_count, $bids, $buy_now_price, $max_bid){
-        $this->max_bid = $max_bid;
-        $this->buy_now_price = $buy_now_price;
+    public $isAcceptingBids;
+    public $showBidNotification = false;
+
+    public function mount(Auction $auction, $seller, $bids){
+        $this->max_bid = $auction->bids()->max('amount');
+        $this->buy_now_price = $auction->buy_now_price;
         $this->bids = $bids;
-        $this->auction_count = $auction_count;
+        $this->auction_count = $seller->auctions->where('is_active', true)->count();
         $this->seller = $seller;
-        $this->type = $type;
+        $this->type = $auction->type_id;
         $this->auction = $auction;
-        $this->items = $items;
+        $this->items = $auction->items;
         $this->item = $this->items[0];
         $this->selectedItem = $this->items[0];
         $this->selected_uuid = $this->items[0]['uuid'];
         $this->price = $this->item['price'];
         $this->condition = $this->item['condition']['condition'];
         $this->quantity = $this->item['quantity'];
+        $this->isAcceptingBids = $this->auction->is_active;
+
+        $now = new DateTime(\Carbon\Carbon::now());
+        $end = new DateTime($this->auction->end_time);
+        if($now >= $end && $this->auction->is_active){
+            EndAuction::dispatch($auction);
+        }
+    }
+
+    public function bidPlaced(){
+        $this->showBidNotification = true;
+    }
+
+    public function endAuction(){
+        $this->isAcceptingBids = false;
     }
 
     public function itemSelected($selectedItem){
@@ -60,5 +78,13 @@ class ChooseItem extends Component
     public function render()
     {
         return view('livewire.choose-item');
+    }
+
+    public function getListeners()
+    {
+        return [
+            "echo:auctions.{$this->auction->uuid},BidPlaced" => 'bidPlaced',
+            "end-auction.{$this->auction->uuid},EndAuction" => 'endAuction',
+        ];
     }
 }
