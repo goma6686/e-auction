@@ -1,6 +1,6 @@
-@if(count($active_auctions) > 0)
+@if(count($auctions) > 0)
     <div class="row">
-    @foreach ($active_auctions as $auction)
+    @foreach ($auctions as $auction)
         @include('components.itemcard')
     @endforeach
     </div>

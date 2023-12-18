@@ -17,19 +17,7 @@ class HomeController extends Controller
         $auction_items = Auction::withCount(['bids', 'items'])
             ->where('is_active', true)
             ->with(['items', 'category', 'items.condition'])
-            ->addSelect([
-                'max_price' => Item::selectRaw('MAX(price)')
-                    ->whereColumn('auction_uuid', 'auctions.uuid')
-                    ->havingRaw('COUNT(*) > 1'),
-                'min_price' => Item::selectRaw('MIN(price)')
-                    ->whereColumn('auction_uuid', 'auctions.uuid')
-                    ->havingRaw('COUNT(*) > 1'),
-                'buy_price' => Item::selectRaw('MAX(price)')
-                    ->whereColumn('auction_uuid', 'auctions.uuid')
-                    ->havingRaw('COUNT(*) = 1'),
-                'count' => Item::selectRaw('COUNT(*)')
-                    ->whereColumn('auction_uuid', 'auctions.uuid'),
-            ])
+            ->withMin('items', 'price')
             ->orderByDesc('bids_count')
             ->groupBy('auctions.category_id', 'auctions.uuid')
             ->take(3)
@@ -41,15 +29,10 @@ class HomeController extends Controller
     public function home(){
         $categories = Category::all();
 
-        $auctions = Auction::where('is_active', true)
-            ->with(['items', 'category', 'items.condition'])
-            ->select(
-                '*',
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
-            DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
-            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
-            )
+        $auctions = Auction::withCount(['bids'])
+            ->where('is_active', true)
+            ->with(['items', 'category'])
+            ->withMin('items', 'price')
             ->orderByDesc('auctions.created_at')
             ->paginate(12);
 
@@ -59,18 +42,13 @@ class HomeController extends Controller
     public function auctions(){
         $categories = Category::all();
 
-        $auctions = Auction::where('is_active', true)
-            ->where('type_id', '=', "2")
-            ->with(['items', 'category', 'items.condition'])
-            ->select(
-                '*',
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
-            DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
-            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
-            )
-            ->orderByDesc('auctions.created_at')
-            ->paginate(12);
+        $auctions = Auction::withCount(['bids'])
+        ->where('is_active', true)
+        ->where('type_id', '=', '2')
+        ->with(['items', 'category'])
+        ->withMin('items', 'price')
+        ->orderByDesc('auctions.created_at')
+        ->paginate(12);
 
         return view ('home', compact('categories', 'auctions'));
     }
@@ -78,19 +56,14 @@ class HomeController extends Controller
     public function buy(){
         $categories = Category::all();
 
-        $auctions = Auction::where('is_active', true)
-            ->where('type_id', '=', "1")
-            ->with(['items', 'category', 'items.condition'])
-            ->select(
-                '*',
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
-            DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
-            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
-            )
+        $auctions = Auction::withCount(['bids'])
+            ->where('is_active', true)
+            ->where('type_id', '=', '1')
+            ->with(['items', 'category'])
+            ->withMin('items', 'price')
             ->orderByDesc('auctions.created_at')
-            ->paginate(10);
-            //return dd($auctions);
+            ->paginate(12);
+
         return view ('home', compact('categories', 'auctions'));
     }
 
@@ -100,19 +73,14 @@ class HomeController extends Controller
         if($category === 'all')
             return redirect()->route('home');
         else {
-            $auctions = Auction::where('is_active', true)
+            $auctions = Auction::withCount(['bids'])
+            ->where('is_active', true)
             ->where('category_id', Category::where('category', $category)->first()->id)
             ->with(['items', 'category', 'items.condition'])
-            ->select(
-                '*',
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as max_price'),
-            DB::raw('(SELECT MIN(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) > 1) as min_price'),
-            DB::raw('(SELECT MAX(price) FROM items WHERE items.auction_uuid = auctions.uuid HAVING COUNT(*) = 1) as buy_price'),
-            DB::raw('(SELECT COUNT(*) FROM items WHERE items.auction_uuid = auctions.uuid) as count')
-            )
+            ->withMin('items', 'price')
+            ->orderByDesc('auctions.created_at')
             ->paginate(10);
 
-            //return dd($auctions);
             return view ('home', compact('categories', 'auctions'));
         }
         

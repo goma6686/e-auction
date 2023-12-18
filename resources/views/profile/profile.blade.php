@@ -24,12 +24,12 @@
                         </div>
                     @else
                         @guest
-                            @include('profile.profileactive')
+                            @include('profile.profileactive', ['auctions' => $active_auctions])
                         @else
                             @if(Auth::user()->uuid == $user->uuid)
                                 @include('profile.profilefull')
                             @else
-                                @include('profile.profileactive')
+                                @include('profile.profileactive', ['auctions' => $active_auctions])
                             @endif
                         @endguest
                     @endif

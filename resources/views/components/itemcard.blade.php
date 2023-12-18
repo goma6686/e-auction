@@ -20,21 +20,18 @@
             <li class="list-group-item">
                 <div class="row">
                     <div class="col">
-                        @if ($auction->price)
+                        @if ($auction->type_id === '1')
+                            <h6 class="card-subtitle mb-2">From:</h6>
+                            <h6 class="card-subtitle mb-2">{{$auction->items_min_price}} Eur</h6>
+                        @else
                             <h6 class="card-subtitle mb-2">Price:</h6>
                             <h6 class="card-subtitle mb-2">{{$auction->price}} Eur</h6>
-                        @elseif($auction->buy_price)
-                            <h6 class="card-subtitle mb-2">Price:</h6>
-                            <h6 class="card-subtitle mb-2">{{$auction->buy_price}} Eur</h6>
-                        @else
-                            <h6 class="card-subtitle mb-2">From:</h6>
-                            <h6 class="card-subtitle mb-2">{{$auction->min_price}} Eur</h6>
                         @endif
                     </div>
                     @if ($auction->type_id === '2')
                         <div class="col-md-6 text-center">
                             <h6 class="card-subtitle mb-2">Current bids:</h6>
-                            <h6 class="card-subtitle mb-2">{{ $auction->bids()->count()}}</h6>
+                            <h6 class="card-subtitle mb-2">{{ $auction->bids_count}}</h6>
                         </div>
                     @endif
                 </div>

@@ -1,3 +1,4 @@
+<h3 style="text-align: center;">{{$text}}</h3>
 <div class="table-responsive">
     <table class="table accordion table-light table-hover table-striped">
         <thead>
@@ -42,19 +43,21 @@
                         <a href="/auction/{{$auction->uuid}}" class="btn" role="button"> {{$auction->title}}</a>
                     </td>
                     <td>
-                        {{$auction->count}}
+                        {{$auction->items_count}}
                     </td>
-                    @if ($auction->price)
-                        <td>
-                            {{$auction->price}}
-                        </td>
-                    @elseif ($auction->buy_price)
-                        <td>
-                            {{$auction->buy_price}}
-                        </td>
+                    @if ($auction->type_id === '1')
+                        @if($auction->buy_price != NULL)
+                            <td>
+                                {{$auction->buy_price}}
+                            </td>
+                        @else
+                            <td>
+                                {{$auction->min_price}} - {{$auction->max_price}}
+                            </td>
+                        @endif
                     @else
                         <td>
-                            {{$auction->min_price}} - {{$auction->max_price}}
+                            {{$auction->price}}
                         </td>
                     @endif
                     <td>

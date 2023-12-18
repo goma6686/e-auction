@@ -137,7 +137,7 @@
     @include('components.sessionmessage')
     </div>
   </div>
-@if ($isAcceptingBids)
+@if ($isAcceptingBids && $auction->type_id === '2')
     @include('scripts.timer')
 @endif
 
