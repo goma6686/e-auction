@@ -1,3 +1,5 @@
+const vueLoaderPath = require.resolve('vue-loader')
+
 module.exports = {
     // ... other configurations
   
@@ -12,6 +14,15 @@ module.exports = {
               presets: ['@babel/preset-env']
             }
           }
+        },
+        {
+            test: /\.vue$/,
+            loader: vueLoaderPath,
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false
+              }
+            }
         }
       ]
     }
