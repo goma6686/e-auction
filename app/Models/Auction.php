@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
+use Algolia\ScoutExtended\Facades\Algolia;
+use Spatie\Searchable\SearchResult;
 
-class Auction extends Model
+class Auction extends Model implements \Spatie\Searchable\Searchable
 {
     use HasFactory, HasUuids, Searchable;
     
@@ -34,10 +36,22 @@ class Auction extends Model
         'reserve_price',
     ];
 
-    public function searchableAs(): string
+    public function getSearchResult(): SearchResult
     {
-        return config('scout.prefix') . 'auctions_index';
+        $url = route('auctions.show', $this->uuid);
+
+        return new SearchResult(
+            $this,
+            $this->title,
+            $url
+        );
     }
+
+    /*public function searchableAs(): string
+    {
+        //return config('scout.prefix') . 'auctions';
+        return 'auctions_index';
+    }*/
 
     public function toSearchableArray(): array
     {
@@ -48,6 +62,11 @@ class Auction extends Model
         $array['user'] = $this->user->username;
 
         return $array;
+    }
+
+    public function shouldBeSearchable()
+    {
+        return $this->is_active;
     }
 
     public function favourites(): HasMany

@@ -40,22 +40,24 @@
           </div>
         </div>
       </div>
-      
-      <div class="items mt-4">
+      <div class="items mt-4" >
         <div class="row">
-            @foreach ($auctions as $auction)
-            <div class="col-4 card-group">
-                @include('components.itemcard')
-            </div>
-            @endforeach
-          {!! $auctions->links() !!}
+          @livewire('search-auctions')
+        </div>
         </div>
       </div>
-    </div>
-    
-    
+  @endsection
+  @section('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.0/dist/algoliasearch-lite.umd.js" integrity="sha256-/2SlAlnMUV7xVQfSkUQTMUG3m2LPXAzbS8I+xybYKwA=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.62.0/dist/instantsearch.production.min.js" integrity="sha256-nXIfriS+Lsxm+4lKjyIuaeo1kkt4qmWB+QvNY7Nx6X4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js@1.12.2/dist/umd/index.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-plugin-query-suggestions@1.12.2/dist/umd/index.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-plugin-recent-searches@1.12.2/dist/umd/index.production.min.js"></script>
+
   @endsection
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/reset-min.css" integrity="sha256-2AeJLzExpZvqLUxMfcs+4DWcMwNfpnjUeAAvEtPr0wU=" crossorigin="anonymous">
+
 @endsection

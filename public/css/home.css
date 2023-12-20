@@ -1,11 +1,10 @@
-#root {
-    height: 100vh;
-    width: 100vw;
-    margin-right: 5em;
-}
-
 .container {
     display: flex;
+}
+
+.sidebar {
+    margin-left: 5em;
+    margin-top: 2em!important;
 }
 
 .items {

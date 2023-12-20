@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'searchableAttributes' => ['uuid', 'title', 'quantity', 'auction_uuid', 'price', 'condition'],
+    'searchableAttributes' => ['uuid', 'title', 'image', 'quantity', 'auction_uuid', 'price', 'condition'],
 
     /*
     |--------------------------------------------------------------------------

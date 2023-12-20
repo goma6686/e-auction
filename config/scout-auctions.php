@@ -17,14 +17,20 @@ return [
     */
 
     'searchableAttributes' => [
+        'uuid',
         'title',
         'description',
         'end_time',
+        'user_uuid',
         'buy_now_price',
         'price',
+        'reserve_price',
+        'is_active',
         'category',
         'type',
         'user',
+        'images',
+        'item.image',
     ],
 
     /*
@@ -88,7 +94,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['category_id', 'type_id', 'category', 'type'],
+    'attributesForFaceting' => ['category_id', 'type_id', 'category', 'type', 'item'],
 
     /*
     |--------------------------------------------------------------------------

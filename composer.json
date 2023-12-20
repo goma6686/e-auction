@@ -14,8 +14,10 @@
         "laravel/sanctum": "^3.2",
         "laravel/scout": "^10.6",
         "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.2",
         "livewire/livewire": "^3.1",
-        "pusher/pusher-php-server": "^7.2"
+        "pusher/pusher-php-server": "^7.2",
+        "spatie/laravel-searchable": "^1.11"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

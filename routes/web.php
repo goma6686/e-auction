@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
@@ -76,11 +77,3 @@ Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'tog
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
-
-Route::get('search', function() {
-    $query = ''; // <-- Change the query for testing.
-
-    $auctions = Auction::search($query)->get();
-
-    return $auctions;
-});

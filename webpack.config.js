@@ -4,6 +4,12 @@ module.exports = {
     // ... other configurations
   
     module: {
+      loaders: [
+        {
+          test: /\.css$/,
+          loaders: ['style?insertAt=top', 'css'],
+        },
+      ],
       rules: [
         {
           test: /\.js$/,
