@@ -11,12 +11,12 @@
             wire:keydown.arrow-down="incrementHighlight"
             wire:keydown.enter="selectAuction"
         />
-            @if($auctions->count() > 0)
+            @if (!empty($auctions))
             <div class="row">
                 @foreach ($auctions as $auction)
                 @include('components.itemcard')
                 @endforeach
-                </div>
+            </div>
             @else
                 <div class="h-100">
                     No results!

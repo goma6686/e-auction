@@ -17,20 +17,13 @@ return [
     */
 
     'searchableAttributes' => [
-        'uuid',
         'title',
         'description',
-        'end_time',
-        'user_uuid',
-        'buy_now_price',
-        'price',
-        'reserve_price',
-        'is_active',
         'category',
         'type',
         'user',
         'images',
-        'item.image',
+        'unordered(type_id)',
     ],
 
     /*
@@ -47,7 +40,7 @@ return [
     |
     */
 
-    'customRanking' => ['desc(created_at)', 'desc(updated_at)'],
+    'customRanking' => ['desc(bids_count)', 'desc(items.item_price)'],
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +87,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['category_id', 'type_id', 'category', 'type', 'item'],
+    'attributesForFaceting' => ['category', 'type', 'user'],
 
     /*
     |--------------------------------------------------------------------------
@@ -170,4 +163,10 @@ return [
     | configuration, just use the command `scout:sync` to get remote settings in this file.
     |
     */
+    'replicas' => [
+        'auctions_price_asc',
+        'auctions_price_desc',
+        'auctions_end_time_asc',
+        'auctions_end_time_desc',
+    ],
 ];

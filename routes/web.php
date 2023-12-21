@@ -12,6 +12,7 @@ use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
 use App\Models\Auction;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,12 +28,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
-    Route::get('/home', [HomeController::class, 'home'])->name('home');
-    Route::get('/auctions', [HomeController::class, 'auctions'])->name('auctions');
-    Route::get('/buy-now', [HomeController::class, 'buy'])->name('buy-now');
-    Route::get('/home/{category}', [HomeController::class, 'category'])->name('items.categories');
+    Route::get('/home/{category?}/{type?}', function(?string $category = 'all', ?string $type = 'all'){
+    return view('home', [
+        'categories' => Category::all(),
+        'category' => $category,
+        'type' => $type
+        ]);
+    })->name('home');
 });
-
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
     Route::get('/profile/{uuid}#all', [ProfileController::class, 'profile'])->name('profile.all');

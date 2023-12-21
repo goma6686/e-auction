@@ -22,8 +22,8 @@
         <div class="col">
           <div class="btn-group" role="group">
             <a class="btn btn-outline-dark" href="{{ route('home') }}">All</a>
-            <a class="btn btn-outline-dark" href="{{ route('auctions') }}">Auctions</a>
-            <a class="btn btn-outline-dark" href="{{ route('buy-now') }}">Buy Now</a>
+            <a class="btn btn-outline-dark" href="{{ route('home', ['type' => 'Auction', 'category' => $category]) }}">Auctions</a>
+            <a class="btn btn-outline-dark" href="{{ route('home', ['type' => 'Buy-Now', 'category' => $category]) }}">Buy Now</a>
           </div>
         </div>
         <div class="col text-end">
@@ -42,7 +42,7 @@
       </div>
       <div class="items mt-4" >
         <div class="row">
-          @livewire('search-auctions')
+          @livewire('search-auctions', ['category' => $category, 'type' => $type])
         </div>
         </div>
       </div>

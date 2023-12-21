@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['condition_id', 'condition'],
+    'attributesForFaceting' => ['condition_id', 'condition', 'auction_uuid'],
 
     /*
     |--------------------------------------------------------------------------

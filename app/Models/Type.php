@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 
 class Type extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     public function auctions(): BelongsToMany
     {

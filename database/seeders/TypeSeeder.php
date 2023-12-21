@@ -16,7 +16,7 @@ class TypeSeeder extends Seeder
         DB::table('types')->delete();
 
         DB::table('types')->insert([
-                ['id' => '1', 'type' => 'Buy Now'],
+                ['id' => '1', 'type' => 'Buy-Now'],
                 ['id' => '2', 'type' => 'Auction']
         ]);
     }

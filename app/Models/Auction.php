@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use Algolia\AlgoliaSearch\SearchClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
-use Algolia\ScoutExtended\Facades\Algolia;
-use Spatie\Searchable\SearchResult;
 
-class Auction extends Model implements \Spatie\Searchable\Searchable
+class Auction extends Model
 {
     use HasFactory, HasUuids, Searchable;
     
@@ -36,23 +35,6 @@ class Auction extends Model implements \Spatie\Searchable\Searchable
         'reserve_price',
     ];
 
-    public function getSearchResult(): SearchResult
-    {
-        $url = route('auctions.show', $this->uuid);
-
-        return new SearchResult(
-            $this,
-            $this->title,
-            $url
-        );
-    }
-
-    /*public function searchableAs(): string
-    {
-        //return config('scout.prefix') . 'auctions';
-        return 'auctions_index';
-    }*/
-
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
@@ -60,6 +42,7 @@ class Auction extends Model implements \Spatie\Searchable\Searchable
         $array['category'] = $this->category->category;
         $array['type'] = $this->type->type;
         $array['user'] = $this->user->username;
+        $array['images'] = $this->items->pluck('image')->toArray();
 
         return $array;
     }
