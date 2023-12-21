@@ -43,6 +43,9 @@ class Auction extends Model
         $array['type'] = $this->type->type;
         $array['user'] = $this->user->username;
         $array['images'] = $this->items->pluck('image')->toArray();
+        $array['items_min_price'] = $this->items->min('price');
+        $array['items_max_price'] = $this->items->max('price');
+        $array['bids_count'] = $this->bids->count();
 
         return $array;
     }

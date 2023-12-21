@@ -16,15 +16,7 @@ return [
     |
     */
 
-    'searchableAttributes' => [
-        'title',
-        'description',
-        'category',
-        'type',
-        'user',
-        'images',
-        'unordered(type_id)',
-    ],
+    'searchableAttributes' => ['title', 'description', 'category', 'type', 'user', 'images'],
 
     /*
     |--------------------------------------------------------------------------
