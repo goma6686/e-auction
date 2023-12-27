@@ -58,7 +58,9 @@ class ChooseItem extends Component
     public function updated(){
         $this->bidder_count = $this->auction->bids->count();
         $this->max_bid = $this->auction->getMaxBidAttribute();
-        $this->bids = $this->auction->getBids();
+        if($this->type == 2){
+            $this->bids = $this->auction->getBids();
+        }
     }
 
     public function bidPlaced(){
@@ -86,7 +88,7 @@ class ChooseItem extends Component
 
     public function render()
     {
-        return view('livewire.choose-item');
+        return view('livewire.full-auction');
     }
 
     public function getListeners()
