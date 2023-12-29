@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'e-auction'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
-        
+        Illuminate\Notifications\NotificationServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -184,6 +184,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Notification' => Illuminate\Support\Facades\Notification::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

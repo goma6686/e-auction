@@ -18,7 +18,7 @@ class AuctionSeeder extends Seeder
         User::factory(10)->create()
             ->each(function ($user) {
                 $faker = Faker::create();
-                $numAuctions = $faker->numberBetween(1, 10);
+                $numAuctions = $faker->numberBetween(1, 5);
 
                 for($i = 0; $i < $numAuctions; $i++){
 
@@ -41,7 +41,7 @@ class AuctionSeeder extends Seeder
             User::factory(10)->create()
             ->each(function ($user) {
                 $faker = Faker::create();
-                $numAuctions = $faker->numberBetween(1, 10);
+                $numAuctions = $faker->numberBetween(1, 5);
 
                 for($i = 0; $i < $numAuctions; $i++){
                     Auction::create([

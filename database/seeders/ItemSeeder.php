@@ -22,7 +22,7 @@ class ItemSeeder extends Seeder
 
             $faker = Faker::create();
 
-            $numItems = $faker->numberBetween(2, 10);
+            $numItems = $faker->numberBetween(1, 5);
 
             if ($auction->type_id === 1){ // Buy Now.
                 $quantity = $faker->numberBetween(1, 10);

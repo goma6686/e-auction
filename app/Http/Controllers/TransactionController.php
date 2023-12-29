@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Events\BidPlaced;
+use App\Mail\AuctionOutbid;
 use App\Models\Auction;
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Transaction;
+use App\Models\Bid;
+use App\Notifications\OutbidNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class TransactionController extends Controller
 {
@@ -32,6 +38,7 @@ class TransactionController extends Controller
 
         if($auction->bids->count() > 0){
             $highest_bid =  $auction->bids()->max('amount');
+            
         } else {
             $highest_bid = $auction->price;
         }
@@ -39,6 +46,11 @@ class TransactionController extends Controller
         if($bid_amount <= $highest_bid){
             return back()->with('error', 'Bid must be higher than the current price');
         } else {
+            if($auction->bids->count() > 0){
+                $highest_bidder = User::where('uuid', $auction->bids()->where('amount', $highest_bid)->pluck('user_uuid')->first())->firstOrFail();
+                $highest_bidder->notify(new OutbidNotification($auction, $highest_bidder, $request->user()->uuid));
+            }    
+
 
             $auction->price = $bid_amount;
             $auction->save();
@@ -54,6 +66,7 @@ class TransactionController extends Controller
             $auction->refresh();
 
             BidPlaced::dispatch($auction);
+            
             return back()->with('success', 'You have successfully bid this item');
         }
     }

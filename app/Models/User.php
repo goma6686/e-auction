@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notification;
 use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
@@ -26,6 +27,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'username',
+        'email',
         'password',
     ];
 
@@ -47,6 +49,11 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return [$this->email => $this->username];
+    }
 
     public function transactions(): HasMany
     {
