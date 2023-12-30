@@ -15,6 +15,7 @@
                         </div>
                         <div class="profile-header-info">
                             <h4 class="m-t-10 m-b-5">{{ $user->username }}</h4>
+                            <h4 class="m-t-10 m-b-5">{{ $user->email }}</h4>
                         </div>
                         </div>
                     </div>

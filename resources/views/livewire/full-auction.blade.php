@@ -94,16 +94,11 @@
               @if(Auth::user()->is_active)
                 @if(Auth::user()->uuid != $seller->uuid)
                     @if ($auction->type_id === '1')
-                        @include('components.buy')
+                        @include('auction.components.buy')
                     @else
-                        @include('components.bid')
+                        @include('auction.components.bid')
                     @endif
                 @else
-                    <h6 class="row">
-                        <div class="col-7 text-start">
-                            [{{ $bidder_count }}] bids
-                        </div>
-                    </h6>
                     <h5>This is your own listing</h5>
                 @endif
               @else

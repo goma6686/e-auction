@@ -14,7 +14,7 @@
             @if (!empty($auctions))
             <div class="row">
                 @foreach ($auctions as $auction)
-                @include('components.itemcard')
+                @include('auction.components.itemcard')
                 @endforeach
             </div>
             @else
@@ -22,21 +22,5 @@
                     No results!
                 </div>
             @endif
-        {{--
-        @if(!empty($term))
-                @if(!empty($auctions))
-                <div class="row">
-                    @foreach ($auctions as $auction)
-                    @include('components.itemcard')
-                    @endforeach
-                    </div>
-                @endif
-        @else
-            <div class="row">
-            @foreach ($auctions as $auction)
-            @include('components.itemcard')
-            @endforeach
-            </div>
-        @endif--}}
     </div>
 </div>

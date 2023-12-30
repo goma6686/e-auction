@@ -1,7 +1,7 @@
 @if(count($list) > 0)
     <div class="row">
     @foreach ($list as $auction)
-        @include('components.itemcard')
+        @include('auction.components.itemcard')
     @endforeach
     </div>
 @else

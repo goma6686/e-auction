@@ -1,20 +1,28 @@
 <div class="card" id="item-card">
     <div class="h-100 text-center">
         @auth
-{{--@if (!Auth::user()->auctions->contains('uuid', $auction['uuid']))--}}
+@if (!Auth::user()->auctions->contains('uuid', $auction['uuid']))
                 <button class="@if (Auth::user()->favourites->contains('auction_uuid',  $auction['uuid'])) 
                     icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{  $auction['uuid'] }}">
                     <i class="bi bi-heart-fill" ></i>
                 </button>
-            {{--@endif--}}
+            @endif
         @endauth
-            <img id="item-image" @isset($auction['images'][0]) src="/images/{{ $auction['images'][0] }}" @else src="/images/noimage.jpg" @endisset class="card-img-top mx-auto d-block" alt="{{$auction['title']}}">
-       </div>
+        <img id="item-image"
+         @if (isset($auction['items'][0]['image']))
+             src="/images/{{ $auction['items'][0]['image'] }}"
+            @elseif (isset($auction['images'][0]))
+            src="/images/{{ $auction['images'][0] }}"
+            @else
+            src="/images/noimage.jpg"
+         @endif
+         class="card-img-top mx-auto d-block" alt="{{$auction['title']}}">
+        </div>
     
     <div class="card-body text-center">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <h5 class="card-title">{{$auction['title']}}</h5>
+                <h5 class="card-title">{{$auction['title'] }} </h5>
                 <h6 class="card-subtitle mb-2 text-muted">
                     
                     @foreach ($categories as $categ)
