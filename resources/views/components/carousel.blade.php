@@ -7,7 +7,7 @@
     <div class="carousel-inner">
         @foreach ($auction->items as $index => $item)
         <div class="carousel-item {{$index === 0 ? 'active' : '' }}">
-            <img id="item-image" @if($item->image != null) src="/images/{{ $item->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top ratio">
+            <img id="item-image" @if($item->image != null) src="/images/items/{{ $item->image }}" @else src="/images/noimage.jpg" @endif class="card-img-top ratio">
             <div class="carousel-caption d-none d-md-block">
                 <h5>{{$item->title}}</h5>
             </div>

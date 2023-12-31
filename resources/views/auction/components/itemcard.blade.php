@@ -10,9 +10,9 @@
         @endauth
         <img id="item-image"
          @if (isset($auction['items'][0]['image']))
-             src="/images/{{ $auction['items'][0]['image'] }}"
+             src="/images/items/{{ $auction['items'][0]['image'] }}"
             @elseif (isset($auction['images'][0]))
-            src="/images/{{ $auction['images'][0] }}"
+            src="/images/items/{{ $auction['images'][0] }}"
             @else
             src="/images/noimage.jpg"
          @endif

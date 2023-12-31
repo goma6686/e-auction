@@ -2,12 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
-
 use App\Models\Item;
-use Illuminate\Http\Request;
 
 class ImageService
 {
@@ -19,15 +14,15 @@ class ImageService
         $file = $image;
         $imageName = time() . '_' . $file->getClientOriginalName();
         $item->image = $imageName;
-        $image->move(public_path('images'), $imageName);
+        $image->move(public_path('images/items'), $imageName);
         $item->save();
     }
 
     public function destroyImage($uuid){
         $item = Item::find($uuid);
 
-        if(file_exists(public_path('/images/' . $item->image))){
-            unlink(public_path('/images/' . $item->image));
+        if(file_exists(public_path('/images/items/' . $item->image))){
+            unlink(public_path('/images/items/' . $item->image));
         }
 
         $item->image = null;
