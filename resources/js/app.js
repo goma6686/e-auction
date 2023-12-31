@@ -6,3 +6,9 @@
 
 import './bootstrap';
 import '../css/app.css';
+import DataTable from 'datatables.net-bs5';
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-responsive-bs5';
+import 'datatables.net-rowgroup-bs5';
+import 'datatables.net-select-bs5';
+import 'datatables.net-scroller-bs5';

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -7,12 +8,13 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
-use App\Models\Auction;
 use App\Models\Category;
+use App\Models\Item;
+use App\Models\User;
+use App\Models\Auction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', [HomeController::class, 'index']);
+
     Route::get('/home/{category?}/{type?}', function(?string $category = 'all', ?string $type = 'all'){
     return view('home', [
         'categories' => Category::all(),
@@ -36,6 +39,13 @@ Route::controller(HomeController::class)->group(function() {
         ]);
     })->name('home');
 });
+
+Route::controller(AdminController::class)->group(function() {
+    Route::get('/back/{page?}', [AdminController::class, 'index'])->name('back')->middleware('is_admin');
+    Route::post('/back/category/store', [AdminController::class, 'store'])->name('admin.store')->middleware('is_admin');
+    Route::delete('/back/category/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete')->middleware('is_admin');
+});
+
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
     Route::get('/profile/{uuid}#all', [ProfileController::class, 'profile'])->name('profile.all');
