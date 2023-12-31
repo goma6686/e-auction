@@ -22,6 +22,14 @@ html, body {
     font-size: larger;
 }
 
+.carousel-control-prev {
+    margin-left: 20%;
+}
+
+.carousel-control-next {
+    margin-right: 20%;
+}
+
 h2 {
     text-align: center;
     margin-top: 2em;

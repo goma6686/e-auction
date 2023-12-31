@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(HomeController::class)->group(function() {
-    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
     Route::get('/home/{category?}/{type?}', function(?string $category = 'all', ?string $type = 'all'){
     return view('home', [
