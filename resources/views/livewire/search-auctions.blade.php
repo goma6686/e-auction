@@ -18,7 +18,7 @@
                 @endforeach
             </div>
             @else
-                <div class="h-100">
+                <div class="row h-75">
                     No results!
                 </div>
             @endif

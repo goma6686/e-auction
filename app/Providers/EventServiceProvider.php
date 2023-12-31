@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\BidPlaced;
 use App\Events\EndAuction;
 use App\Listeners\CloseBidding;
+use App\Listeners\SendBidNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,7 +24,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         EndAuction::class => [
             CloseBidding::class,
-        ]
+        ],
+        BidPlaced::class => [
+            SendBidNotification::class,
+        ],
     ];
 
     /**

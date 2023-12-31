@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
