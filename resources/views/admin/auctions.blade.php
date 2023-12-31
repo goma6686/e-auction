@@ -1,7 +1,7 @@
 <thead>
     <tr>
-        <th>Is Active</th>
         <th>Title</th>
+        <th>Is Active</th>
         <th>Owner</th>
         <th>Category</th>
         <th>Type</th>
@@ -13,11 +13,13 @@
         <th>End Time</th>
         <th>Created_at</th>
         <th></th>
+        <th></th>
     </tr>
 </thead>
 <tbody>
 @foreach ($data as $auction)
     <tr>
+        <td>{{$auction->title}}</td>
         <td>
             @if ($auction->is_active == 1) 
                 @include('components.yes')
@@ -25,7 +27,6 @@
                 @include('components.no')
             @endif
         </td>
-        <td>{{$auction->title}}</td>
         <td>{{$auction->user->email}}</td>
         <td>{{$auction->category->category}}</td>
         <td>{{$auction->type->type}}</td>
@@ -60,8 +61,11 @@
             @endif
         </td>
         <td>{{$auction->created_at}}</td>
+        <td style="text-align: right;">
+            <a href="{{ route('edit-auction', ['uuid' => $auction->uuid, 'route' => 'auctions']) }}"  class="btn btn-sm btn-dark " role="button">Edit</a>
+        </td>
         <td>
-            <form action="/delete-auction/{{$auction->uuid}}" method="POST">
+            <form action="{{route('delete-auction', ['uuid' => $auction->uuid, 'route' => 'profile'])}}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>

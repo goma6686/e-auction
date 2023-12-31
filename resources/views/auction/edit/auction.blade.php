@@ -4,7 +4,7 @@
 <div class="py-12">
     <h1 class="latest text-center mb-2">Editing: {{ $auction->title }}</h1>
     <div class="max-w-7xl sm:px-6 lg:px-8 p-5">
-        <form enctype="multipart/form-data" method="POST" action="{{ route('update-auction', array($auction->uuid)) }}">
+        <form enctype="multipart/form-data" method="POST" action="{{ route('update-auction', ['uuid' => $auction->uuid, 'route' => $route]) }}">
             @csrf
             <div class="form-group pt-4">
                 <label for="title">Title</label>
@@ -45,10 +45,12 @@
                 </select>
                 </div>
             </div>
-            <div class="form-check pt-4">
-                <label for="is_active">Active?</label>
-                <input class="form-check-input" type="checkbox"  @if ($auction->is_active == 1) @checked(true) @endif value="{{$auction->is_active}}" name="is_active">
-            </div>
+            @if ($route !== 'profile')
+                <div class="form-check pt-4">
+                    <label for="is_active">Active?</label>
+                    <input class="form-check-input" type="checkbox"  @if ($auction->is_active == 1) @checked(true) @endif value="{{$auction->is_active}}" name="is_active">
+                </div>
+            @endif
             @include('components.sessionmessage')
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

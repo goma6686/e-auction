@@ -53,9 +53,9 @@ Route::controller(ProfileController::class)->group(function() {
 
 Route::controller(ItemController::class)->group(function() {
     Route::post('/store-item', [ItemController::class, 'store'])->name('store-item');
-    Route::post('/update-item/{uuid}', [ItemController::class, 'update'])->name('update-item');
-    Route::get('/edit-item/{uuid}', [ItemController::class, 'edit'])->name('edit-item');
-    Route::delete('/delete-item/{uuid}', [ItemController::class, 'destroy']);
+    Route::post('/update-item/{uuid}/{route}', [ItemController::class, 'update'])->name('update-item');
+    Route::get('/edit-item/{uuid}/{route}', [ItemController::class, 'edit'])->name('edit-item');
+    Route::delete('/delete-item/{uuid}/{route}', [ItemController::class, 'destroy'])->name('delete-item');
 
     Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage'])->name('upload-image');
     Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage'])->name('delete-image');
@@ -65,9 +65,9 @@ Route::controller(AuctionController::class)->group(function() {
     Route::get('/create-auction/{type}', [AuctionController::class, 'create'])->name('create-auction');
     Route::post('/store-auction/{type}', [AuctionController::class, 'store'])->name('store-auction');
     Route::get('/auction/{uuid}', [AuctionController::class, 'show'])->name('show-auction');
-    Route::get('/edit-auction/{uuid}', [AuctionController::class, 'edit'])->name('edit-auction');
-    Route::delete('/delete-auction/{uuid}', [AuctionController::class, 'destroy']);
-    Route::post('/update-auction/{uuid}', [AuctionController::class, 'update'])->name('update-auction');
+    Route::get('/edit-auction/{uuid}/{route}', [AuctionController::class, 'edit'])->name('edit-auction');
+    Route::delete('/delete-auction/{uuid}/{route}', [AuctionController::class, 'destroy'])->name('delete-auction');
+    Route::post('/update-auction/{uuid}/{route}', [AuctionController::class, 'update'])->name('update-auction');
 });
 
 Route::controller(RegisterController::class)->group(function() {

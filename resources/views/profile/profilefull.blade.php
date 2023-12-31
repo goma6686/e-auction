@@ -33,9 +33,9 @@
     @if(count($all_auctions) > 0)
         @include('components.sessionmessage')
         @includeWhen(count($auctions_no_bids), 'auction.components.auctiontable', ['all_auctions' => $auctions_no_bids, 'text' => 'Auctions ended with no bidders:'])
-        @include('auction.components.auctiontable', ['all_auctions' => $active_auctions, 'text' => 'All Items:'])
+        @include('auction.components.auctiontable', ['all_auctions' => $active_auctions, 'text' => 'All auctions:'])
     @else
-        <h3 style="text-align: center;">No items found :(</h3>
+        <h3 style="text-align: center;">No Auctions found :(</h3>
     @endif
     </div>
     <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bids-tab">

@@ -28,7 +28,7 @@
             </form>
         @endif
 
-        <form enctype="multipart/form-data" method="POST" action="{{ route('update-item', array($auction_item->uuid)) }}">
+        <form enctype="multipart/form-data" method="POST" action="{{ route('update-item', ['uuid' => $auction_item->uuid, 'route' => $route]) }}">
             @csrf
             <div class="form-group pt-4">
                 <label for="title">Title</label>

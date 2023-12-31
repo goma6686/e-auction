@@ -5,7 +5,6 @@
             <tr>
                 <th></th>
                 <th scope="col">#</th>
-                <th scope="col">Active</th>
                 <th scope="col">Type</th>
                 <th scope="col">Title</th>
                 <th scope="col">Items</th>
@@ -29,13 +28,6 @@
                     </th>
                     <td>
                         {{$index}}
-                    <td>
-                        @if ($auction->is_active == 1) 
-                            @include('components.yes')
-                        @else 
-                            @include('components.no')
-                        @endif
-                    </td>
                     <td>
                         {{ $auction->type->type }}
                     </td>
@@ -92,10 +84,12 @@
                         @endif
                     </td>
                     <td style="text-align: right;">
-                        <a href="/edit-auction/{{$auction->uuid}}" class="btn btn-sm btn-dark " role="button">Edit</a>
+                        @if ($auction->end_time >= now()->subHours(3) )
+                            <a href="{{ route('edit-auction', ['uuid' => $auction->uuid, 'route' => 'profile']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
+                        @endif
                     </td>
                     <td>
-                        <form action="/delete-auction/{{$auction->uuid}}" method="POST">
+                        <form action="{{route('delete-auction', ['uuid' => $auction->uuid, 'route' => 'profile'])}}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>
@@ -145,10 +139,12 @@
                                     {{$item->condition->condition}}
                                 </td>
                                 <td style="text-align: right;">
-                                    <a href="/edit-item/{{$item->uuid}}" class="btn btn-sm btn-dark " role="button">Edit</a>
+                                    @if ($auction->end_time >= now()->subHours(3) )
+                                        <a href="{{ route('edit-item', ['uuid' => $item->uuid, 'route' => 'profile']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
+                                    @endif
                                 </td>
                                 <td>
-                                    <form action="/delete-item/{{$item->uuid}}" method="POST">
+                                    <form action="{{ route('delete-item', ['uuid' => $item->uuid, 'route' => 'profile']) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>

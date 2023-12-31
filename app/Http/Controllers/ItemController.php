@@ -26,7 +26,7 @@ class ItemController extends Controller
         return view('home', compact('items'));
     }
 
-    public function edit($uuid){
+    public function edit($uuid, $route){
         $conditions = Condition::all();
 
         $auction_item = Item::where('uuid', $uuid)
@@ -37,10 +37,10 @@ class ItemController extends Controller
             ->select('type_id')
             ->first();
             
-        return view('auction.edit.item', compact('auction_item', 'conditions', 'auction_type'));
+        return view('auction.edit.item', compact('auction_item', 'conditions', 'auction_type', 'route'));
     }
 
-    public function update(Request $request, $uuid){
+    public function update(Request $request, $uuid, $route){
         $request->validate([
             'title' => 'required|max:255',
             'condition' => 'required',
@@ -62,10 +62,14 @@ class ItemController extends Controller
         $item->refresh();
         $user_id = (Auction::where('uuid', $item->auction_uuid)->first())->user_uuid;
         
-        return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
+        if($route === 'profile'){
+            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
+        } else {
+            return redirect()->route('back', ['page' => $route])->with('success', 'Changes saved successfully');
+        }
     }
 
-    public function destroy($uuid){
+    public function destroy($uuid, $route){
         $item = Item::with('auctions')->where('uuid', $uuid)->first();
 
         $auction = Auction::withCount('items')->where('uuid', $item->auction_uuid)->first();
@@ -81,7 +85,11 @@ class ItemController extends Controller
             $item->delete();
         }
 
-        return redirect()->route('profile.all', ['uuid' => $user_id]);
+        if($route === 'profile'){
+            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Item deleted successfully');
+        } else {
+            return redirect()->route('back', ['page' => $route])->with('success', 'Item deleted successfully');
+        }
     }
 
     public function destroyImage($uuid){

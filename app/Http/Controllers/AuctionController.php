@@ -102,7 +102,7 @@ class AuctionController extends Controller
         return view('auction.full', compact('auction', 'seller', 'auction_count', 'bids', 'buy_now_price', 'max_bid'));
     }
 
-    public function destroy($uuid){
+    public function destroy($uuid, $route){
         $auction = Auction::find($uuid);
         $user_id = $auction->user_uuid;
         foreach($auction->items as $item) {
@@ -111,20 +111,24 @@ class AuctionController extends Controller
         $auction->items()->delete();
         $auction->delete();
         
-        return redirect()->route('profile.all', ['uuid' => $user_id]);
+        if($route === 'profile'){
+            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Auction deleted successfully');;
+        } else {
+            return redirect()->route('back', ['page' => $route])->with('success', 'Auction deleted successfully');
+        }
     }
 
-    public function edit($uuid){
+    public function edit($uuid, $route){
         $categories = Category::all();
 
         $auction = Auction::where('uuid', $uuid)
         ->with('category')
         ->first();
         
-        return view('auction.edit.auction', compact('auction', 'categories'));
+        return view('auction.edit.auction', compact('auction', 'categories', 'route'));
     }
 
-    public function update(Request $request, $uuid){
+    public function update(Request $request, $uuid, $route){
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
@@ -133,7 +137,6 @@ class AuctionController extends Controller
         ]);
 
         $auction = Auction::find($uuid);
-        $user_id = $auction->user_uuid;
         $auction->title = $request->input('title');
         $auction->description = $request->input('description');
         $auction->is_active = $request->input('is_active') != null ? true : false;
@@ -156,7 +159,11 @@ class AuctionController extends Controller
         //$auction->update(); //Algolia
         $auction->searchable();
 
-        return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
+        if($route === 'profile'){
+            return redirect()->route('profile.all', ['uuid' => $auction->user_uuid])->with('success', 'Changes saved successfully');
+        } else {
+            return redirect()->route('back', ['page' => $route])->with('success', 'Changes saved successfully');
+        }
     }
 
 }

@@ -10,7 +10,7 @@ use App\Models\User;
 
 class AdminController extends Controller
 {
-    public function index(?string $page = 'items')
+    public function index(?string $page = 'auctions')
     {
         switch($page){
             case 'items':
