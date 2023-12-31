@@ -20,6 +20,10 @@
                 $('#dataTable').DataTable({
                     "pageLength": 15,
                     "order": [[ 0, "desc" ]],
+                    "search": {
+                        regex: true,
+                        caseInsensitive: true,
+                      },
                 });
             } );
         </script>
