@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.form')
 
 @section('content')
 <div class="py-12">

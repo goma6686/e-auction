@@ -1,10 +1,8 @@
-@extends('layouts.main')
+@extends('layouts.form')
 
 @section('content')
-<div class="py-12">
-    <h1 class="latest text-center mb-2">Editing: {{ $auction_item->title }}</h1>
-    <div class="max-w-7xl sm:px-6 lg:px-8 p-5">
-
+<div id="editing" class="border border-dark border-3 rounded-3 p-5">
+    <h1 class="latest text-center mb-2 mb-5">Editing: {{ $auction_item->title }}</h1>
         @if (isset($auction_item->image))
             <label for="image">Current image:</label><br>
             <img src="/images/items/{{ $auction_item->image }}" alt="{{ $auction_item->title }}" width="200">
@@ -57,7 +55,7 @@
             @include('components.sessionmessage')
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+
 </div>
 <script type="text/javascript">
     config = {

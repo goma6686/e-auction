@@ -13,6 +13,21 @@ html, body {
     margin-right: 5em;
 }
 
+#editing {
+    margin-left: 20em;
+    margin-right: 20em;
+}
+
+.breadcrumb-item > a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.breadcrumb-item > a:hover {
+    color: #0748c2;
+    text-decoration: none;
+}
+
 .carousel-control-prev,
 .carousel-control-next,
 .carousel-control-prev:hover,
