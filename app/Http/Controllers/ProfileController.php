@@ -12,7 +12,6 @@ class ProfileController extends Controller
 {
     public function profile(Request $request, $uuid) {
         $user = User::find($uuid);
-        $categories = Category::all();
 
         $active_auctions = $user->auctions()
                 ->withCount(['bids', 'items'])
@@ -50,9 +49,9 @@ class ProfileController extends Controller
                 ->orderByDesc('bids_count')
                 ->get();
 
-            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited', 'active_bids', 'auctions_no_bids', 'categories'));
+            return view('profile.profile', compact('user', 'all_auctions', 'active_auctions', 'favourited', 'active_bids', 'auctions_no_bids'));
         } else {
-            return view('profile.profile', compact('user', 'active_auctions', 'categories'));
+            return view('profile.profile', compact('user', 'active_auctions'));
         }
     }
 }

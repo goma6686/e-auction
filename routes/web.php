@@ -33,7 +33,6 @@ Route::controller(HomeController::class)->group(function() {
 
     Route::get('/home/{category?}/{type?}', function(?string $category = 'all', ?string $type = 'all'){
     return view('home', [
-        'categories' => Category::all(),
         'category' => $category,
         'type' => $type
         ]);

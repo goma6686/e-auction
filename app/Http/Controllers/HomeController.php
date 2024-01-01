@@ -9,7 +9,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
 
         $auction_items = Auction::withCount(['bids', 'items'])
             ->where('is_active', true)
@@ -20,13 +19,12 @@ class HomeController extends Controller
             ->take(3)
             ->get()->toArray();
             
-        return view('welcome', compact('categories', 'auction_items'));
+        return view('welcome', compact('auction_items'));
     }
 
     public function home(){
-        $categories = Category::all();
         $category = 'all';
 
-        return view ('home', compact('categories', 'category'));
+        return view ('home', compact('category'));
     }
 }

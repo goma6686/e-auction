@@ -21,10 +21,9 @@ class AuctionController extends Controller
     }
 
     public function create(Request $request, $type) {
-        $categories = Category::all();
         $conditions = Condition::all();
 
-        return view('auction.create', compact('categories', 'conditions', 'type'));
+        return view('auction.create', compact('conditions', 'type'));
     }
 
     public function store(Request $request, $type) {
@@ -119,13 +118,11 @@ class AuctionController extends Controller
     }
 
     public function edit($uuid, $route){
-        $categories = Category::all();
-
         $auction = Auction::where('uuid', $uuid)
         ->with('category')
         ->first();
         
-        return view('auction.edit.auction', compact('auction', 'categories', 'route'));
+        return view('auction.edit.auction', compact('auction', 'route'));
     }
 
     public function update(Request $request, $uuid, $route){
