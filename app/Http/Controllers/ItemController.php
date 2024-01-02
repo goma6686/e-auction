@@ -44,7 +44,7 @@ class ItemController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'condition' => 'required',
-            'price' => 'required|numeric|min:0.01',
+            'price' => 'sometimes|numeric|min:00.01',
         ]);
 
         $item = Item::find($uuid);
@@ -54,7 +54,7 @@ class ItemController extends Controller
         if($request->input('quantity')){
             $item->quantity = $request->input('quantity');
         }
-        if($request->input('quantity')){
+        if($request->input('price') && $request->input('price') < $item->price){
             $item->price = $request->input('price');
         }
 
@@ -65,7 +65,7 @@ class ItemController extends Controller
         if($route === 'profile'){
             return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
         } else {
-            return redirect()->route('back', ['page' => $route])->with('success', 'Changes saved successfully');
+            return redirect()->route('admin.items')->with('success', 'Changes saved successfully');
         }
     }
 

@@ -26,7 +26,6 @@ class AdminController extends Controller
                 break;
             case 'auctions':
                 $data = Auction::withCount(['bids', 'items'])
-                    ->where('is_active', true)
                     ->with(['items', 'category', 'items.condition', 'type', 'user'])
                     ->withMin('items', 'price')
                     ->get();

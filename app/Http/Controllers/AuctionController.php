@@ -7,9 +7,14 @@ use App\Services\ImageService;
 
 use App\Models\Auction;
 use App\Models\Condition;
-use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Bid;
+use App\Repositories\Interfaces\AuctionRepositoryInterface;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AuctionController extends Controller
 {
@@ -26,23 +31,36 @@ class AuctionController extends Controller
         return view('auction.create', compact('conditions', 'type'));
     }
 
-    public function store(Request $request, $type) {
-
-        /*$request->validate([
-            'title' => 'required',
+    public function store(Request $request, $type): RedirectResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:255|min:3',
             'description' => 'required',
-            'end_time' => 'required|date|after:today',
             'category' => 'required',
-            'condition' => 'required',
-            'price' => 'required|numeric|min:0.01',
-        ]);*/
+            'end_time' => 'sometimes|date|after:today',
+            'reserve_price' => [
+                'sometimes', 'numeric', 'min:'.$request->price+1, 'max:999999.99'],
+            'price' => 'sometimes|numeric|min:00.01|max:999999.99',
+            'buy_now_price' => [
+                'numeric', 'min:10.00', 'min:'.$request->price+1],
+            'items.*.item_title' => 'required|max:255|min:3',
+            'items.*.condition' => 'required',
+            'items.*.price' => 'sometimes|numeric|min:00.01|max:999999.99',
+            'items.*.quantity' => 'sometimes|numeric|min:1|max:999',
+        ]);
+
+        if ($validator->fails()) {
+            Session::flash('error', $validator->errors()->all());
+            return Redirect::back();
+        }
+
         $auction = Auction::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category,
             'user_uuid' => $request->user()->uuid,
             'end_time' => $request->end_time ?? null,
-            'is_active' => $request->is_active === '1' ? true : false,
+            'is_active' => true,
             'type_id' => $type,
             'reserve_price' => $request->reserve_price ?? null,
             'price' => $request->price ?? null,
@@ -73,9 +91,7 @@ class AuctionController extends Controller
     public function show(Request $request, $uuid) {
         $auction = Auction::withCount('items')->with(['items', 'category', 'items.condition'])->find($uuid);
 
-        $seller = User::find($auction->user_uuid);
-
-        $auction_count = $seller->loadCount(['auctions' => function ($query) {
+        $auction_count = $auction->getAuctionSeller()->loadCount(['auctions' => function ($query) {
             $query->where('is_active', true);
         }])->auctions_count;
 
@@ -98,7 +114,7 @@ class AuctionController extends Controller
             $bids = $bids->toArray();
         }
     
-        return view('auction.full', compact('auction', 'seller', 'auction_count', 'bids', 'buy_now_price', 'max_bid'));
+        return view('auction.full', compact('auction', 'auction_count', 'bids', 'buy_now_price', 'max_bid'));
     }
 
     public function destroy($uuid, $route){
@@ -108,6 +124,8 @@ class AuctionController extends Controller
             $this->imageService->destroyImage($item->uuid);
         }
         $auction->items()->delete();
+        $auction->bids()->delete();
+        $auction->winners()->delete();
         $auction->delete();
         
         if($route === 'profile'){
@@ -125,23 +143,55 @@ class AuctionController extends Controller
         return view('auction.edit.auction', compact('auction', 'route'));
     }
 
-    public function update(Request $request, $uuid, $route){
-        $request->validate([
+    public function update(Request $request, $uuid, $route): RedirectResponse
+    {
+        $auction = Auction::find($uuid);
+
+        $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'description' => 'required',
             'category' => 'required',
-            'end_time' => 'date|after:today',
+            /*'end_time' => [
+                'sometimes',
+                'date',
+                'after:'.$auction->end_time,
+            ],*/
+            'end_time' => 'sometimes|date',
+            'reserve_price' => [
+                'exclude_if:'.Auth::user()->is_admin.',1',
+                'numeric', 'min:'.($auction->price+1), 'max:'.($auction->reserve_price)],
+            'price' => [
+                'exclude_if:'.Auth::user()->is_admin.',1',
+                'numeric', 'max:'.($auction->price)],
         ]);
 
-        $auction = Auction::find($uuid);
+        if ($validator->fails()) {
+            Session::flash('error', $validator->errors()->all());
+            return Redirect::back();
+        }
+
         $auction->title = $request->input('title');
         $auction->description = $request->input('description');
         $auction->is_active = $request->input('is_active') != null ? true : false;
+        $auction->is_blocked = $request->input('is_blocked') != null ? true : false;
         $auction->category_id = $request->input('category');
         if($request->input('end_time')){
+            if(Auth::user()->is_admin){
+                $auction->end_time = $request->input('end_time');
+            } else {
+                if($request->input('end_time') > $auction->end_time){
+                    $auction->end_time = $request->input('end_time');
+                } else {
+                    Session::flash('error', 'End time must be later than current end time');
+                    return Redirect::back();
+                }
+            }
             $auction->end_time = $request->input('end_time');
         }
         if($request->input('reserve_price')){
+            if(Auth::user()->uuid){
+                
+            }
             $auction->reserve_price = $request->input('reserve_price');
         }
         if($request->input('buy_now_price')){
@@ -149,6 +199,9 @@ class AuctionController extends Controller
         }
         if($request->input('price')){
             $auction->price = $request->input('price');
+        }
+        if($request->input('created_at')){
+            $auction->created_at = $request->input('created_at');
         }
         $auction->save();
 
