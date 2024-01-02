@@ -6,10 +6,13 @@
         <a class="nav-link" id="all-tab" href="#all" data-bs-toggle="tab" data-bs-target="#all"role="tab" aria-controls="all" aria-selected="false">Edit Auctions</a>
     </li>
     <li class="nav-item" role="presentation">
+        <a class="nav-link" id="payment-tab" href="#payment" data-bs-toggle="tab" data-bs-target="#payment"role="tab" aria-controls="payment" aria-selected="false">Waiting for payment</a>
+    </li>
+    <li class="nav-item" role="presentation">
         <a class="nav-link" id="bids-tab" href="#bids" data-bs-toggle="tab" data-bs-target="#bids" role="tab" aria-controls="bids" aria-selected="false">Active Bids</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="won-tab" href="#active" data-bs-toggle="tab" data-bs-target="#won" role="tab" aria-controls="won" aria-selected="false">Won Auctions</a>
+        <a class="nav-link" id="won-tab" href="#won" data-bs-toggle="tab" data-bs-target="#won" role="tab" aria-controls="won" aria-selected="false">Won Auctions</a>
     </li>
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="favourite-tab" href="#favourite" data-bs-toggle="tab" data-bs-target="#favourite" role="tab" aria-controls="favourite" aria-selected="false">Favourites</a>
@@ -32,8 +35,8 @@
     <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
     @if(count($all_auctions) > 0)
         @include('components.sessionmessage')
-        @includeWhen(count($auctions_no_bids), 'auction.components.auctiontable', ['all_auctions' => $auctions_no_bids, 'text' => 'Auctions ended with no bidders:'])
-        @include('auction.components.auctiontable', ['all_auctions' => $active_auctions, 'text' => 'All auctions:'])
+        @includeWhen(count($auctions_action_required), 'auction.components.auctiontable', ['all_auctions' => $auctions_action_required, 'text' => 'Auctions that need your attention:'])
+        @include('auction.components.auctiontable', ['all_auctions' => $all_auctions, 'text' => 'All auctions:'])
     @else
         <h3 style="text-align: center;">No Auctions found :(</h3>
     @endif
@@ -41,8 +44,11 @@
     <div class="tab-pane fade" id="bids" role="tabpanel" aria-labelledby="bids-tab">
         @include('components.list', ['list' => $active_bids, 'word' => 'active'])
     </div>
+    <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+        @include('components.list', ['list' => $waiting_for_payment, 'word' => 'waiting for payment'])
+    </div>
     <div class="tab-pane fade" id="won" role="tabpanel" aria-labelledby="won-tab">
-        won auctions
+        @include('components.list', ['list' => $auctions_won, 'word' => 'won'])
     </div>
     <div class="tab-pane fade" id="favourite" role="tabpanel" aria-labelledby="favourite-tab">
         @include('components.list', ['list' => $favourited, 'word' => 'favourited'])

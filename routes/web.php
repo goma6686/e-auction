@@ -11,10 +11,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
-use App\Models\Category;
-use App\Models\Item;
-use App\Models\User;
-use App\Models\Auction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,11 +39,14 @@ Route::controller(AdminController::class)->group(function() {
     Route::get('/back/{page?}', [AdminController::class, 'index'])->name('back')->middleware('is_admin');
     Route::post('/back/category/store', [AdminController::class, 'store'])->name('admin.store')->middleware('is_admin');
     Route::delete('/back/category/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete')->middleware('is_admin');
+    Route::get('/back/items', [AdminController::class, 'index'])->name('admin.items')->middleware('is_admin');
 });
 
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
     Route::get('/profile/{uuid}#all', [ProfileController::class, 'profile'])->name('profile.all');
+    Route::get('/profile/{uuid}#bids', [ProfileController::class, 'profile'])->name('profile.bids');
+    Route::get('/profile/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance');
 });
 
 Route::controller(ItemController::class)->group(function() {

@@ -27,7 +27,8 @@ return new class extends Migration
             $table->unsignedDecimal('price')->nullable();//for Auction with multiple items
             $table->unsignedDecimal('reserve_price')->nullable();
 
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });
     }

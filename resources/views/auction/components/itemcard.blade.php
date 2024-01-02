@@ -1,7 +1,7 @@
 <div class="card" id="item-card">
     <div class="h-100 text-center">
         @auth
-@if (!Auth::user()->auctions->contains('uuid', $auction['uuid']))
+        @if (!Auth::user()->auctions->contains('uuid', $auction['uuid']))
                 <button class="@if (Auth::user()->favourites->contains('auction_uuid',  $auction['uuid'])) 
                     icon-active @else icon-not-active @endif toggleFavourite btn btn-lg" data-item="{{  $auction['uuid'] }}">
                     <i class="bi bi-heart-fill" ></i>
@@ -22,7 +22,18 @@
     <div class="card-body text-center">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <h5 class="card-title">{{$auction['title'] }} </h5>
+            <h5 class="card-title"
+            @auth
+                @isset($auction['highest_bidder'])
+                    @if ($auction['highest_bidder'] !== Auth::user()->uuid)
+                        style="color: red;"
+                    @else
+                        style="color: green;"
+                    @endif
+                @endisset
+            @endauth
+            >
+            {{$auction['title'] }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">
                     
                     @foreach ($categories as $categ)
@@ -46,8 +57,13 @@
                     </div>
                     @if ($auction['type_id'] === '2')
                         <div class="col-md-6 text-center">
-                            <h6 class="card-subtitle mb-2">Current bids:</h6>
-                            <h6 class="card-subtitle mb-2">{{ $auction['bids_count'] ?? ''}}</h6>
+                            @if($auction->getAuctionWinner())
+                                <h6 class="card-subtitle mb-2">Winner:</h6>
+                                <a href="/profile/{{$auction->getAuctionWinner()->uuid}}" class="card-subtitle mb-2 link-dark">{{$auction->getAuctionWinner()->username}}</a>
+                            @else
+                                <h6 class="card-subtitle mb-2">Current bids: </h6>
+                                <h6 class="card-subtitle mb-2">{{ $auction['bids_count'] ?? ''}}</h6>
+                            @endif
                         </div>
                     @endif
                 </div>

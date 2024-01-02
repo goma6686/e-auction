@@ -52,7 +52,7 @@
             placeholder="1.0" step="0.01" min="0.1">
         </div>
         @endif
-
+{{--
         <div class="form-group pt-4">
             <div class="col-md-2">
                 <label for="is_active">Status</label>
@@ -61,7 +61,7 @@
                     <option value="1">Active</option>
                 </select>
             </div>
-        </div>
+        </div>--}}
 
         @if ($type === '2')
             <div class="form-group pt-4">
@@ -142,7 +142,6 @@
                 </div>
             </div>
         </div>
-        @include('components.sessionmessage')
         <div class="pt-4">
             <button type="submit" class="btn btn-primary">Next</button>
         </div>

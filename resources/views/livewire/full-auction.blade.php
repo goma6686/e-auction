@@ -60,13 +60,13 @@
             @else
                 <h5 class="row">
                     <div class="col-3">
-                    @if ($bidder_count === 0)
+                    @if ($auction->bids->count() === 0)
                         Starting bid, €:
                     @else
                         Current bid, €:
                     @endif
                     </div>
-                    <div class="col-7 text-start" name="price" wire:model="max_bid"> {{ $max_bid }}</div>
+                    <div class="col-7 text-start" name="price"> {{ $auction->bids()->max('amount') ?? $auction->price }}</div>
                 </h5>
             @endif
             @if ($auction->type_id === '1')
@@ -92,7 +92,7 @@
             <h5>You can't bid if not logged in</h5>
             @else
               @if(Auth::user()->is_active)
-                @if(Auth::user()->uuid != $seller->uuid)
+                @if(Auth::user() != $auction->getAuctionSeller())
                     @if ($auction->type_id === '1')
                         @include('auction.components.buy')
                     @else
@@ -113,7 +113,7 @@
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
               </svg>
             </span> 
-            <a href="/profile/{{$seller->uuid}}" class="link-dark">{{$seller->username}} ( {{$auction_count}} )</a>
+            <a href="/profile/{{$auction->getAuctionSeller()->uuid}}" class="link-dark">{{$auction->getAuctionSeller()->username}} ( {{$auction_count}} )</a>
           </div>
         </div>
     </form>

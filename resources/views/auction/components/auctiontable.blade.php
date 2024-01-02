@@ -5,6 +5,7 @@
             <tr>
                 <th></th>
                 <th scope="col">#</th>
+                <th scope="col">Active</th>
                 <th scope="col">Type</th>
                 <th scope="col">Title</th>
                 <th scope="col">Items</th>
@@ -28,6 +29,14 @@
                     </th>
                     <td>
                         {{$index}}
+                    </td>
+                    <td>
+                        @if ($auction->is_active )
+                            @include('components.yes')
+                        @else
+                            @include('components.no')
+                        @endif
+                    </td>
                     <td>
                         {{ $auction->type->type }}
                     </td>
@@ -48,11 +57,18 @@
                             </td>
                         @endif
                     @else
-                        <td>
+                        <td
+                        @if ($auction->secondChance()) 
+                            style="color: red;"
+                        @endif>
                             {{$auction->price}}
                         </td>
                     @endif
-                    <td>
+                    <td
+                    @if ($auction->secondChance()) 
+                        style="color: red;"
+                    @endif
+                     >
                         @if ($auction->reserve_price == NULL) 
                             @include('components.no')
                         @else
@@ -66,7 +82,10 @@
                             {{$auction->buy_now_price}}
                         @endif
                     </td>
-                    <td>
+                    <td
+                    @if ($auction->endedWithNoBids())
+                        style="color: red;"
+                    @endif>
                         @if ($auction->type_id === '1')
                             @include('components.no')
                         @else
@@ -80,11 +99,15 @@
                         @if ($auction->end_time == NULL) 
                             @include('components.no')
                         @else 
-                            {{$auction->end_time}}    
+                            {{$auction->end_time}}
                         @endif
                     </td>
                     <td style="text-align: right;">
-                        @if ($auction->end_time >= now()->subHours(3) )
+                        @if ($auction->secondChance())
+                            <a href="{{route('second-chance', ['uuid' => $auction->uuid])}}" class="btn btn-sm btn-dark" onclick="return confirm('Do you want to this anyway?')">Sell anyway</a>
+                        @elseif ($auction->endedWithNoBids())
+                            <a href="#" class="btn btn-sm btn-dark " role="button">Relist</a>
+                        @else
                             <a href="{{ route('edit-auction', ['uuid' => $auction->uuid, 'route' => 'profile']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
                         @endif
                     </td>
@@ -137,11 +160,10 @@
                                 </td>
                                 <td>
                                     {{$item->condition->condition}}
+                                    
                                 </td>
                                 <td style="text-align: right;">
-                                    @if ($auction->end_time >= now()->subHours(3) )
-                                        <a href="{{ route('edit-item', ['uuid' => $item->uuid, 'route' => 'profile']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
-                                    @endif
+                                    <a href="{{ route('edit-item', ['uuid' => $item->uuid, 'route' => 'profile']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
                                 </td>
                                 <td>
                                     <form action="{{ route('delete-item', ['uuid' => $item->uuid, 'route' => 'profile']) }}" method="POST">

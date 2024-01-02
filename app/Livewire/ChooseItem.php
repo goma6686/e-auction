@@ -6,6 +6,8 @@ use App\Events\EndAuction;
 use App\Models\Auction;
 use App\Models\Bid;
 use App\Models\Condition;
+use App\Models\Winner;
+use App\Repositories\Interfaces\AuctionRepositoryInterface;
 use DateTime;
 use Livewire\Component;
 
@@ -19,25 +21,19 @@ class ChooseItem extends Component
     public $title;
     public $quantity;
     public $selectedItem;
-    public $seller;
     public $type;
     public $auction_count;
     public $selected_uuid;
     public $bids;
     public $buy_now_price;
-    public $max_bid;
-    public $bidder_count;
 
     public $isAcceptingBids;
     public $showBidNotification = false;
 
-    public function mount(Auction $auction, $seller, $bids){
-        $this->max_bid = $auction->bids()->max('amount') ?? $auction->price;
+    public function mount(Auction $auction, $bids){
         $this->buy_now_price = $auction->buy_now_price;
         $this->bids = $bids;
-        $this->bidder_count = $auction->bids->count();
-        $this->auction_count = $seller->auctions->where('is_active', true)->count();
-        $this->seller = $seller;
+        $this->auction_count = $auction->getAuctionSeller()->auctions->where('is_active', true)->count();
         $this->type = $auction->type_id;
         $this->auction = $auction;
         $this->items = $auction->items;
@@ -52,12 +48,24 @@ class ChooseItem extends Component
         $now = new DateTime(\Carbon\Carbon::now());
         $end = new DateTime($this->auction->end_time);
         if($now >= $end && $this->auction->is_active){
-            EndAuction::dispatch($auction);
+            $this->endAuction();
         }
     }
+    
+    public function createWinner($auction){
+        if ($auction->bids->count() > 0 && $auction->bids()->max('amount') >= $auction->reserve_price) {
+            $winner = new Winner();
+            $winner->user_uuid = Bid::select('user_uuid')
+                ->where('auction_uuid', $auction->uuid)
+                ->where('amount', $auction->bids()->max('amount'))->pluck('user_uuid')->first();
+            $winner->auction_uuid = $auction->uuid;
+            $winner->final_amount = $auction->bids()->max('amount');
+            $winner->created_at = now();
+            $winner->save();
+        }
+    }
+
     public function updated(){
-        $this->bidder_count = $this->auction->bids->count();
-        $this->max_bid = $this->auction->getMaxBidAttribute();
         if($this->type == 2){
             $this->bids = $this->auction->getBids();
         }
@@ -70,6 +78,10 @@ class ChooseItem extends Component
 
     public function endAuction(){
         $this->isAcceptingBids = false;
+        EndAuction::dispatch($this->auction);
+        if ($this->auction->bids->count() > 0 && $this->auction->bids()->max('amount') >= $this->auction->reserve_price) {
+            app()->make(AuctionRepositoryInterface::class)->createWinner($this->auction);
+        }
     }
 
     public function itemSelected($selectedItem){

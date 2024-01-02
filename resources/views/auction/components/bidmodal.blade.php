@@ -6,8 +6,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <h6>Current: €{{$max_bid}}</h6>
-            <h6>Bids: {{ $bidder_count }}</h6>
+            <h6>Current: €{{$auction->bids()->max('amount') ?? $auction->price}}</h6>
+            <h6>Bids: {{ $auction->bids->count() }}</h6>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             @for ($i = 0; $i < 3; $i++)
                 <form method="post" action="{{route('bid', ['uuid' => $auction->uuid, 'amount' => $bids[$i]])}}">

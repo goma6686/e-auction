@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use App\Http\Controllers\ProfileController;
+use App\Repositories\Interfaces\AuctionRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 class Auction extends Model
@@ -29,6 +33,7 @@ class Auction extends Model
         'user_uuid',
         'type_id',
         'is_active',
+        'is_blocked',
         'end_time',
         'buy_now_price',
         'price',
@@ -52,7 +57,7 @@ class Auction extends Model
 
     public function shouldBeSearchable()
     {
-        return $this->is_active;
+        return $this->is_active && !$this->is_blocked;
     }
 
     public function favourites(): HasMany
@@ -85,6 +90,11 @@ class Auction extends Model
         return $this->belongsTo(Type::class, 'type_id');
     }
 
+    public function winner(): HasOne
+    {
+        return $this->hasOne(Winner::class, 'user_uuid');
+    }
+
     public function getMaxBidAttribute()
     {
         return $this->bids()->max('amount') ?? $this->price;
@@ -114,5 +124,48 @@ class Auction extends Model
         $now = new \DateTime(\Carbon\Carbon::now());
         $end = new \DateTime($this->end_time);
         return $now < $end && $this->is_active;
+    }
+
+    public function canExtendTime(): bool
+    {
+        return (
+            (!$this->is_blocked) && ($this->is_active) &&
+            Carbon::now()->subHours(2)->lte($this->created_at) &&
+            ($this->bids()->count() == 0)
+        );
+    }
+
+    public function canLowerPrice(): bool
+    {
+        return (
+            (!$this->is_blocked) && ($this->is_active) && 
+            ((new \DateTime($this->end_time))->diff(new \DateTime(Carbon::now()))->h < 12)
+            &&
+            ($this->bids()->count() == 0)
+        );
+    }
+
+    public function secondChance(): bool
+    {
+        $controller = new ProfileController();
+        $auctions = $controller->getSecondChanceAuctions();
+
+        return in_array($this->uuid, $auctions);
+    }
+
+    public function endedWithNoBids(): bool
+    {
+        $controller = new ProfileController();
+        $array= $controller->getAuctionsEndedWithNoBids();
+        return in_array($this->uuid, $array);
+    }
+
+    public function getAuctionSeller(){
+        return User::find($this->user_uuid);
+    }
+
+public function getAuctionWinner()
+    {
+        return User::findOrFail(Winner::where('auction_uuid', $this->uuid)->pluck('user_uuid'))->first();
     }
 }

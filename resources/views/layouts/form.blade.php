@@ -10,6 +10,7 @@
     </header>
         <main>
             <div class="content py-5 ">
+                @include('components.sessionmessage')
                 @yield('content')
             </div>
         </main>

@@ -51,6 +51,7 @@ class AuctionSeeder extends Seeder
                         'end_time' => null,
                         'category_id' => $faker->numberBetween(1, 8),
                         'is_active' => $faker->boolean(75), // 75% chance of being active
+                        'is_blocked' => $faker->boolean(10), // 10% chance of being blocked
                         'type_id' => 1,
                         'buy_now_price' => null,
                         'user_uuid' => $user->uuid,

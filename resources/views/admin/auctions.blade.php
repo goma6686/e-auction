@@ -65,7 +65,7 @@
             <a href="{{ route('edit-auction', ['uuid' => $auction->uuid, 'route' => 'auctions']) }}"  class="btn btn-sm btn-dark " role="button">Edit</a>
         </td>
         <td>
-            <form action="{{route('delete-auction', ['uuid' => $auction->uuid, 'route' => 'profile'])}}" method="POST">
+            <form action="{{route('delete-auction', ['uuid' => $auction->uuid, 'route' => 'auctions'])}}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>

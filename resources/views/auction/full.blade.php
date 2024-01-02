@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-7">
-      @livewire('choose-item', ['auction' => $auction->uuid, 'seller' => $seller, 'bids' => $bids])
+      @livewire('choose-item', ['auction' => $auction->uuid, 'bids' => $bids])
     </div>
   </div>    
 </div>

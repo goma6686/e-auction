@@ -66,7 +66,9 @@ class TransactionController extends Controller
             $auction->refresh();
 
             BidPlaced::dispatch($auction);
-            
+            if($bid_amount < $auction->reserve_price){
+                return back()->with('success', 'Reserve price has not been met! Bid has been placed');
+            }
             return back()->with('success', 'You have successfully bid this item');
         }
     }

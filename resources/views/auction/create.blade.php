@@ -9,7 +9,7 @@
             Create Auction
         @endif
     </h1>
-    <div class="max-w-7xl sm:px-6 lg:px-8 p-5">
+    <div style="padding-left: 20em; padding-right: 20em;">
         @livewire('create-auction', ['type' => $type])
     </div>
 </div>
