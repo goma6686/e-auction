@@ -8,9 +8,9 @@ use App\Services\ImageService;
 use App\Models\Auction;
 use App\Models\Condition;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Bid;
-use App\Repositories\Interfaces\AuctionRepositoryInterface;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -37,29 +37,28 @@ class AuctionController extends Controller
             'title' => 'required|max:255|min:3',
             'description' => 'required',
             'category' => 'required',
-            'end_time' => 'sometimes|date|after:today',
             'reserve_price' => [
-                'sometimes', 'numeric', 'min:'.$request->price+1, 'max:999999.99'],
-            'price' => 'sometimes|numeric|min:00.01|max:999999.99',
+                'nullable', 'decimal:0,2', 'min:'.$request->price, 'max:999999.99'],
+            'price' => 'nullable|decimal:0,2|min:0.01',
             'buy_now_price' => [
-                'numeric', 'min:10.00', 'min:'.$request->price+1],
+                'nullable','decimal:0,2', 'min:10.00', 'min:'.$request->price+1],
             'items.*.item_title' => 'required|max:255|min:3',
             'items.*.condition' => 'required',
-            'items.*.price' => 'sometimes|numeric|min:00.01|max:999999.99',
-            'items.*.quantity' => 'sometimes|numeric|min:1|max:999',
+            'items.*.price' => 'nullable|numeric|min:00.01|max:999999.99',
+            'items.*.quantity' => 'nullable|numeric|min:1|max:999',
         ]);
 
         if ($validator->fails()) {
             Session::flash('error', $validator->errors()->all());
             return Redirect::back();
         }
-
+        
         $auction = Auction::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category,
             'user_uuid' => $request->user()->uuid,
-            'end_time' => $request->end_time ?? null,
+            'end_time' => new DateTime(Carbon::now()->addDays($request->duration)) ?? null,//new DateTime(Carbon::now()) ?? null,
             'is_active' => true,
             'type_id' => $type,
             'reserve_price' => $request->reserve_price ?? null,
@@ -125,7 +124,7 @@ class AuctionController extends Controller
         }
         $auction->items()->delete();
         $auction->bids()->delete();
-        $auction->winners()->delete();
+        $auction->winner()->delete();
         $auction->delete();
         
         if($route === 'profile'){
@@ -143,6 +142,15 @@ class AuctionController extends Controller
         return view('auction.edit.auction', compact('auction', 'route'));
     }
 
+    public function relist($uuid, $duration){
+        $auction = Auction::find($uuid);
+        $auction->end_time = new DateTime(Carbon::now()->addDays($duration));//date('Y-m-d H:i:s', strtotime($auction->end_time. ' + '.$duration.' days'));
+        $auction->is_active = true;
+        $auction->save();
+
+        return redirect()->route('profile.all', ['uuid' => $auction->user_uuid])->with('success', 'Auction relisted successfully');
+    }
+
     public function update(Request $request, $uuid, $route): RedirectResponse
     {
         $auction = Auction::find($uuid);
@@ -157,12 +165,10 @@ class AuctionController extends Controller
                 'after:'.$auction->end_time,
             ],*/
             'end_time' => 'sometimes|date',
-            'reserve_price' => [
-                'exclude_if:'.Auth::user()->is_admin.',1',
+            /*'reserve_price' => [
                 'numeric', 'min:'.($auction->price+1), 'max:'.($auction->reserve_price)],
             'price' => [
-                'exclude_if:'.Auth::user()->is_admin.',1',
-                'numeric', 'max:'.($auction->price)],
+                'numeric', 'max:'.($auction->price)],*/
         ]);
 
         if ($validator->fails()) {
@@ -175,6 +181,7 @@ class AuctionController extends Controller
         $auction->is_active = $request->input('is_active') != null ? true : false;
         $auction->is_blocked = $request->input('is_blocked') != null ? true : false;
         $auction->category_id = $request->input('category');
+
         if($request->input('end_time')){
             if(Auth::user()->is_admin){
                 $auction->end_time = $request->input('end_time');
@@ -188,17 +195,32 @@ class AuctionController extends Controller
             }
             $auction->end_time = $request->input('end_time');
         }
+        
         if($request->input('reserve_price')){
-            if(Auth::user()->uuid){
-                
+            if(Auth::user()->is_admin){
+                $auction->reserve_price = $request->input('reserve_price');   
+            } else {
+                if($request->input('reserve_price') <= $auction->reserve_price){
+                    $auction->reserve_price = $request->input('reserve_price');
+                } else {
+                    Session::flash('error', 'Reserve price must be higher than current reserve price');
+                    return Redirect::back();
+                }
             }
-            $auction->reserve_price = $request->input('reserve_price');
         }
-        if($request->input('buy_now_price')){
-            $auction->buy_now_price = $request->input('buy_now_price');
-        }
+        $auction->buy_now_price = $request->input('buy_now_price');
+        
         if($request->input('price')){
-            $auction->price = $request->input('price');
+            if(Auth::user()->is_admin){
+                $auction->price = $request->input('price');   
+            } else {
+                if($request->input('price') <= $auction->price){
+                    $auction->price = $request->input('price');
+                } else {
+                    Session::flash('error', 'Price must be higher than current price');
+                    return Redirect::back();
+                }
+            }
         }
         if($request->input('created_at')){
             $auction->created_at = $request->input('created_at');

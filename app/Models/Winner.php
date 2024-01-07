@@ -29,4 +29,19 @@ class Winner extends Model
     {
         return $this->belongsTo(Auction::class);
     }
+
+    public function getWinner($auction_uuid)
+    {
+        return Winner::where('auction_uuid', $auction_uuid)->first();
+    }
+
+    public function getWinners()
+    {
+        return Winner::all();
+    }
+
+    public function getWonAuctionsByUser($user_uuid)
+    {
+        return Winner::where('user_uuid', $user_uuid)->get();
+    }
 }

@@ -92,12 +92,22 @@ class Auction extends Model
 
     public function winner(): HasOne
     {
-        return $this->hasOne(Winner::class, 'user_uuid');
+        return $this->hasOne(Winner::class);
     }
 
     public function getMaxBidAttribute()
     {
         return $this->bids()->max('amount') ?? $this->price;
+    }
+
+    public function getMinPriceAttribute()
+    {
+        return $this->items()->min('price');
+    }
+
+    public function getMaxPriceAttribute()
+    {
+        return $this->items()->max('price');
     }
 
     public function getBidIncrements($max_bid = null)

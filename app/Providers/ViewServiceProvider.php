@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
+use App\Enums\Duration;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,10 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $view->with('categories', Category::all());
+        });
+
+        View::composer('*', function ($view) {
+            $view->with('durations', Duration::values());
         });
     }
 }

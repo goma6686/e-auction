@@ -77,6 +77,10 @@ class TransactionController extends Controller
         $item = Item::where('uuid', $item_uuid)->firstOrFail();
         $auction = Auction::where('uuid', $item->auction_uuid)->firstOrFail();
         $quantity = $request->input('quantity');
+
+        if($request->user()->uuid == $auction->user_uuid){
+            return back()->with('error', 'You cannot buy your own item');
+        }
         
         $user_balance = $request->user()->balance;
 
@@ -95,6 +99,7 @@ class TransactionController extends Controller
                 $request->user()->save();
     
                 $item->decrement('quantity', $quantity);
+                $item->increment('quantity_sold', $quantity);
 
                 if($item->quantity == 0){
                     if($item->image)

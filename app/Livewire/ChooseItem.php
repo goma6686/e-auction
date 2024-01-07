@@ -42,7 +42,7 @@ class ChooseItem extends Component
         $this->selected_uuid = $this->items[0]['uuid'];
         $this->price = $this->item['price'];
         $this->condition = $this->item['condition']['condition'];
-        $this->quantity = $this->item['quantity'];
+        $this->quantity = $this->item['quantity'] > 10 ? 'More than 10 left' : $this->item['quantity'].' left';
         $this->isAcceptingBids = $this->auction->getIsAcceptingBidsAttribute();
 
         $now = new DateTime(\Carbon\Carbon::now());

@@ -17,7 +17,7 @@ selectableTabList.forEach((selectableTab) => {
   selectableTab.addEventListener('click', function () {
     var newUrl;
     const hash = selectableTab.getAttribute('href');
-    if (hash == '#active-tab') {
+    if (hash == '#all-tab') {
       newUrl = url.split('#')[0];
     } else {
       newUrl = url.split('#')[0] + hash;

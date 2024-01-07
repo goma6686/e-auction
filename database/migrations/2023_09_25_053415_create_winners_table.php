@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('winners', function (Blueprint $table) {
             $table->id('id');
             $table->foreignUuid('user_uuid');
-            $table->foreignUuid('auction_uuid');
+            $table->foreignUuid('auction_uuid')->unique();
             $table->decimal('final_amount')->unsigned();
             $table->DateTime('created_at');
         });

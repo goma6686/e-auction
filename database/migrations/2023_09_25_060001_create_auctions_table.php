@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->dateTime('end_time')->nullable();
-
             $table->foreignUuid('user_uuid');
             $table->foreignUuid('category_id');
             $table->foreignUuid('type_id');

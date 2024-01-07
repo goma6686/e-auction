@@ -29,5 +29,6 @@
     </main>
     @livewireScripts
     @vite(['resources/js/app.js'])
+    <script type="text/javascript" src="{{asset('js/profile-tabs.js')}}"></script>
 </body>
 </html>

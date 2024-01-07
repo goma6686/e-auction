@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-use App\Models\Category;
 use App\Models\Condition;
 use Livewire\WithFileUploads;
 
@@ -13,12 +12,10 @@ class CreateAuction extends Component
     use WithFileUploads;
 
     public $image;
-
-    public $categories;
     public $title;
     public $description;
     public $end_time;
-    public $category;
+    public $duration;
     public $condition;
     public $is_active;
     public $price;
@@ -30,17 +27,7 @@ class CreateAuction extends Component
     public $items = [];
     public $conditions;
 
-    protected $rules = [
-        'title' => 'required',
-        'description' => 'required|min:3',
-        'end_time' => 'required|date|after:today',
-        'category' => 'required|exists:categories,id',
-        'condition' => 'required|exists:conditions,id',
-        'price' => 'required|numeric|min:0.01',
-    ];
-
     public function mount($type){
-        $this->categories = Category::all();
         $this->type = $type;
         $this->conditions = Condition::all();
         $this->items = [[

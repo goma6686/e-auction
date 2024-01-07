@@ -8,10 +8,9 @@
 }
 
 .profile-header .profile-header-cover {
-    background-image: url(https://cdn.pixabay.com/photo/2018/07/20/13/52/sunflower-3550693_960_720.jpg);
-    background-size: cover;
+    background-color: #212529;
     background-position: center;
-    background-repeat: no-repeat;
+    opacity: 90%;
     position: absolute;
     left: 0;
     right: 0;
@@ -55,8 +54,6 @@
 .profile-header .profile-header-tab .profile-items {
     background: #fff;
     list-style-type: none;
-    margin: -10px 0 0;
-    padding: 0 0 0 140px;
     white-space: nowrap;
     border-radius: 0
 }

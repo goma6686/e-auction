@@ -37,6 +37,9 @@
                 </a>
               </li>
               <li>
+                <a class="dropdown-item secondary" href="/dashboard/{{Auth::user()->uuid}}" role="button">Dashboard</a>
+              </li>
+              <li>
                 <form action="{{ route('logout') }}" method="POST">
                   @csrf
                   <a style="color: black;" class="dropdown-item secondary" href="{{ route('logout') }}"

@@ -18,7 +18,7 @@ class BidSeeder extends Seeder
         $faker = Faker::create();
 
         $userUUids = User::pluck('uuid')->toArray();
-        $auctionUUids = Auction::pluck('uuid')->toArray();
+        $auctionUUids = Auction::where('type_id', '2')->pluck('uuid')->toArray();
 
         foreach (range(1, 100) as $index) {
             DB::table('bids')->insert([

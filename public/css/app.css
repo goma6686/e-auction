@@ -80,8 +80,15 @@ h2 {
 }
 
 #item-image {
-    width: 100%;
+    width: auto;
     height: 20vw;
+    -o-object-fit: cover;
+       object-fit: cover;
+}
+
+#list-image{
+    width: auto;
+    height: 15vw;
     -o-object-fit: cover;
        object-fit: cover;
 }

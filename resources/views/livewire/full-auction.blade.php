@@ -74,7 +74,7 @@
                     <div class="col-3">Quantity:</div>
                     <div class="col-7">
                     <input id="quantity" type="text" name="quantity" placeholder="1" step="1" min="1" required>
-                    <h6>Left: {{ $quantity }}</h6>
+                    <h6>{{ $quantity }}</h6>
                     </div>
                 </h5>
             @endif
@@ -118,7 +118,7 @@
         </div>
     </form>
         <h6 class="pt-3 text-center">
-            @if ($isAcceptingBids)
+            @isset ($isAcceptingBids)
                 @if (round((strtotime($auction->end_time) - time()) / 3600) < 12)
                     <div id="timer" class="wrap-countdown time-countdown" 
                     data-expire="{{ Carbon\Carbon::parse($auction->end_time) }}"></div>
@@ -127,7 +127,7 @@
                 @endif
             @else
                 <b id="status">Auction Has Ended</b>
-            @endif
+            @endisset
         </h6>
     @include('components.sessionmessage')
     </div>

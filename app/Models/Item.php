@@ -26,6 +26,7 @@ class Item extends Model
         'category_id',
         'price',
         'quantity',
+        'quantity_sold',
     ];
 
     public function toSearchableArray(): array

@@ -18,7 +18,7 @@
                 @if (Auth::user()->is_admin)
                     <div class="form-group pt-4">
                         <label for="buy_now_price">Buy Now Price:</label><br>
-                        <input id="buy_now_price" type="number" name="buy_now_price" placeholder="1.0" step="0.01" min="0.1" class="@error('buy_now_price') is-invalid @enderror" value="{{ $auction->buy_now_price }}">
+                        <input id="buy_now_price" type="number" name="buy_now_price" placeholder="1.0" step="0.01" class="@error('buy_now_price') is-invalid @enderror" value="{{ $auction->buy_now_price }}">
                     </div>
                 @endif
                 @if (($auction->canLowerPrice() && !Auth::user()->is_admin) || Auth::user()->is_admin)
@@ -30,7 +30,7 @@
                 <div class="form-group pt-4">
                     <label for="reserve_price">Reserve Price:
                     </label><br>
-                    <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" min="{{$auction->price+5}}" max="{{$auction->reserve_price}}" class="@error('reserve_price') is-invalid @enderror" value="{{ $auction->reserve_price }}">
+                    <input id="reserve_price" type="number" name="reserve_price" placeholder="1.0" step="0.01" @if(!Auth::user()->is_admin) min="{{$auction->price+5}}" max="{{$auction->reserve_price}}" @endif class="@error('reserve_price') is-invalid @enderror" value="{{ $auction->reserve_price }}">
                 </div>
                 @auth
                     @if ($auction->canExtendTime() && !Auth::user()->is_admin)

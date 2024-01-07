@@ -52,21 +52,20 @@
             placeholder="1.0" step="0.01" min="0.1">
         </div>
         @endif
-{{--
-        <div class="form-group pt-4">
-            <div class="col-md-2">
-                <label for="is_active">Status</label>
-                <select class="form-control" name="is_active" wire:model="is_active">
-                    <option value="0" selected>Inactive</option>
-                    <option value="1">Active</option>
-                </select>
-            </div>
-        </div>--}}
 
         @if ($type === '2')
             <div class="form-group pt-4">
-                <label for="end_time">End date and time*: (after {{ \Carbon\Carbon::now()->toDateString() }})</label><br>
-                <input wire:model="end_time" type="datetime-local" name="end_time" class=" @error('end_time') is-invalid @enderror" required>
+                <div class="col-md-2">
+                <label for="duration">Choose duration</label>
+                <select class="form-control"
+                        wire:model="duration"
+                        name="duration"
+                        required>
+                        @foreach($durations as $duration)
+                            <option value="{{ $duration }}" selected> {{$duration}} DAYS</option>
+                        @endforeach
+                </select>
+                </div>
             </div>
         @endif
 

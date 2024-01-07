@@ -8,6 +8,7 @@
                 </button>
             @endif
         @endauth
+        
         <img id="item-image"
          @if (isset($auction['items'][0]['image']))
              src="/images/items/{{ $auction['items'][0]['image'] }}"
@@ -18,7 +19,6 @@
          @endif
          class="card-img-top mx-auto d-block" alt="{{$auction['title']}}">
         </div>
-    
     <div class="card-body text-center">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -35,13 +35,11 @@
             >
             {{$auction['title'] }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">
-                    
-                    @foreach ($categories as $categ)
+                @foreach ($categories as $categ)
                     @if ($categ['id'] == $auction['category_id'])
                         {{$categ['category']}}
                     @endif
                 @endforeach
-                    
                 </h6>
             </li>
             <li class="list-group-item">
@@ -57,13 +55,11 @@
                     </div>
                     @if ($auction['type_id'] === '2')
                         <div class="col-md-6 text-center">
-                            @if($auction->getAuctionWinner())
-                                <h6 class="card-subtitle mb-2">Winner:</h6>
-                                <a href="/profile/{{$auction->getAuctionWinner()->uuid}}" class="card-subtitle mb-2 link-dark">{{$auction->getAuctionWinner()->username}}</a>
-                            @else
-                                <h6 class="card-subtitle mb-2">Current bids: </h6>
-                                <h6 class="card-subtitle mb-2">{{ $auction['bids_count'] ?? ''}}</h6>
-                            @endif
+                            <h6 class="card-subtitle mb-2">Current bids: </h6>
+                            <h6 class="card-subtitle mb-2">{{ $auction['bids_count']}}</h6>
+                            @isset($auction['buy_now_price'])
+                            <h6 class="card-subtitle mb-2">{{ $auction['buy_now_price']}}</h6>
+                            @endisset
                         </div>
                     @endif
                 </div>

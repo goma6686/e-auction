@@ -13,7 +13,6 @@
         <th>End Time</th>
         <th>Created_at</th>
         <th></th>
-        <th></th>
     </tr>
 </thead>
 <tbody>
@@ -43,7 +42,7 @@
             @if ($auction->price) 
                 {{$auction->price}}
             @else 
-                Buy Now type
+                -
             @endif
         </td>
         <td>
@@ -62,14 +61,14 @@
         </td>
         <td>{{$auction->created_at}}</td>
         <td style="text-align: right;">
+            <div class="btn-group">
             <a href="{{ route('edit-auction', ['uuid' => $auction->uuid, 'route' => 'auctions']) }}"  class="btn btn-sm btn-dark " role="button">Edit</a>
-        </td>
-        <td>
             <form action="{{route('delete-auction', ['uuid' => $auction->uuid, 'route' => 'auctions'])}}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>
             </form>
+            </div>
         </td>
     </tr>
 @endforeach

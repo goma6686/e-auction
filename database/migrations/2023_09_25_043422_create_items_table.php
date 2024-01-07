@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->unsignedInteger('quantity')->default(1);
+            $table->unsignedInteger('quantity_sold')->default(0);
 
             $table->foreignUuid('auction_uuid');
             $table->foreignUuid('condition_id');

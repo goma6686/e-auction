@@ -9,6 +9,7 @@ use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
+use App\Livewire\Chat;
 use App\Livewire\ChooseItem;
 use App\Livewire\CreateAuction;
 use Illuminate\Support\Facades\Route;
@@ -44,9 +45,16 @@ Route::controller(AdminController::class)->group(function() {
 
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
-    Route::get('/profile/{uuid}#all', [ProfileController::class, 'profile'])->name('profile.all');
-    Route::get('/profile/{uuid}#bids', [ProfileController::class, 'profile'])->name('profile.bids');
-    Route::get('/profile/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance');
+    Route::get('/dashboard/{uuid}', [ProfileController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard/{uuid}/messages', [ProfileController::class, 'messages'])->name('messages');
+    //Route::get('/dashboard/{uuid}#all', [ProfileController::class, 'dashboard'])->name('dashboard.all');
+    Route::get('/dashboard/{uuid}#payment', [ProfileController::class, 'dashboard'])->name('dashboard.payment');
+    Route::get('/dashboard/{uuid}#bids', [ProfileController::class, 'dashboard'])->name('dashboard.bids');
+    Route::get('/dashboard/{uuid}#won', [ProfileController::class, 'dashboard'])->name('dashboard.won');
+    Route::get('/dashboard/{uuid}#favourite', [ProfileController::class, 'dashboard'])->name('dashboard.favourite');
+    Route::get('/dashboard/{uuid}#history', [ProfileController::class, 'dashboard'])->name('dashboard.active-bids');
+    Route::get('/dashboard/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance');
+   Route::post('/sendmessage', [ProfileController::class, 'sendMessage'])->name('sendMessage');
 });
 
 Route::controller(ItemController::class)->group(function() {
@@ -57,15 +65,16 @@ Route::controller(ItemController::class)->group(function() {
 
     Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage'])->name('upload-image');
     Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage'])->name('delete-image');
-});
+})->middleware('auth');
 
 Route::controller(AuctionController::class)->group(function() {
-    Route::get('/create-auction/{type}', [AuctionController::class, 'create'])->name('create-auction');
-    Route::post('/store-auction/{type}', [AuctionController::class, 'store'])->name('store-auction');
+    Route::get('/create-auction/{type}', [AuctionController::class, 'create'])->name('create-auction')->middleware('auth');
+    Route::post('/store-auction/{type}', [AuctionController::class, 'store'])->name('store-auction')->middleware('auth');
     Route::get('/auction/{uuid}', [AuctionController::class, 'show'])->name('show-auction');
-    Route::get('/edit-auction/{uuid}/{route}', [AuctionController::class, 'edit'])->name('edit-auction');
-    Route::delete('/delete-auction/{uuid}/{route}', [AuctionController::class, 'destroy'])->name('delete-auction');
-    Route::post('/update-auction/{uuid}/{route}', [AuctionController::class, 'update'])->name('update-auction');
+    Route::get('/edit-auction/{uuid}/{route}', [AuctionController::class, 'edit'])->name('edit-auction')->middleware('auth');
+    Route::delete('/delete-auction/{uuid}/{route}', [AuctionController::class, 'destroy'])->name('delete-auction')->middleware('auth');
+    Route::post('/update-auction/{uuid}/{route}', [AuctionController::class, 'update'])->name('update-auction')->middleware('auth');
+    Route::post('/relist-auction/{uuid}/{duration}', [AuctionController::class, 'relist'])->name('relist-auction')->middleware('auth');
 });
 
 Route::controller(RegisterController::class)->group(function() {
@@ -88,3 +97,5 @@ Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'tog
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
+//Route::post('/sendmessage', [Chat::class, 'sendMessage'])->name('sendMessage');
+//Route::get('/receive-message', [Chat::class, 'receiveMessage'])->name('receive-message');
