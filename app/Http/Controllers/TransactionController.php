@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\BidPlaced;
-use App\Mail\AuctionOutbid;
 use App\Models\Auction;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Transaction;
-use App\Models\Bid;
 use App\Notifications\OutbidNotification;
-use Illuminate\Support\Facades\Notification;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class TransactionController extends Controller
 {

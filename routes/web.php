@@ -74,6 +74,7 @@ Route::controller(AuctionController::class)->group(function() {
     Route::delete('/delete-auction/{uuid}/{route}', [AuctionController::class, 'destroy'])->name('delete-auction')->middleware('auth');
     Route::post('/update-auction/{uuid}/{route}', [AuctionController::class, 'update'])->name('update-auction')->middleware('auth');
     Route::post('/relist-auction/{uuid}/{duration}', [AuctionController::class, 'relist'])->name('relist-auction')->middleware('auth');
+    Route::post('/auction/cancel/{uuid}', [AuctionController::class, 'cancel'])->name('cancel-auction')->middleware('auth');
 });
 
 Route::controller(RegisterController::class)->group(function() {
@@ -97,4 +98,3 @@ Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'tog
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
-Route::post('/sendmessage', [Chat::class, 'sendMessage'])->name('sendMessage');

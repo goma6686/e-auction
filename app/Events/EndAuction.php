@@ -3,28 +3,25 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Auction;
 
-class MessageSent implements ShouldBroadcast
+class EndAuction implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public $message;
-   // public $auction_uuid;
-    public $receiver_uuid;
-
-    public function __construct($message, $receiver_uuid )
+    public $auction;
+    public function __construct(Auction $auction)
     {
-        $this->message = $message;
-        //$this->auction_uuid = $auction_uuid;
-        $this->receiver_uuid = $receiver_uuid;
+        $this->auction = $auction;
     }
 
     /**
@@ -35,16 +32,16 @@ class MessageSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            //new Channel('message-sent'.$this->user_uuid),
-            new PrivateChannel('message-sent'.$this->receiver_uuid),
-            //new Channel('message-sent'.$this->receiver_uuid),
+            new Channel('end-auction.'.$this->auction->uuid),
         ];
     }
 
     public function broadcastWith()
     {
         return [
-            'message' => $this->message,
+            'uuid' => $this->auction->uuid,
+            'bidder_count' => $this->auction->bids()->count(),
+            'price' => $this->auction->price
         ];
     }
 }

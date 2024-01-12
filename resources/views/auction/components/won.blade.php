@@ -56,9 +56,6 @@
                         {{$auction->price}}
                     </td>
                     <td  class=" text-end ">
-                        <a href="{{ route('messages', ['auction_uuid' => $auction->uuid]) }}" class="btn btn-dark">Message</a>
-                    </td>
-                    <td  class=" text-end ">
                         <form enctype="multipart/form-data" method="POST" action="{{route('pay', ['uuid' => $auction->uuid])}}">
                                 @csrf
                             <button id="buy" class="btn btn-dark" type="submit"  name='action'>PAY</button>

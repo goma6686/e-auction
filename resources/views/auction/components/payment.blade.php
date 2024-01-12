@@ -42,12 +42,10 @@
     <div class="card-footer text-muted ">
         
         <div class="d-grid gap-2 col-6 mx-auto">
-            <a class="btn btn-sm btn-dark" role="button" href="{{ route('messages', ['auction_uuid' => $auction->uuid]) }}">
-                CONTACT
-            </a>
-            <a class="btn btn-sm btn-danger" role="button" href="/auction/{{ $auction['uuid'] }}">
-                CANCEL
-            </a>
+            <form action="{{route('cancel-auction', ['uuid' => $auction->uuid])}}" method="POST">
+                @csrf
+                <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to cancel this auction?')">CANCEL</button>
+            </form>
         </div> 
     </div>
 </div>

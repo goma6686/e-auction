@@ -14,7 +14,6 @@ class AuctionDeadline extends Command
      *
      * @var string
      */
-    //protected $signature = 'app:auction-deadline';
     protected $signature = 'watch:auction';
 
     /**

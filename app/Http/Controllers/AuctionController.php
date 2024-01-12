@@ -151,6 +151,15 @@ class AuctionController extends Controller
         return redirect()->route('dashboard', ['uuid' => $auction->user_uuid])->with('success', 'Auction relisted successfully');
     }
 
+    public function cancel($uuid){
+        $auction = Auction::find($uuid);
+        $auction->winner()->delete();
+
+        $auction->save();
+
+        return redirect()->route('dashboard', ['uuid' => $auction->user_uuid])->with('success', 'Auction relisted successfully');
+    }
+
     public function update(Request $request, $uuid, $route): RedirectResponse
     {
         $auction = Auction::find($uuid);
