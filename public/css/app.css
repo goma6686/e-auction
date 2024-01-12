@@ -79,13 +79,6 @@ h2 {
   width: 100%;
 }
 
-#item-image {
-    width: auto;
-    height: 20vw;
-    -o-object-fit: cover;
-       object-fit: cover;
-}
-
 #list-image{
     width: auto;
     height: 15vw;

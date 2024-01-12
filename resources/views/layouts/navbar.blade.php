@@ -30,9 +30,6 @@
         <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#favourite" role="button">
           <i class="bi bi-bag-heart"></i>
         </a>
-        <a class="btn btn-outline-light" role="button">
-          <i class="bi bi-envelope"></i>
-        </a>
       </div>
       @endauth
     </div>
