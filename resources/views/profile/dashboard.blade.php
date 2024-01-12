@@ -25,9 +25,6 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="history-tab" href="#history" data-bs-toggle="tab" data-bs-target="#history" role="tab" aria-controls="history" aria-selected="false">History</a>
                         </li>
-                        <div class="a" >
-                            <a class="nav-link"  href="/dashboard/{{Auth::user()->uuid}}/messages">Messages</a>
-                        </div>
                     </ul>
 
                     <div class="tab-content" id="nav-tabContent">
