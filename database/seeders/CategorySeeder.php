@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         DB::table('categories')->delete();
 
         DB::table('categories')->insert([
-                ['id' => '1', 'categoryImage' => 'sport.jpg', 'category' => 'SPORTS'],
+                ['id' => '1', 'categoryImage' => 'home.jpg', 'category' => 'UNKNOWN'],
                 ['id' => '2', 'categoryImage' => 'ring.jpg', 'category' => 'JEWELRY'],
                 ['id' => '3', 'categoryImage' => 'watch.jpg', 'category' => 'WATCHES'],
                 ['id' => '4', 'categoryImage' => 'technology.jpg', 'category' => 'ELECTRONICS'],
@@ -24,6 +24,7 @@ class CategorySeeder extends Seeder
                 ['id' => '6', 'categoryImage' => 'toy.jpg', 'category' => 'TOYS'],
                 ['id' => '7', 'categoryImage' => 'home.jpg', 'category' => 'HOME'],
                 ['id' => '8', 'categoryImage' => 'triangle.jpg', 'category' => 'OTHER'],
+                ['id' => '9', 'categoryImage' => 'sport.jpg', 'category' => 'SPORTS'],
         ]);
     }
 }

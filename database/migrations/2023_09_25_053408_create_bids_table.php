@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bids', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->foreignUuid('user_uuid');
-            $table->foreignUuid('item_uuid');
+            $table->foreignUuid('auction_uuid');
             $table->decimal('amount')->unsigned();
             $table->boolean('is_winning')->default(false);
             $table->DateTime('created_at');

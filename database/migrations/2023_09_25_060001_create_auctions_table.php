@@ -14,12 +14,20 @@ return new class extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
 
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time');
-            $table->foreignUuid('user_uuid');
+            $table->string('title');
+            $table->text('description')->nullable();
 
-            $table->boolean('is_active')->default(false);
-            $table->unsignedInteger('bidder_count')->unsigned()->default(0);
+            $table->dateTime('end_time')->nullable();
+            $table->foreignUuid('user_uuid');
+            $table->foreignUuid('category_id');
+            $table->foreignUuid('type_id');
+
+            $table->unsignedDecimal('buy_now_price')->nullable();//for Auction
+            $table->unsignedDecimal('price')->nullable();//for Auction with multiple items
+            $table->unsignedDecimal('reserve_price')->nullable();
+
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });
     }

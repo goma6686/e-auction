@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('winners', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
+            $table->id('id');
             $table->foreignUuid('user_uuid');
-            $table->foreignUuid('item_uuid');
+            $table->foreignUuid('auction_uuid')->unique();
             $table->decimal('final_amount')->unsigned();
             $table->DateTime('created_at');
         });

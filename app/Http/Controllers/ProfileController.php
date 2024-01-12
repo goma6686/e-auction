@@ -2,33 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Auction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Auction;
-
+use App\Models\Conversation;
+use App\Events\MessageSent;
+use App\Repositories\Interfaces\AuctionRepositoryInterface;
+use App\Enums\Duration;
+use Illuminate\Http\Request;
+use App\Traits\EnumToArray;
 class ProfileController extends Controller
 {
-    public function profile(Request $request, $uuid) {
+    use EnumToArray;
+
+    public function sendMessage(Request $request, $auction){
+
+        $message = $request->input('data');
+
+        $conversation = Conversation::create([
+            'message' => $message,
+            'user' => auth()->user()->username,
+        ]);
+        //$user = auth()->user();
+        
+        //broadcast(new MessageSent::broadcast($message))->toOthers();
+        MessageSent::broadcast($message, $auction);
+        return response()->json(['message' => $message, 'auction' => $auction]);
+    }
+
+    public function getAuctionsEndedWithNoBids(): array {
+        $auction_repository = app()->make(AuctionRepositoryInterface::class);
+        return $auction_repository->getAuctionsEndedWithNoBids();
+    }
+
+    public function getSecondChanceAuctions(): array {
+        $auction_repository = app()->make(AuctionRepositoryInterface::class);
+        return $auction_repository->getSecondChanceAuctions();
+    }
+
+    public function profile($uuid) {
         $user = User::find($uuid);
+        $durations = Duration::values();
+        return view('profile.profile', compact('user', 'durations'));
+    }
 
-        $active_items = $user->auctions()
-                ->where('is_active', true)
-                ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-                ->leftJoin('categories', 'categories.id', '=', 'items.category_id')
-                ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
-                ->get();
+    public function dashboard($uuid){
+        $durations = Duration::values();
+        $user = Auth::user();
+        return view('profile.dashboard', compact('durations', 'user'));
+    }
 
-        if(Auth::check() && Auth::user()->uuid == $uuid) {
-            $all_items = $user->auctions()
-                ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-                ->leftJoin('categories', 'categories.id', '=', 'items.category_id')
-                ->leftJoin('conditions', 'conditions.id', '=', 'items.condition_id')
-                ->get();
-
-            return view('profile.profile', compact('user', 'all_items', 'active_items'));
+    public function messages($auction_uuid){
+        $user = Auth::user();
+        $auction = Auction::findOrFail($auction_uuid);
+        if($auction->getAuctionSeller() === $user){
+            $receiver = $user->uuid;
         } else {
-            return view('profile.profile', compact('user', 'active_items'));
+            $receiver = $auction->getAuctionSeller()->uuid;
         }
+
+        return view('profile.chat', compact('user', 'auction', 'receiver'));
+    }
+
+    public function sellAnyway($uuid){
+        $auction = Auction::where('uuid', $uuid)->firstOrFail();
+        app()->make(AuctionRepositoryInterface::class)->createWinner($auction);
+        return redirect()->back();
     }
 }

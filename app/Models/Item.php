@@ -6,19 +6,36 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Item extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
+
+    protected $touches = ['auctions'];//Algolia
 
     protected $primaryKey = 'uuid';
     protected $keyType = 'string';
     public $incrementing = false;
+    protected $table = 'items';
 
-    public function categories(): BelongsTo
+    protected $fillable = [
+        'title', 
+        'description',
+        'condition_id',
+        'category_id',
+        'price',
+        'quantity',
+        'quantity_sold',
+    ];
+
+    public function toSearchableArray(): array
     {
-        return $this->belongsTo(Category::class);
+        $array = $this->toArray();
+
+        $array['condition'] = $this->condition->condition;
+
+        return $array;
     }
 
     public function auctions(): BelongsTo
@@ -26,18 +43,16 @@ class Item extends Model
         return $this->belongsTo(Auction::class, 'auction_uuid');
     }
 
-    public function bids(): HasMany
-    {
-        return $this->hasMany(Bid::class);
-    }
-
     public function condition(): BelongsTo
     {
-        return $this->belongsTo(Condition::class);
+        return $this->belongsTo(Condition::class, 'condition_id');
     }
 
-    public function user(): BelongsTo
+    public function canLowerPrice(): bool
     {
-        return $this->belongsTo(User::class);
+        $auction = Auction::find($this->auction_uuid);
+        return (
+           (!$auction->is_blocked) && ($this->quantity_sold == 0)
+        );
     }
 }

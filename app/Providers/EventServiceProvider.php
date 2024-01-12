@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\MessageSent;
+use App\Events\EndAuction;
+use App\Listeners\CloseBidding;
+use App\Listeners\SendBidNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        EndAuction::class => [
+            CloseBidding::class,
+        ],
+        MessageSent::class => [
+            //
+        ]
     ];
 
     /**

@@ -3,166 +3,100 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\ImageService;
+
 use App\Models\Category;
 use App\Models\Auction;
 use App\Models\Item;
-use App\Models\User;
 use App\Models\Condition;
 
 class ItemController extends Controller
 {
-    public function index(Request $request){
-        $category = Category::find($request->input('category'));
-        $items = $category ? $category->items : Item::all();
+    protected $imageService;
 
-        return view('home', compact('items'));
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
     }
 
-    public function show(Request $request, $uuid) {
-        $item = Auction::where('item_uuid', $uuid)
-        ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-        ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
-        ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
-        ->first();
-        
-        $seller = User::find($item->user_uuid);
-
-        $count = $seller->loadCount(['auctions' => function ($query) {
-            $query->where('is_active', true);
-        }])->auctions_count;
-
-        return view('item.full', compact('item', 'seller', 'count'));
-    }
-
-    public function create(Request $request) {
-        $categories = Category::all();
+    public function edit($uuid, $route){
         $conditions = Condition::all();
 
-        return view('item.create', compact('categories', 'conditions'));
-    }
-
-    public function store(Request $request) {
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'category' => 'required',
-            'condition' => 'required',
-            'price' => 'required|numeric|min:0.01',
-            'end_time' => 'required|date|after:today',
-        ]);
-        
-        $item = new Item();
-        $item->title = $request->input('title');
-        $item->description = $request->input('description');
-        $item->category_id = $request->input('category');
-        $item->condition_id = $request->input('condition');
-        $item->current_price = $request->input('price');
-        $item->user_uuid = $request->user()->uuid;
-
-        if($request->hasFile('image')) {
-            $this->uploadImage($request, $item);
-        }
-
-        $item->save();
-
-        $auction = new Auction();
-        $auction->item_uuid = $item->uuid;
-        $auction->user_uuid = $item->user_uuid;
-        $auction->current_price = $item->current_price;
-        $auction->next_price = $item->current_price;
-        $auction->end_time = $request->input('end_time');
-        if ($request->input('is_active') != null) {
-            $auction->is_active = true;
-            $auction->start_time = now();
-        }
-        else {
-            $auction->is_active = false;
-        }
-        $auction->bidder_count = 0;
-        $auction->save();
-        return redirect()->back();
-    }
-
-    public function edit($uuid){
-        $categories = Category::all();
-        $conditions = Condition::all();
-
-        $auction_item = Auction::where('item_uuid', $uuid)
-        ->leftJoin('items', 'auctions.uuid', '=', 'items.auction_uuid')
-        ->leftJoin('categories', 'items.category_id', '=', 'categories.id')
-        ->leftJoin('conditions', 'items.condition_id', '=', 'conditions.id')
+        $auction_item = Item::where('uuid', $uuid)
+        ->with('condition')
         ->first();
 
-        return view('item.edit', compact('auction_item', 'categories', 'conditions'));
+        $auction_type = Auction::where('uuid', $auction_item->auction_uuid)
+            ->select('type_id')
+            ->first();
+            
+        return view('auction.edit.item', compact('auction_item', 'conditions', 'auction_type', 'route'));
     }
 
-    public function update(Request $request, $uuid){
+    public function update(Request $request, $uuid, $route){
         $request->validate([
             'title' => 'required|max:255',
-            'description' => 'required',
-            'category' => 'required',
             'condition' => 'required',
-            'price' => 'required|numeric|min:0.01',
-            'end_time' => 'required|date|after:today',
+            'price' => 'sometimes|numeric|min:00.01',
         ]);
 
         $item = Item::find($uuid);
         $item->title = $request->input('title');
-        $item->description = $request->input('description');
         $item->condition_id = $request->input('condition');
-        $item->category_id = $request->input('category');
-        $item->current_price = $request->input('price');
+
+        if($request->input('quantity')){
+            $item->quantity = $request->input('quantity');
+        }
+        if($request->input('price') && $request->input('price') < $item->price){
+            $item->price = $request->input('price');
+        }
+
         $item->save();
-
-        $auction = Auction::where('item_uuid', $uuid)->first();
-        $auction->end_time = $request->input('end_time');
-        $auction->is_active = $request->input('is_active') != null ? true : false;
-        $auction->save();
-
-        /*$item = new Item(['title' => $request->input('title')],
-        ['description' => $request->input('description')],
-        ['condition_id' => $request->input('condition')],
-        ['category_id' => $request->input('category')],
-        ['current_price' => $request->input('price')]);
-
-        $auction = Auction::where('item_uuid', $uuid)->first();
-
-        $item->auctions()->save($auction);*/
-
-        return redirect()->back();
+        $item->refresh();
+        $user_id = (Auction::where('uuid', $item->auction_uuid)->first())->user_uuid;
+        
+        if($route === 'profile'){
+            return redirect()->route('dashboard', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
+        } else {
+            return redirect()->route('admin.items')->with('success', 'Changes saved successfully');
+        }
     }
 
-    public function destroy($uuid){
-        $item = Item::find($uuid);
-        if(isset($item->image)){
-            unlink(public_path('/images/' . $item->image));
+    public function destroy($uuid, $route){
+        $item = Item::with('auctions')->where('uuid', $uuid)->first();
+
+        $auction = Auction::withCount('items')->where('uuid', $item->auction_uuid)->first();
+        $user_id = $auction['user_uuid'];
+
+        if($auction->items_count == 1){
+            $this->imageService->destroyImage($item->uuid);
+            $auction->items()->delete();
+            $auction->delete();
+        }else{
+            if($item->image)
+            $this->destroyImage($uuid);
+            $item->delete();
         }
-        $item->auctions()->delete();
-        $item->delete();
-        
-        return redirect()->back();
+
+        if($route === 'profile'){
+            return redirect()->route('dashboard', ['uuid' => $user_id])->with('success', 'Item deleted successfully');
+        } else {
+            return redirect()->route('back', ['page' => $route])->with('success', 'Item deleted successfully');
+        }
     }
 
     public function destroyImage($uuid){
-        $item = Item::find($uuid);
-        unlink(public_path('/images/' . $item->image));
-        $item->image = null;
-        $item->save();
-
+        $this->imageService->destroyImage($uuid);
         return redirect()->back();
     }
 
     public function uploadImage(Request $request, $uuid){
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'image|mimes:jpeg,png,jpg',
         ]);
-        $item = Item::find($uuid);
-        $file = $request->file('image');
-        $imageName = time() . '_' . $file->getClientOriginalName();
-        $item->image = $imageName;
-        $request->image->move(public_path('images'), $imageName);
-        $item->save();
 
+        $this->imageService->uploadImage($request->file('image'), $uuid);
+        
         return redirect()->back();
     }
 }

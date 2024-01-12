@@ -1,38 +1,40 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse " id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
-          @guest
-            <a class="btn btn-outline-light me-2" href="{{ route('login') }}">Login</a>
-            <a class="btn btn-outline-light me-2" href="{{ route('register') }}">Register</a>
-          @else
-          <div class="dropdown" id="buttons">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              {{Auth::user()->username }}
-            </button>
-            <button type="button" class="btn btn-secondary balance" data-id="{{Auth::user()->id}}" data-bs-toggle="modal" data-bs-target="#balance">
-              {{Auth::user()->balance/100}} €
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item secondary" href="{{ route('profile', ['uuid' => Auth::user()->uuid]) }}">
-                  Profile
-                </a>
-              </li>
-              <li>
-                <form action="{{ route('logout') }}" method="POST">
-                  @csrf
-                  <a style="color: black;" class="dropdown-item secondary" href="{{ route('logout') }}"
-                  onclick="event.preventDefault();
-                                  this.closest('form').submit();">
-                  Logout
-                </a>
-                </form>
-              </li>
-            </ul>
-          </div>
-          @endguest
+
+  <div class="container-fluid">
+    <div class="ms-auto mb-2 mb-lg-0">
+      @auth
+      <div class="dropdown" id="buttons">
+        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Sell
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="{{ route('create-auction', ['type' => 1]) }}">Buy Now</a></li>
+            <li><a class="dropdown-item" href="{{ route('create-auction', ['type' => 2]) }}">Auction</a></li>
         </ul>
+        <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#all" role="button">
+          <i class="bi bi-bell"></i>
+          @if (Auth::user()->getWaitingForPaymentAuctions()->count() > 0)
+            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+              {{Auth::user()->getWaitingForPaymentAuctions()->count()}}
+            </span>
+          @endif
+        </a>
+        <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#won" role="button">
+          <i class="bi bi-cart"></i>
+          @if (Auth::user()->winningAuctions()->count() > 0)
+            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+              {{Auth::user()->winningAuctions()->count()}}
+            </span>
+          @endif
+        </a>
+        <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#favourite" role="button">
+          <i class="bi bi-bag-heart"></i>
+        </a>
+        <a class="btn btn-outline-light" role="button">
+          <i class="bi bi-envelope"></i>
+        </a>
       </div>
+      @endauth
     </div>
+  </div>
 </nav>

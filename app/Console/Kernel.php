@@ -2,19 +2,25 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AuctionDeadline;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        AuctionDeadline::class
+    ];
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        //$schedule->command('watch:auction')->everySecond();
+        $schedule->job(new AuctionDeadline())->everySecond();
+        $schedule->command('watch:auction')->everySecond()->runInBackground();
     }
-
     /**
      * Register the commands for the application.
      */

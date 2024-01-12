@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+/*Route::post('/sendmessage', function(Request $request) {
+    $channelName = $request->post('channelName');
+    $message = $request->post('data');
+    broadcast(new MessageSent($channelName, $message));
+})->middleware('throttle:60,1');*/

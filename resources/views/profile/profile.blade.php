@@ -6,32 +6,39 @@
         <div class="col">
             <div id="content" class="content content-full-width">
                 <div class="profile">
-                    <div class="profile-header">
-                        <!-- profile-header-cover -->
-                        <div class="profile-header-cover"></div>
-                        <div class="profile-header-content">
-                        <div class="profile-header-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReMZX2wlBguwnabKRRtHGtsmUPuOQW50dRPA&usqp=CAU">
-                        </div>
-                        <div class="profile-header-info">
-                            <h4 class="m-t-10 m-b-5">{{ $user->username }}</h4>
-                        </div>
-                        </div>
-                    </div>
                     @if($user->is_active == 0)
-                        <div class="container px-4 px-lg-5 mt-5">
+                        <div class="container">
                             <h3 style="text-align: center;">This account has been deactivated:(</h3>
                         </div>
                     @else
-                        @guest
-                            @include('layouts.profileactive')
+                        {{--@include('profile.profileactive', ['auctions' => $user->ActiveUserAuctions()])--}}
+                        <div class="profile-header">
+                            <!-- profile-header-cover -->
+                            <div class="profile-header-cover"></div>
+                            <div class="profile-header-content">
+                                <div class="profile-header-img">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReMZX2wlBguwnabKRRtHGtsmUPuOQW50dRPA&usqp=CAU">
+                                </div>
+                                <div class="profile-header-info d-grid gap-3">
+                                    <h4 class="ps-3">{{ $user->username }}</h4>
+                                    <h4 class="ps-3">{{ $user->email }}</h4>
+                                </div>
+                                @auth
+                                    @if (Auth::user()->uuid == $user->uuid)
+                                        <a class="m-3 btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}" role="button">Dashboard</a>
+                                    @endif
+                                @endauth
+                            </div>
+                        </div>
+                        @if(count( $user->ActiveUserAuctions()) > 0)
+                            <div class="row">
+                            @foreach ( $user->ActiveUserAuctions() as $auction)
+                                @include('auction.components.itemcard')
+                            @endforeach
+                            </div>
                         @else
-                            @if(Auth::user()->uuid == $user->uuid)
-                                @include('layouts.profilefull')
-                            @else
-                                @include('layouts.profileactive')
-                            @endif
-                        @endguest
+                            <h3 style="text-align: center;">No items found :(</h3>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -39,7 +46,6 @@
     </div>
 </div>
 @endsection
-
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 @endsection

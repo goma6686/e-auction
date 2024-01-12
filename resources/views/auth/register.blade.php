@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.form')
 
 @section('content')
 <div class="row justify-content-center">
@@ -8,6 +8,14 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('store') }}">
                     @csrf
+                    <div class="row mb-3">
+                        <label for="email" class="col-md-4 col-form-label text-md-end">email</label>
+                        
+                        <div class="col-md-6">
+                            <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" required autofocus>  
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <label for="username" class="col-md-4 col-form-label text-md-end">Username</label>
                         
