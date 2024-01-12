@@ -28,6 +28,10 @@ class TransactionController extends Controller
         $auction = Auction::where('uuid', $auction_uuid)->firstOrFail();
         $bid_amount = $bid_amount;
 
+        if($request->user()->uuid == $auction->user_uuid){
+            return back()->with('error', 'You cannot bid your own item');
+        }
+
         if($auction->end_time < now()){
             return back()->with('error', 'This auction has ended');
         }
@@ -55,7 +59,7 @@ class TransactionController extends Controller
             $auction->price = $bid_amount;
             $auction->save();
 
-            $this->createTransaction($request->user()->uuid, $bid_amount, 'payin');
+            $this->createTransaction($auction->uuid, $request->user()->uuid, $bid_amount, 'payin');
 
             $auction->bids()->create([
                 'user_uuid' => $request->user()->uuid,
@@ -111,16 +115,22 @@ class TransactionController extends Controller
                     }
                 }
     
-                $this->createTransaction($request->user()->uuid, $price * $quantity, 'payin');
+                $this->createTransaction($auction->uuid, $request->user()->uuid, $price * $quantity, 'payin');
     
                 return back()->with('success', 'You have successfully bought this item');
             }
         } else {
+            $this->pay($request, $auction->uuid);
             if($user_balance < $price){
                 return back()->with('error', 'You do not have enough balance to buy this item');
             } else {
                 $request->user()->balance -= $price;
                 $request->user()->save();
+
+                $seller = $auction->getAuctionSeller();
+
+                $seller->balance += $auction->price;
+                $seller->save();
 
                 foreach($auction->items as $item) {
                     if($item->image)
@@ -128,15 +138,47 @@ class TransactionController extends Controller
                     $item->delete();
                 }
                 $auction->delete();
-                $this->createTransaction($request->user()->uuid, $price, 'payin');
+                $this->createTransaction($auction->uuid ,$request->user()->uuid, $price, 'payin');
                 return redirect()->route('home')->with('success', 'You have successfully bought this item');
             }
         }
     }
 
-    public function createTransaction($uuid, $amount, $transaction_type){
+    public function pay(Request $request, $auction_uuid){
+        $auction = Auction::where('uuid', $auction_uuid)->firstOrFail();
+
+        if($request->user()->uuid == $auction->user_uuid){
+            return back()->with('error', 'You cannot pay for your own item');
+        }
+        
+        $user_balance = $request->user()->balance;
+
+        if($user_balance < $auction->price){
+            return back()->with('error', 'You do not have enough balance to pay for this item');
+        } else {
+            $request->user()->balance -= $auction->price;
+            $request->user()->save();
+
+            $seller = $auction->getAuctionSeller();
+
+            $seller->balance += $auction->price;
+            $seller->save();
+
+            foreach($auction->items as $item) {
+                if($item->image)
+                    $this->imageService->destroyImage($item->uuid);
+                $item->delete();
+            }
+            $auction->delete();
+            $this->createTransaction($auction->uuid ,$request->user()->uuid, $auction->price, 'payin');
+            return redirect()->route('dashboard.won', ['uuid' => $request->user()->uuid])->with('success', 'You have successfully payed for this item');
+        }
+    }
+
+    public function createTransaction($auction_uuid, $user_uuid, $amount, $transaction_type){
         Transaction::create([
-            'user_uuid' => $uuid,
+            'auction_uuid' => $auction_uuid,
+            'user_uuid' => $user_uuid,
             'amount' => $amount,
             'transaction_type' => $transaction_type
         ]);

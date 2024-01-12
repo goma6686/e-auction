@@ -13,17 +13,17 @@
         </ul>
         <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#all" role="button">
           <i class="bi bi-bell"></i>
-          @if (Auth::user()->howManyAuctionsRequiredAction() > 0)
-            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
-              {{Auth::user()->howManyAuctionsRequiredAction()}}
-            </span>
-          @endif
-        </a>
-        <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#payment" role="button">
-          <i class="bi bi-cart"></i>
           @if (Auth::user()->getWaitingForPaymentAuctions()->count() > 0)
             <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
               {{Auth::user()->getWaitingForPaymentAuctions()->count()}}
+            </span>
+          @endif
+        </a>
+        <a class="btn btn-outline-light" href="/dashboard/{{Auth::user()->uuid}}#won" role="button">
+          <i class="bi bi-cart"></i>
+          @if (Auth::user()->winningAuctions()->count() > 0)
+            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
+              {{Auth::user()->winningAuctions()->count()}}
             </span>
           @endif
         </a>

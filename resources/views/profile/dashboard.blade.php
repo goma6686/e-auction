@@ -7,10 +7,6 @@
                 <h3 class="text-start"><b>{{Auth::user()->username}} dashboard</b></h3>
                 <div class="profile">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        {{--
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="active-tab" href="#active" data-bs-toggle="tab" data-bs-target="#active" role="tab" aria-controls="active" aria-selected="true">My Auctions</a>
-                        </li>--}}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="all-tab" href="#all" data-bs-toggle="tab" data-bs-target="#all"role="tab" aria-controls="all" aria-selected="true">Edit Auctions</a>
                         </li>
@@ -35,10 +31,6 @@
                     </ul>
 
                     <div class="tab-content" id="nav-tabContent">
-                        {{--
-                        <div class="tab-pane tab fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
-                            xD
-                        </div>--}}
                         <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                         @if(count(Auth::user()->AllUserAuctions()) > 0)
                             @include('components.sessionmessage')
@@ -52,16 +44,16 @@
                             @include('components.list', ['list' => Auth::user()->getActiveBids(), 'word' => 'active'])
                         </div>
                         <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-                            @include('auction.components.payment', ['payment_auctions' => Auth::user()->getWaitingForPaymentAuctions(), 'word' => 'payment'])
+                            @include('auction.components.payment', ['word' => 'payment'])
                         </div>
                         <div class="tab-pane fade" id="won" role="tabpanel" aria-labelledby="won-tab">
-                            @include('auction.components.history', ['unpaid_auctions' => Auth::user()->getWonAuctions()])
+                            @include('auction.components.won')
                         </div>
                         <div class="tab-pane fade" id="favourite" role="tabpanel" aria-labelledby="favourite-tab">
                             @include('components.list', ['list' => Auth::user()->getFavouriteAuctions(), 'word' => 'favourited'])
                         </div>
                         <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-                            aa
+                            
                         </div>
                     </div>
                 </div>

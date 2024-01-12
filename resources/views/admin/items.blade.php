@@ -23,13 +23,13 @@
                 @include('components.no')
             @endif
         </td>
-        <td>{{$item->quantity}}</td>
+        <td>{{$item->quantity}} </td>
         <td>{{$item->condition->condition}}</td>
         <td>{{$item->price}}</td>
         <td>{{$item->created_at}}</td>
         <td>
             <div class="btn-group">
-                <button href="{{ route('edit-auction', ['uuid' => $item->auction_uuid, 'route' => 'items']) }}"  class="btn btn-sm btn-dark " role="button">Edit</button>
+                <a href="{{ route('edit-auction', ['uuid' => $item->auction_uuid, 'route' => 'items']) }}"  class="btn btn-sm btn-dark " role="button">Edit</a>
                 <form  action="{{ route('delete-auction', ['uuid' => $item->auction_uuid, 'route' => 'items']) }}" method="POST">
                     @csrf
                     @method('DELETE')
@@ -39,7 +39,7 @@
         </td>
         <td>
             <div class="btn-group">
-            <button href="{{ route('edit-item', ['uuid' => $item->uuid, 'route' => 'items']) }}" class="btn btn-sm btn-dark " role="button">Edit</button>
+            <a href="{{ route('edit-item', ['uuid' => $item->uuid, 'route' => 'items']) }}" class="btn btn-sm btn-dark " role="button">Edit</a>
             <form  action="{{ route('delete-item', ['uuid' => $item->uuid, 'route' => 'items']) }}" method="POST">
                 @csrf
                 @method('DELETE')

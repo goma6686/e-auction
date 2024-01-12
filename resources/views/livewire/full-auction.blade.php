@@ -73,8 +73,10 @@
                 <h5 class="row">
                     <div class="col-3">Quantity:</div>
                     <div class="col-7">
+                    <h6 style="color: red;">{{ $quantity_sold }}</h6>
                     <input id="quantity" type="text" name="quantity" placeholder="1" step="1" min="1" required>
-                    <h6>{{ $quantity }}</h6>
+                    <h6>{{ $quantity }} </h6>
+                    
                     </div>
                 </h5>
             @endif

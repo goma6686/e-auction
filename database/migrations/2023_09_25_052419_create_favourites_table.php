@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignUuid('user_uuid');
             $table->foreignUuid('auction_uuid');
-            $table->timestamps();
 
             $table->unique(['user_uuid', 'auction_uuid']);
         });

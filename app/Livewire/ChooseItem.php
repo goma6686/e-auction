@@ -20,6 +20,7 @@ class ChooseItem extends Component
     public $price;
     public $title;
     public $quantity;
+    public $quantity_sold;
     public $selectedItem;
     public $type;
     public $auction_count;
@@ -28,7 +29,6 @@ class ChooseItem extends Component
     public $buy_now_price;
 
     public $isAcceptingBids;
-    public $showBidNotification = false;
 
     public function mount(Auction $auction, $bids){
         $this->buy_now_price = $auction->buy_now_price;
@@ -43,6 +43,7 @@ class ChooseItem extends Component
         $this->price = $this->item['price'];
         $this->condition = $this->item['condition']['condition'];
         $this->quantity = $this->item['quantity'] > 10 ? 'More than 10 left' : $this->item['quantity'].' left';
+        $this->quantity_sold = $this->item['quantity_sold'] > 0 ? $this->item['quantity_sold']. ' sold' : '';
         $this->isAcceptingBids = $this->auction->getIsAcceptingBidsAttribute();
 
         $now = new DateTime(\Carbon\Carbon::now());
@@ -66,19 +67,19 @@ class ChooseItem extends Component
     }
 
     public function updated(){
-        if($this->type == 2){
+       if($this->type == 2){
             $this->bids = $this->auction->getBids();
         }
     }
 
     public function bidPlaced(){
         $this->updated();
-        $this->showBidNotification = true;
     }
 
     public function endAuction(){
         $this->isAcceptingBids = false;
-        EndAuction::dispatch($this->auction);
+        $this->auction->update(['is_active' => false]);
+        $this->auction->refresh();
         if ($this->auction->bids->count() > 0 && $this->auction->bids()->max('amount') >= $this->auction->reserve_price) {
             app()->make(AuctionRepositoryInterface::class)->createWinner($this->auction);
         }
@@ -91,6 +92,7 @@ class ChooseItem extends Component
         $this->selected_uuid = $selectedItemData['uuid'];
         $this->price = $selectedItemData['price'];
         $this->quantity = $selectedItemData['quantity'];
+        $this->quantity_sold = $selectedItemData['quantity_sold'];
         foreach (Condition::all() as $condition){
             if ($condition['id'] == $selectedItemData['condition_id']){
                 $this->condition = $condition['condition'];
@@ -107,7 +109,6 @@ class ChooseItem extends Component
     {
         return [
             "echo:auctions.{$this->auction->uuid},BidPlaced" => 'bidPlaced',
-            "end-auction.{$this->auction->uuid},EndAuction" => 'endAuction',
         ];
     }
 }

@@ -7,9 +7,6 @@ use App\Models\Item;
 class ImageService
 {
     public function uploadImage($image, $uuid){
-        /*$request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg',
-        ]);*/
         $item = Item::find($uuid);
         $file = $image;
         $imageName = time() . '_' . $file->getClientOriginalName();

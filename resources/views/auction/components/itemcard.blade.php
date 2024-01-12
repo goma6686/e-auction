@@ -58,7 +58,7 @@
                             <h6 class="card-subtitle mb-2">Current bids: </h6>
                             <h6 class="card-subtitle mb-2">{{ $auction['bids_count']}}</h6>
                             @isset($auction['buy_now_price'])
-                            <h6 class="card-subtitle mb-2">{{ $auction['buy_now_price']}}</h6>
+                            <h6 class="card-subtitle mb-2">Or Buy Now {{ $auction['buy_now_price']}}</h6>
                             @endisset
                         </div>
                     @endif

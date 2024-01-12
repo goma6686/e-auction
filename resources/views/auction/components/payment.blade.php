@@ -1,4 +1,4 @@
-@foreach ($payment_auctions as $auction)
+@foreach (Auth::user()->getWaitingForPaymentAuctions() as $auction)
 <div class="card" id="item-card">
     <div class="card-header text-center">
         <h6 class="mb-2 text-muted">
@@ -26,12 +26,12 @@
     <div class="text-center">
         <dl>
             <dt>WINNER:</dt>
-            <a href="/profile/{{$auction->getAuctionSeller()->uuid}}" class="link-dark">
+            <a href="/profile/{{$auction->winner->uuid}}" class="link-dark">
             <dd>
-                {{$auction->getAuctionWinner()->username}},
+                {{$auction->winner->username}},
             </dd>
             <dd>
-                {{$auction->getAuctionWinner()->email}}
+                {{$auction->winner->email}}
             </dd>
         </a>
             <dt>PRICE:</dt>
@@ -42,7 +42,7 @@
     <div class="card-footer text-muted ">
         
         <div class="d-grid gap-2 col-6 mx-auto">
-            <a class="btn btn-sm btn-dark" role="button" href="/auction/{{ $auction['uuid'] }}">
+            <a class="btn btn-sm btn-dark" role="button" href="{{ route('messages', ['auction_uuid' => $auction->uuid]) }}">
                 CONTACT
             </a>
             <a class="btn btn-sm btn-danger" role="button" href="/auction/{{ $auction['uuid'] }}">

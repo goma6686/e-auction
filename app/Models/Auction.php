@@ -3,15 +3,12 @@
 namespace App\Models;
 
 use App\Http\Controllers\ProfileController;
-use App\Repositories\Interfaces\AuctionRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 class Auction extends Model
@@ -75,6 +72,11 @@ class Auction extends Model
         return $this->belongsTo(User::class, 'user_uuid');
     }
 
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_uuid');
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -90,9 +92,9 @@ class Auction extends Model
         return $this->belongsTo(Type::class, 'type_id');
     }
 
-    public function winner(): HasOne
+    public function winner(): BelongsTo
     {
-        return $this->hasOne(Winner::class);
+        return $this->BelongsTo(User::class, 'user_uuid');
     }
 
     public function getMaxBidAttribute()
@@ -129,7 +131,7 @@ class Auction extends Model
         return $bids->toArray();
     }
 
-    public function getIsAcceptingBidsAttribute()
+    public function getIsAcceptingBidsAttribute(): bool
     {
         $now = new \DateTime(\Carbon\Carbon::now());
         $end = new \DateTime($this->end_time);
@@ -139,7 +141,7 @@ class Auction extends Model
     public function canExtendTime(): bool
     {
         return (
-            (!$this->is_blocked) && ($this->is_active) &&
+            (!$this->is_blocked) &&
             Carbon::now()->subHours(2)->lte($this->created_at) &&
             ($this->bids()->count() == 0)
         );
@@ -148,7 +150,7 @@ class Auction extends Model
     public function canLowerPrice(): bool
     {
         return (
-            (!$this->is_blocked) && ($this->is_active) && 
+            (!$this->is_blocked) && 
             ((new \DateTime($this->end_time))->diff(new \DateTime(Carbon::now()))->h < 12)
             &&
             ($this->bids()->count() == 0)
@@ -170,12 +172,8 @@ class Auction extends Model
         return in_array($this->uuid, $array);
     }
 
-    public function getAuctionSeller(){
-        return User::find($this->user_uuid);
-    }
-
-public function getAuctionWinner()
+    public function getAuctionSeller(): User
     {
-        return User::findOrFail(Winner::where('auction_uuid', $this->uuid)->pluck('user_uuid'))->first();
+        return User::find($this->user_uuid);
     }
 }

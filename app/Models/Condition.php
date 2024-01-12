@@ -11,6 +11,8 @@ class Condition extends Model
 {
     use HasFactory, Searchable;
 
+    public $timestamps = false;
+
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class);

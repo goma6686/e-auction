@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\BidPlaced;
+use App\Events\MessageSent;
 use App\Events\EndAuction;
 use App\Listeners\CloseBidding;
 use App\Listeners\SendBidNotification;
@@ -25,9 +25,9 @@ class EventServiceProvider extends ServiceProvider
         EndAuction::class => [
             CloseBidding::class,
         ],
-        BidPlaced::class => [
-            SendBidNotification::class,
-        ],
+        MessageSent::class => [
+            //
+        ]
     ];
 
     /**

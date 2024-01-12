@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transaction extends Model
 {
@@ -17,6 +18,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_uuid',
+        'auction_uuid',
         'amount',
         'transaction_uuid',
         'transaction_type'
@@ -27,8 +29,8 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'user_uuid');
     }
 
-    public function auction(): BelongsTo
+    public function auction(): HasOne
     {
-        return $this->belongsTo(Auction::class, 'item_uuid');
+        return $this->hasOne(Auction::class, 'auction_uuid');
     }
 }

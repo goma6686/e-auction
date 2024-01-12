@@ -128,7 +128,7 @@ class AuctionController extends Controller
         $auction->delete();
         
         if($route === 'profile'){
-            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Auction deleted successfully');;
+            return redirect()->route('dashboard', ['uuid' => $user_id])->with('success', 'Auction deleted successfully');;
         } else {
             return redirect()->route('back', ['page' => $route])->with('success', 'Auction deleted successfully');
         }
@@ -148,7 +148,7 @@ class AuctionController extends Controller
         $auction->is_active = true;
         $auction->save();
 
-        return redirect()->route('profile.all', ['uuid' => $auction->user_uuid])->with('success', 'Auction relisted successfully');
+        return redirect()->route('dashboard', ['uuid' => $auction->user_uuid])->with('success', 'Auction relisted successfully');
     }
 
     public function update(Request $request, $uuid, $route): RedirectResponse
@@ -201,7 +201,9 @@ class AuctionController extends Controller
                 $auction->reserve_price = $request->input('reserve_price');   
             } else {
                 if($request->input('reserve_price') <= $auction->reserve_price){
-                    $auction->reserve_price = $request->input('reserve_price');
+                    if($auction->bids()->count() === 0){
+                        $auction->reserve_price = $request->input('reserve_price');
+                    }
                 } else {
                     Session::flash('error', 'Reserve price must be higher than current reserve price');
                     return Redirect::back();
@@ -215,7 +217,9 @@ class AuctionController extends Controller
                 $auction->price = $request->input('price');   
             } else {
                 if($request->input('price') <= $auction->price){
-                    $auction->price = $request->input('price');
+                    if($auction->bids()->count() === 0){
+                        $auction->price = $request->input('price');
+                    }
                 } else {
                     Session::flash('error', 'Price must be higher than current price');
                     return Redirect::back();
@@ -232,7 +236,7 @@ class AuctionController extends Controller
         $auction->searchable();
 
         if($route === 'profile'){
-            return redirect()->route('profile.all', ['uuid' => $auction->user_uuid])->with('success', 'Changes saved successfully');
+            return redirect()->route('dashboard', ['uuid' => $auction->user_uuid])->with('success', 'Changes saved successfully');
         } else {
             return redirect()->route('back', ['page' => $route])->with('success', 'Changes saved successfully');
         }

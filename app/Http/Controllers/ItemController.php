@@ -19,13 +19,6 @@ class ItemController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function index(Request $request){
-        $category = Category::find($request->input('category'));
-        $items = $category ? $category->items : Item::all();
-
-        return view('home', compact('items'));
-    }
-
     public function edit($uuid, $route){
         $conditions = Condition::all();
 
@@ -63,7 +56,7 @@ class ItemController extends Controller
         $user_id = (Auction::where('uuid', $item->auction_uuid)->first())->user_uuid;
         
         if($route === 'profile'){
-            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
+            return redirect()->route('dashboard', ['uuid' => $user_id])->with('success', 'Changes saved successfully');
         } else {
             return redirect()->route('admin.items')->with('success', 'Changes saved successfully');
         }
@@ -86,7 +79,7 @@ class ItemController extends Controller
         }
 
         if($route === 'profile'){
-            return redirect()->route('profile.all', ['uuid' => $user_id])->with('success', 'Item deleted successfully');
+            return redirect()->route('dashboard', ['uuid' => $user_id])->with('success', 'Item deleted successfully');
         } else {
             return redirect()->route('back', ['page' => $route])->with('success', 'Item deleted successfully');
         }

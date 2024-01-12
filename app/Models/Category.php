@@ -11,6 +11,8 @@ class Category extends Model
 {
     use HasFactory, Searchable;
 
+    public $timestamps = false;
+
     public function auctions(): BelongsToMany
     {
         return $this->belongsToMany(Auction::class);

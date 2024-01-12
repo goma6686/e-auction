@@ -24,12 +24,7 @@ class ItemSeeder extends Seeder
 
             $numItems = $faker->numberBetween(1, 5);
 
-            if ($auction->type_id === 1){ // Buy Now.
-                $quantity = $faker->numberBetween(1, 10);
-
-            } else {
-                $quantity = 1;
-            }
+            ($auction->type_id == 1) ? ( $quantity = $faker->numberBetween(1, 10)) : ( $quantity = 1);
 
             for($i = 0; $i < $numItems; $i++){
                 Item::create([
@@ -39,6 +34,7 @@ class ItemSeeder extends Seeder
                     'auction_uuid' => $auction->uuid,
                     'condition_id' => $faker->numberBetween(1, 6),
                     'quantity' => $quantity,
+                    'quantity_sold' => $faker->numberBetween(0, 200),
                     'price' => $faker->randomFloat(4, 0, 1000),
                 ]);
             }

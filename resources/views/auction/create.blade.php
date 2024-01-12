@@ -13,13 +13,4 @@
         @livewire('create-auction', ['type' => $type])
     </div>
 </div>
-<script type="text/javascript">
-    config = {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "\Carbon\Carbon::now()->toDateString()",
-    }
-
-    flatpickr("input[type=datetime-local]", config);
-</script>
 @endsection

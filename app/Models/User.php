@@ -7,9 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notification;
-use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
@@ -50,14 +50,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function routeNotificationForMail(Notification $notification): array
+    public function routeNotificationForMail(): array
     {
         return [$this->email => $this->username];
     }
 
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class, 'user_uuid');
     }
 
     public function bids(): HasMany
@@ -75,23 +75,17 @@ class User extends Authenticatable
         return $this->hasMany(Favourite::class, 'user_uuid');
     }
 
-    public function winner(): HasMany
+    public function winningAuctions(): BelongsToMany
     {
-        return $this->hasMany(Winner::class, 'user_uuid');
+        return $this->BelongsToMany(Auction::class, 'winners' ,'user_uuid');
     }
 
-    public function howManyAuctionsWon(): int
+    public function conversations(): BelongsToMany
     {
-        return $this->winner()->count();
-    }
-
-    public function howManyAuctionsRequiredAction(): int
-    {   
-        return $this->auctions()->where('is_active', false)->where('type_id', '2')
-            ->whereNotIn('uuid', 
-                    Winner::whereIn('auction_uuid', $this->auctions()->pluck('uuid')->toArray())
-            ->pluck('auction_uuid')->toArray())
-            ->count();
+        return $this->belongsToMany(Conversation::class, 'conversation_user', 'user_uuid', 'auction_uuid')
+            ->withPivot(['user_uuid', 'auction_uuid']);
+            /*return $this->belongsToMany(Conversation::class, 'conversation_user', 'user_uuid', 'conversation_id')
+            ->withPivot(['user_uuid', 'conversation_id']);*/
     }
 
     public function getSecondChanceAuctions(): array

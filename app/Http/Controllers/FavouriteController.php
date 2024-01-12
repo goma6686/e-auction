@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auction;
 use App\Models\Favourite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FavouriteController extends Controller
 {
-    public function index(){
-        $favourite = auth()->user()->favourite->with(['auctions', 'auctions.items', 'auctions.category', 'auctions.items.condition'])->get();
-        return view('components.favourites', compact('favourite'));
-    }
 
     public function toggleAuctionInFavourite(Request $request)
     {

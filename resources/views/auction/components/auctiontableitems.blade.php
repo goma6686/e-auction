@@ -5,7 +5,8 @@
         <th scope="col">Title</th>
         <th scope="col">Image</th>
         <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
+        <th scope="col">Quantity left</th>
+        <th scope="col">Quantity sold</th>
         <th scope="col">Condition</th>
         <th scope="col"></th>
       </tr>
@@ -33,6 +34,9 @@
         </td>
         <td>
             {{$item->quantity}}
+        </td>
+        <td>
+            {{$item->quantity_sold}}
         </td>
         <td>
             {{$item->condition->condition}}

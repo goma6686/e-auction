@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Auction;
 
 class HomeController extends Controller
@@ -20,11 +19,5 @@ class HomeController extends Controller
             ->get()->toArray();
             
         return view('welcome', compact('auction_items'));
-    }
-
-    public function home(){
-        $category = 'all';
-
-        return view ('home', compact('category'));
     }
 }

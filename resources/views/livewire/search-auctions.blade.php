@@ -2,7 +2,7 @@
     <div class="relative p-2">
         <input
             type="text"
-            class="form-input w-full"
+            class="form-input w-100"
             placeholder="Search Auctions..."
             wire:model.live="term"
             wire:keydown.escape="resetlist"

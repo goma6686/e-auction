@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'is_admin' => true,
             'password' => Hash::make('123'),
+            'balance' => $faker->randomFloat(2, 200, 1000),
         ]);
 
         $numAuctions = $faker->numberBetween(1, 5);
@@ -73,6 +74,7 @@ class UserSeeder extends Seeder
             'username' => 'tea',
             'is_admin' => false,
             'password' => Hash::make('123'),
+            'balance' => $faker->randomFloat(2, 200, 1000),
         ]);
 
         $numAuctions = $faker->numberBetween(1, 5);

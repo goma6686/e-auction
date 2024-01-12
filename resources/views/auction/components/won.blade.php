@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody >
-            @foreach ($unpaid_auctions as $index => $auction)
+            @foreach (Auth::user()->getWonAuctions() as $index => $auction)
                 <tr class="align-middle ">
                     <td >
                         {{$index+1}}
@@ -56,10 +56,13 @@
                         {{$auction->price}}
                     </td>
                     <td  class=" text-end ">
-                        <a href="#" class="btn btn-dark" onclick="return confirm('Do you want to this anyway?')">Message</a>
+                        <a href="{{ route('messages', ['auction_uuid' => $auction->uuid]) }}" class="btn btn-dark">Message</a>
                     </td>
                     <td  class=" text-end ">
-                        <a href="#" class="btn btn-dark" onclick="return confirm('Do you want to this anyway?')">PAY</a>
+                        <form enctype="multipart/form-data" method="POST" action="{{route('pay', ['uuid' => $auction->uuid])}}">
+                                @csrf
+                            <button id="buy" class="btn btn-dark" type="submit"  name='action'>PAY</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

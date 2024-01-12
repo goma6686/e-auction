@@ -52,9 +52,16 @@ class ProfileController extends Controller
         return view('profile.dashboard', compact('durations', 'user'));
     }
 
-    public function messages($uuid){
+    public function messages($auction_uuid){
         $user = Auth::user();
-        return view('profile.chat', compact('user'));
+        $auction = Auction::findOrFail($auction_uuid);
+        if($auction->getAuctionSeller() === $user){
+            $receiver = $user->uuid;
+        } else {
+            $receiver = $auction->getAuctionSeller()->uuid;
+        }
+
+        return view('profile.chat', compact('user', 'auction', 'receiver'));
     }
 
     public function sellAnyway($uuid){

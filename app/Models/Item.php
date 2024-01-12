@@ -48,21 +48,11 @@ class Item extends Model
         return $this->belongsTo(Condition::class, 'condition_id');
     }
 
-    public function canChangePrice(): bool
-    {
-        $auction = Auction::find($this->auction_uuid);
-        return (
-            (!$auction->is_blocked) && ($auction->is_active)
-            // nenupirkta items
-        );
-    }
-
     public function canLowerPrice(): bool
     {
         $auction = Auction::find($this->auction_uuid);
         return (
-            (!$auction->is_blocked) && (!$auction->is_active)
-            // nenupirkta items
+           (!$auction->is_blocked) && ($this->quantity_sold == 0)
         );
     }
 }

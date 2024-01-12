@@ -37,10 +37,12 @@
                     <label for="quantity">Quantity:</label><br>
                     <input id="quantity" type="number" name="quantity" step="1" min="1" class="@error('quantity') is-invalid @enderror" value="{{ $auction_item->quantity }}">
                 </div>
+                @if (($auction_item->canLowerPrice() && !Auth::user()->is_admin) || Auth::user()->is_admin)
                 <div class="form-group pt-4">
                     <label for="price">Price:</label><br>
                     <input id="price" type="number" name="price" placeholder="1.0" step="0.01" min="0.1" class="@error('price') is-invalid @enderror" value="{{ $auction_item->price }}">
                 </div>
+                @endif
             @endif
             <div class="form-group py-4">
                 <div class="col-md-2">
@@ -57,13 +59,4 @@
         </form>
 
 </div>
-<script type="text/javascript">
-    config = {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "\Carbon\Carbon::now()->toDateString()",
-    }
-
-    flatpickr("input[type=datetime-local]", config);
-</script>
 @endsection

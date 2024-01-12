@@ -46,15 +46,14 @@ Route::controller(AdminController::class)->group(function() {
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
     Route::get('/dashboard/{uuid}', [ProfileController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/{uuid}/messages', [ProfileController::class, 'messages'])->name('messages');
-    //Route::get('/dashboard/{uuid}#all', [ProfileController::class, 'dashboard'])->name('dashboard.all');
+    Route::get('/dashboard/{auction_uuid}/messages', [ProfileController::class, 'messages'])->name('messages');
     Route::get('/dashboard/{uuid}#payment', [ProfileController::class, 'dashboard'])->name('dashboard.payment');
     Route::get('/dashboard/{uuid}#bids', [ProfileController::class, 'dashboard'])->name('dashboard.bids');
     Route::get('/dashboard/{uuid}#won', [ProfileController::class, 'dashboard'])->name('dashboard.won');
     Route::get('/dashboard/{uuid}#favourite', [ProfileController::class, 'dashboard'])->name('dashboard.favourite');
     Route::get('/dashboard/{uuid}#history', [ProfileController::class, 'dashboard'])->name('dashboard.active-bids');
     Route::get('/dashboard/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance');
-   Route::post('/sendmessage', [ProfileController::class, 'sendMessage'])->name('sendMessage');
+    //Route::post('/sendmessage', [ProfileController::class, 'sendMessage'])->name('sendMessage');
 });
 
 Route::controller(ItemController::class)->group(function() {
@@ -65,7 +64,7 @@ Route::controller(ItemController::class)->group(function() {
 
     Route::post('/upload-image/{uuid}', [ItemController::class, 'uploadImage'])->name('upload-image');
     Route::delete('/delete-image/{uuid}', [ItemController::class, 'destroyImage'])->name('delete-image');
-})->middleware('auth');
+});
 
 Route::controller(AuctionController::class)->group(function() {
     Route::get('/create-auction/{type}', [AuctionController::class, 'create'])->name('create-auction')->middleware('auth');
@@ -91,11 +90,11 @@ Route::controller(LoginController::class)->group(function() {
 Route::controller(TransactionController::class)->group(function() {
     Route::post('/bid/{uuid}/{amount}', [TransactionController::class, 'bid'])->name('bid');
     Route::post('/buy/{uuid}', [TransactionController::class, 'buy'])->name('buy');
+    Route::post('/pay/{uuid}', [TransactionController::class, 'pay'])->name('pay');
 });
 
 Route::match(['post', 'delete'], '/favourite', [FavouriteController::class, 'toggleAuctionInFavourite'])->name('wishlistToggle');
 
 Route::get('/auction', CreateAuction::class)->name('auction');
 Route::get('/choose-item', ChooseItem::class)->name('choose-item');
-//Route::post('/sendmessage', [Chat::class, 'sendMessage'])->name('sendMessage');
-//Route::get('/receive-message', [Chat::class, 'receiveMessage'])->name('receive-message');
+Route::post('/sendmessage', [Chat::class, 'sendMessage'])->name('sendMessage');

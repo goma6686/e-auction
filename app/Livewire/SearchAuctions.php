@@ -2,11 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Models\Auction;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
-use Algolia\AlgoliaSearch\SearchClient;
 use Livewire\Attributes\Url;
 use App\Repositories\Interfaces\SearchRepositoryInterface;
 
