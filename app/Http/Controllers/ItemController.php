@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
 
-use App\Models\Category;
 use App\Models\Auction;
 use App\Models\Item;
 use App\Models\Condition;

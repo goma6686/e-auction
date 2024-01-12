@@ -9,7 +9,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Notifications\Notification;
 
 class User extends Authenticatable
 {
@@ -78,14 +77,6 @@ class User extends Authenticatable
     public function winningAuctions(): BelongsToMany
     {
         return $this->BelongsToMany(Auction::class, 'winners' ,'user_uuid');
-    }
-
-    public function conversations(): BelongsToMany
-    {
-        return $this->belongsToMany(Conversation::class, 'conversation_user', 'user_uuid', 'auction_uuid')
-            ->withPivot(['user_uuid', 'auction_uuid']);
-            /*return $this->belongsToMany(Conversation::class, 'conversation_user', 'user_uuid', 'conversation_id')
-            ->withPivot(['user_uuid', 'conversation_id']);*/
     }
 
     public function getSecondChanceAuctions(): array

@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Events\EndAuction;
 use App\Models\Auction;
 use App\Models\Bid;
 use App\Models\Condition;
