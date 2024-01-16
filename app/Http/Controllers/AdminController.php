@@ -56,6 +56,18 @@ class AdminController extends Controller
         }
     }
 
+    public function activate($uuid){
+        User::where('uuid', $uuid)
+            ->update(['is_active' => 1]);
+        return redirect()->back();
+    }
+
+    public function deactivate($uuid){
+        User::where('uuid', $uuid)
+            ->update(['is_active' => 0]);
+        return redirect()->back();
+    }
+
     public function destroy($id)
     {
         $category = Category::findOrFail($id);

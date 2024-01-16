@@ -41,6 +41,8 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/back/category/store', [AdminController::class, 'store'])->name('admin.store')->middleware('is_admin');
     Route::delete('/back/category/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete')->middleware('is_admin');
     Route::get('/back/items', [AdminController::class, 'index'])->name('admin.items')->middleware('is_admin');
+    Route::get('user/activate/{uuid}', [AdminController::class, 'activate'])->name('admin.activate')->middleware('is_admin');
+    Route::get('user/deactivate/{uuid}', [AdminController::class, 'deactivate'])->name('admin.deactivate')->middleware('is_admin');
 });
 
 Route::controller(ProfileController::class)->group(function() {

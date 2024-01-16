@@ -1,26 +1,3 @@
-{{--
-<thead>
-    <tr>
-        <th>Title</th>
-        <th></th>
-    </tr>
-</thead>
-<tbody>
-@foreach ($data as $category)
-    <tr>
-        <td>{{$category->category}}</td>
-        <td>
-            <form action="#" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete this post?')">Delete</button>
-            </form>
-        </td>
-    </tr>
-@endforeach
-</tbody>
---}}
-
 <thead>
     <tr>
         <th scope="col">#</th>

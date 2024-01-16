@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('content')
+@section('content'){{--
     <div id="myCarousel" class="carousel slide multi-item-carousel" data-bs-ride="carousel"  data-bs-interval="false">
         <div class="carousel-inner ">
             @foreach ($categories->chunk(5) as $key => $category)
@@ -21,7 +21,7 @@
                 <span>>></span>
             </button>
         </div>
-    </div>
+    </div>--}}
     <h2>Featured Items</h2>
     <div class="row d-flex justify-content-center">
         @foreach ($auction_items as $auction)

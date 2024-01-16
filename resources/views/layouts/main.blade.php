@@ -21,7 +21,7 @@
         </main>
         @else
         <main>
-            <div class="content py-5 ">
+            <div class="content">
                 @yield('content')
             </div>
         </main>
