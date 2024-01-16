@@ -2,6 +2,7 @@
     <tr>
         <th>Title</th>
         <th>Is Active</th>
+        <th>Is Blocked</th>
         <th>Owner</th>
         <th>Category</th>
         <th>Type</th>
@@ -24,6 +25,13 @@
                 @include('components.yes')
             @else 
                 @include('components.no')
+            @endif
+        </td>
+        <td>
+            @if ($auction->is_blocked)
+                <a href="{{ route('admin.unblock', ['uuid' => $auction->uuid]) }}"  class="btn btn-sm btn-success " role="button">Unblock</a>
+            @else
+                <a href="{{ route('admin.block', ['uuid' => $auction->uuid]) }}"  class="btn btn-sm btn-danger " role="button">Block</a>
             @endif
         </td>
         <td>{{$auction->user->email}}</td>

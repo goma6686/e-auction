@@ -44,7 +44,6 @@
             @else
                 <a href="{{ route('admin.activate', ['uuid' => $user->uuid]) }}"  class="btn btn-sm btn-success " role="button">Activate</a>
             @endif
-            
         </td>
     </tr>
 @endforeach

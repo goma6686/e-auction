@@ -43,6 +43,8 @@ Route::controller(AdminController::class)->group(function() {
     Route::get('/back/items', [AdminController::class, 'index'])->name('admin.items')->middleware('is_admin');
     Route::get('user/activate/{uuid}', [AdminController::class, 'activate'])->name('admin.activate')->middleware('is_admin');
     Route::get('user/deactivate/{uuid}', [AdminController::class, 'deactivate'])->name('admin.deactivate')->middleware('is_admin');
+    Route::get('auctions/block/{uuid}', [AdminController::class, 'block'])->name('admin.block')->middleware('is_admin');
+    Route::get('auctions/unblock/{uuid}', [AdminController::class, 'unblock'])->name('admin.unblock')->middleware('is_admin');
 });
 
 Route::controller(ProfileController::class)->group(function() {

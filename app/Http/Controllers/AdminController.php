@@ -68,6 +68,19 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function block($uuid){
+        Auction::where('uuid', $uuid)
+            ->update(['is_blocked' => 1]);
+        return redirect()->back();
+    }
+
+    public function unblock($uuid){
+        Auction::where('uuid', $uuid)
+            ->update(['is_blocked' => 0]);
+        return redirect()->back();
+    }
+    
+
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
