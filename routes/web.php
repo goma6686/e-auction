@@ -49,14 +49,13 @@ Route::controller(AdminController::class)->group(function() {
 
 Route::controller(ProfileController::class)->group(function() {
     Route::get('/profile/{uuid}', [ProfileController::class, 'profile'])->name('profile');
-    Route::get('/dashboard/{uuid}', [ProfileController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/{auction_uuid}/messages', [ProfileController::class, 'messages'])->name('messages');
-    Route::get('/dashboard/{uuid}#payment', [ProfileController::class, 'dashboard'])->name('dashboard.payment');
-    Route::get('/dashboard/{uuid}#bids', [ProfileController::class, 'dashboard'])->name('dashboard.bids');
-    Route::get('/dashboard/{uuid}#won', [ProfileController::class, 'dashboard'])->name('dashboard.won');
-    Route::get('/dashboard/{uuid}#favourite', [ProfileController::class, 'dashboard'])->name('dashboard.favourite');
-    Route::get('/dashboard/{uuid}#history', [ProfileController::class, 'dashboard'])->name('dashboard.active-bids');
-    Route::get('/dashboard/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance');
+    Route::get('/dashboard/{uuid}', [ProfileController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+    Route::get('/dashboard/{uuid}#payment', [ProfileController::class, 'dashboard'])->name('dashboard.payment')->middleware('auth');
+    Route::get('/dashboard/{uuid}#bids', [ProfileController::class, 'dashboard'])->name('dashboard.bids')->middleware('auth');
+    Route::get('/dashboard/{uuid}#won', [ProfileController::class, 'dashboard'])->name('dashboard.won')->middleware('auth');
+    Route::get('/dashboard/{uuid}#favourite', [ProfileController::class, 'dashboard'])->name('dashboard.favourite')->middleware('auth');
+    Route::get('/dashboard/{uuid}#history', [ProfileController::class, 'dashboard'])->name('dashboard.active-bids')->middleware('auth');
+    Route::get('/dashboard/{uuid}/sell', [ProfileController::class, 'sellAnyway'])->name('second-chance')->middleware('auth');
     //Route::post('/sendmessage', [ProfileController::class, 'sendMessage'])->name('sendMessage');
 });
 

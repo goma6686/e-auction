@@ -5,6 +5,7 @@
         <th>Is Active</th>
         <th>Is Blocked</th>
         <th>Owner</th>
+        <th>Winner</th>
         <th>Category</th>
         <th>Item Count</th>
         <th>Bids</th>
@@ -36,6 +37,14 @@
             @endif
         </td>
         <td>{{$auction->user->email}}</td>
+        <td>
+            @if($auction->getAuctionWinner())
+                {{$auction->getAuctionWinner()->username}}
+            @else
+                -
+            @endif
+            
+        </td>
         <td>{{$auction->category->category}}</td>
         <td>{{$auction->items_count}}</td>
         <td>{{$auction->bids_count}}</td>

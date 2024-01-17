@@ -176,4 +176,9 @@ class Auction extends Model
     {
         return User::find($this->user_uuid);
     }
+
+    public function getAuctionWinner(): User | null
+    {
+       return  User::find(Winner::where('auction_uuid', $this->uuid)->pluck('user_uuid')->first());
+    }
 }

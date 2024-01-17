@@ -1,7 +1,7 @@
 
 <div class="table-responsive overflow-visible">
     <table class="table accordion accordion-flush table-light table-less">
-        <thead>
+        <thead  class="table-dark">
             <tr>
               <th scope="col" class="col "></th>
               <th scope="col" class="col">Seller</th>
@@ -46,7 +46,7 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{$index}}">
                                     <li class="dropdown-item">
-                                    <img class="img-responsive rounded d-block " id="list-image"  @if (isset($auction['items'][$index]['image'])) src="/images/items/{{ $auction['items'][$index]['image'] }}" @else src="/images/noimage.jpg" @endif>
+                                    <img class="img-responsive rounded d-block img-fluid" id="list-image"  @if (isset($auction['items'][$index]['image'])) src="/images/items/{{ $auction['items'][$index]['image'] }}" @else src="/images/noimage.jpg" @endif>
                                     </li>
                                 </ul>
                             @endforeach
