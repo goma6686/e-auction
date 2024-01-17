@@ -1,5 +1,5 @@
-<table class="table table-light table-hover table-striped">
-    <thead>
+<table class="table table-hover">
+    <thead class="table-secondary">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Title</th>

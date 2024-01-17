@@ -27,6 +27,14 @@ html, body {
     color: #0748c2;
     text-decoration: none;
 }
+.nav-pills .nav-link.active {
+    background-color:#212529;
+    color: white;
+}
+
+.nav-pills .nav-link {
+    color: #212529;
+}
 
 .carousel-control-prev,
 .carousel-control-next,

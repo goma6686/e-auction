@@ -1,11 +1,11 @@
 <thead>
     <tr>
+        <th>Type</th>
         <th>Title</th>
         <th>Is Active</th>
         <th>Is Blocked</th>
         <th>Owner</th>
         <th>Category</th>
-        <th>Type</th>
         <th>Item Count</th>
         <th>Bids</th>
         <th>Buy Now Price</th>
@@ -19,6 +19,7 @@
 <tbody>
 @foreach ($data as $auction)
     <tr>
+        <td>{{$auction->type->type}}</td>
         <td>{{$auction->title}}</td>
         <td>
             @if ($auction->is_active == 1) 
@@ -36,7 +37,6 @@
         </td>
         <td>{{$auction->user->email}}</td>
         <td>{{$auction->category->category}}</td>
-        <td>{{$auction->type->type}}</td>
         <td>{{$auction->items_count}}</td>
         <td>{{$auction->bids_count}}</td>
         <td>
@@ -64,7 +64,7 @@
             @if ($auction->end_time) 
                 {{$auction->end_time}}
             @else 
-                Buy Now type
+                -
             @endif
         </td>
         <td>{{$auction->created_at}}</td>
