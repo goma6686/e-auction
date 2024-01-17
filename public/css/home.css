@@ -6,10 +6,13 @@
     display: flex;
 }
 
-.items {
-    height: fit-content;
+.content {
+    flex-direction: column;
     background-color: #ffffff;
     border: 1px solid #000000;
+}
+
+.items {
     border-radius: 5px;
     padding: 1em;
 }
