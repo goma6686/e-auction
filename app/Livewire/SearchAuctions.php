@@ -13,7 +13,7 @@ class SearchAuctions extends Component
     use WithPagination;
 
     #[Url]
-    public $term;
+    public $query;
     public $auctions = [];
     public $highlightIndex;
     public $category;
@@ -32,36 +32,13 @@ class SearchAuctions extends Component
 
     public function resetlist()
     {
-        $this->term  = '';
-        $this->auctions = $this->getResult($this->term, 'auctions')['hits'];
+        $this->query  = '';
+        $this->auctions = $this->getResult($this->query, 'auctions')['hits'];
         $this->highlightIndex = 0;
     }
 
-    public function incrementHighlight()
-    {
-        if ($this->highlightIndex === count($this->auctions) - 1) {
-            $this->highlightIndex = 0;
-            return;
-        }
-        $this->highlightIndex++;
-    }
-
-    public function decrementHighlight()
-    {
-        if ($this->highlightIndex === 0) {
-            $this->highlightIndex = count($this->auctions) - 1;
-            return;
-        }
-        $this->highlightIndex--;
-    }
-
-    public function selectAuction()
-    {
-        $auction = $this->auctions[$this->highlightIndex] ?? null;
-    }
-
-    public function updatedTerm(){
-        $this->auctions = $this->getResult($this->term, 'auctions')['hits'];
+    public function updatedQuery(){
+        $this->auctions = $this->getResult($this->query, 'auctions')['hits'];
     }
     public function render()
     {
