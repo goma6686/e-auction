@@ -5,7 +5,7 @@
     <h1 class="latest text-center mb-2 mb-5">Editing: {{ $auction_item->title }}</h1>
         @if (isset($auction_item->image))
             <label for="image">Current image:</label><br>
-            <img src="/images/items/{{ $auction_item->image }}" alt="{{ $auction_item->title }}" width="200">
+            <img src="/images/items/{{ $auction_item->image }}" class="img-fluid" alt="{{ $auction_item->title }}" width="200">
             <form action="/delete-image/{{ $auction_item->uuid }}" method="POST">
                 @csrf
                 @method('delete')

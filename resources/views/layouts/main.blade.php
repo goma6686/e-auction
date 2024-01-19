@@ -11,11 +11,11 @@
         @include('layouts.navbar')
     </header>
         @if (Route::currentRouteName() !== 'welcome')
-        <main id="root" class="row">
-            <div class="sidebar col-1">
+        <main id="root" class="row grid-row">
+            <div class="sidebar col-sm-2" id="large">
                 @yield('sidebar')
             </div>
-            <div class="content col-9">
+            <div class="content col-sm-9">
                 @yield('content')
             </div>
         </main>

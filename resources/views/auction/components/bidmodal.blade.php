@@ -1,5 +1,5 @@
-<div wire:ignore.self class="modal fade" id="bid" tabindex="-1" aria-labelledby="bid" aria-hidden="true" role="dialog">
-    <div class="modal-dialog modal-dialog-centered secondary">
+<div class="modal fade" id="bid" tabindex="-1" aria-labelledby="bid" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered secondary modal-fullscreen-sm-down">
     <div class="modal-content">
         <div class="modal-header">
         <h3 class="modal-title" id="bid">Place bid:</h3>

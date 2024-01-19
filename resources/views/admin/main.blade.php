@@ -113,7 +113,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         @include('components.sessionmessage')
-                        <table id="dataTable" class="table table-striped nowrap" style="width: 100%">
+                        <table id="dataTable" class="table overflow-auto" style="width: 100%">
                         @switch($page)
                             @case($page == 'auctions')
                                 @include('admin.auctions', ['tableTitle' => 'Auctions', 'data' => $data])

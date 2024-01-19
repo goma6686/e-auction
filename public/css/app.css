@@ -6,11 +6,33 @@ html, body {
     background-color:rgb(229, 233, 233);
 }
 
-#root {
-    margin-bottom: 2em;
-    margin-top: 2em;
-    margin-left: 5em;
-    margin-right: 5em;
+#offcanvaslink {
+    color: #fff;
+}
+
+@media (min-width: 992px) {
+    #root {
+        margin-bottom: 2em;
+        margin-top: 2em;
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+} 
+
+@media (max-width: 767px) {
+    #root {
+        margin: 1em;
+    }
+
+    #item-image {
+        max-width: 70%;
+    }
+}
+
+@media (min-width: 576px){
+    .col-sm-9 {
+        width: 100%;
+    }
 }
 
 #editing {
@@ -53,19 +75,8 @@ html, body {
     margin-right: 20%;
 }
 
-h2 {
-    text-align: center;
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
 #categories {
     justify-content: center;
-}
-
-#item-card {
-    width: 25rem;
-    margin: 1rem;
 }
 
 #category-card {
@@ -101,4 +112,3 @@ h2 {
 .icon-not-active {
     color: rgb(143, 141, 141);
 }
-

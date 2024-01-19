@@ -1,0 +1,33 @@
+#root {
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+}
+
+.content {
+    flex-direction: column;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.items {
+    border-radius: 5px;
+    padding: 1em;
+}
+
+tab-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-pane {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.card {
+    margin-bottom: 4em;
+    border-radius: 5px;
+}

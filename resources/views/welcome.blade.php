@@ -23,7 +23,7 @@
         </div>
     </div>--}}
     <h2>Featured Items</h2>
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center p-4">
         @foreach ($auction_items as $auction)
             @include('auction.components.itemcard')
         @endforeach

@@ -46,28 +46,28 @@
                     </select>
                 </div>
             </h5>
-            <h5 class="row">
-                <div class="col-3">Condition:</div>
-                <div class="col-7 text-start">{{ $condition }}</div>
-            </h5>
+            <div class="row">
+                <h5 class="col-lg-3">Condition:</h5>
+                <h6 class="col-lg-7 text-start">{{ $condition }}</h6>
+            </div>
             @if ($auction->type_id === '1')
-                <h5 class="row">
-                    <div class="col-3">Price, €:</div>
-                    <div class="col-7 text-start" name="price">{{ $price }}</div>
-                </h5>
+                <div class="row">
+                    <h5 class="col-lg-3">Price, €:</h5>
+                    <h6 class="col-lg-7 text-start" name="price">{{ $price }}</h6>
+                </div>
                 <form enctype="multipart/form-data" method="POST" action="{{route('buy', ['uuid' => $selected_uuid])}}">
                     @csrf
             @else
-                <h5 class="row">
-                    <div class="col-3">
+                <div class="row">
+                    <h5 class="col-lg-3">
                     @if ($auction->bids->count() === 0)
                         Starting bid, €:
                     @else
                         Current bid, €:
                     @endif
-                    </div>
-                    <div class="col-7 text-start" name="price"> {{ $auction->bids()->max('amount') ?? $auction->price }}</div>
-                </h5>
+                    </h5>
+                    <h6 class="col-7 text-start" name="price"> {{ $auction->bids()->max('amount') ?? $auction->price }}</h6>
+                </div>
             @endif
             @if ($auction->type_id === '1')
                 <h5 class="row">
@@ -83,15 +83,15 @@
         @endif
         <hr>
         </div>
-        <h5 class="row">
-          <div class="col-3">Category:</div>
-          <div class="col-7 text-start">{{ $auction->category->category }}</div>
-        </h5>
+        <div class="row">
+          <h5 class="col-lg-3">Category:</h5>
+          <h6 class="col-lg-7 text-start">{{ $auction->category->category }}</h6>
+        </div>
       </div>
         <div class="card-footer form-group row">
           <div class="pt-2 col">
             @guest
-            <h5>You can't bid if not logged in</h5>
+            <h6>You can't bid if not logged in</h6>
             @else
               @if(Auth::user()->is_active)
                 @if(Auth::user() != $auction->getAuctionSeller())
@@ -101,10 +101,10 @@
                         @include('auction.components.bid')
                     @endif
                 @else
-                    <h5>This is your own listing</h5>
+                    <h6>This is your own listing</h6>
                 @endif
               @else
-                <h5>You are deactivated</h5>
+                <h6>You are deactivated</h6>
               @endif
             @endguest
           </div>

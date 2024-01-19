@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
   <div class="container-fluid">
-    <div class="ms-auto mb-2 mb-lg-0">
+    <div id="non-mobile" class="ms-auto mb-2 mb-lg-0">
       @auth
       <div class="dropdown" id="buttons">
         <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -1,4 +1,4 @@
-<thead>
+<thead  class="table-dark">
     <tr>
         <th>Auction</th>
         <th>Title</th>

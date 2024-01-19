@@ -17,7 +17,7 @@
             @else
             src="/images/noimage.jpg"
          @endif
-         class="card-img-top mx-auto d-block" alt="{{$auction['title']}}">
+         class="card-img-top mx-auto d-block img-fluid" alt="{{$auction['title']}}">
         </div>
     <div class="card-body text-center">
         <ul class="list-group list-group-flush">
@@ -75,7 +75,7 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    {{  $auction['end_time'] }}
+                    {{   date('D/M/Y h:i', strtotime($auction['end_time'])) }}
                 </div>
             </div>
         @endif

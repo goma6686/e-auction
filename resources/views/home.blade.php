@@ -18,7 +18,7 @@
         </div>
     @endif
     <div class="mt-4">
-      <div class="row">
+      <div class="row d-flex--sm d-flex--xs  flex-column--sm flex=column--xs">
         <div class="col">
           <div class="btn-group" role="group">
             <a class="btn btn-outline-dark @if ($type === 'all') active @endif" href="{{ route('home') }}">All</a>
@@ -26,7 +26,7 @@
             <a class="btn btn-outline-dark @if ($type === 'Buy-Now') active @endif" href="{{ route('home', ['type' => 'Buy-Now', 'category' => $category]) }}">Buy Now</a>
           </div>
         </div>
-        <div class="col text-end">
+        <div class="col pt-2 text-end">
           <div class="dropdown">
             <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               Default sort
@@ -40,11 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="items mt-4" >
-        <div class="row">
           @livewire('search-auctions', ['category' => $category, 'type' => $type])
-        </div>
-        </div>
       </div>
   @endsection
   @section('scripts')

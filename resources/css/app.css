@@ -6,12 +6,46 @@ html, body {
     background-color:rgb(229, 233, 233);
 }
 
-#root {
-    margin-bottom: 2em;
-    margin-top: 2em;
-    margin-left: 5em;
-    margin-right: 5em;
+@media (min-width: 768px) {
+    #root {
+        margin-bottom: 2em;
+        margin-top: 2em;
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+    
+} 
+
+@media (max-width: 767px) {
+    #root {
+        margin: 1em;
+    }
 }
+
+@media (min-width: 992px) {
+    #below-large {
+        display: none;
+    }
+} 
+
+@media (max-width: 991px) {
+    #large {
+        display: none;
+    }
+} 
+
+@media (min-width: 577px) {
+    #mobile {
+        display: none;
+    }
+} 
+
+@media (max-width: 576px) {
+    #non-mobile {
+        display: none;
+    }
+} 
+
 
 .carousel-control-prev,
 .carousel-control-next,
@@ -24,8 +58,8 @@ html, body {
 
 h2 {
     text-align: center;
-    margin-top: 2em;
-    margin-bottom: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 #categories {

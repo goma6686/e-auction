@@ -1,4 +1,4 @@
-<thead>
+<thead  class="table-dark">
     <tr>
         <th>Type</th>
         <th>Title</th>
@@ -39,7 +39,9 @@
         <td>{{$auction->user->email}}</td>
         <td>
             @if($auction->getAuctionWinner())
+            <a href="/profile/{{$auction->getAuctionWinner()->uuid}}" class="link-dark ">
                 {{$auction->getAuctionWinner()->username}}
+            </a>
             @else
                 -
             @endif

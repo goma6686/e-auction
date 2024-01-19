@@ -1,4 +1,4 @@
-<thead>
+<thead  class="table-dark">
     <tr>
         <th>Username</th>
         <th>Email</th>

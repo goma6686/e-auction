@@ -17,7 +17,7 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{$index}}">
                 <li class="dropdown-item">
                    Condition: [{{$item->condition->condition}}]
-                <img class="img-responsive rounded d-block " id="list-image"  @if (isset($auction['items'][$index]['image'])) src="/images/items/{{ $auction['items'][$index]['image'] }}" @else src="/images/noimage.jpg" @endif>
+                <img class="img-responsive rounded d-block img-fluid " id="list-image"  @if (isset($auction['items'][$index]['image'])) src="/images/items/{{ $auction['items'][$index]['image'] }}" @else src="/images/noimage.jpg" @endif>
                 </li>
             </ul>
         @endforeach
@@ -26,12 +26,12 @@
     <div class="text-center">
         <dl>
             <dt>WINNER:</dt>
-            <a href="/profile/{{$auction->winner->uuid}}" class="link-dark">
+                <a href="/profile/{{$auction->getAuctionWinner()->uuid}}" class="link-dark">
             <dd>
-                {{$auction->winner->username}},
+                {{$auction->getAuctionWinner()->username}}
             </dd>
             <dd>
-                {{$auction->winner->email}}
+              {{$auction->getAuctionWinner()->email}}
             </dd>
         </a>
             <dt>PRICE:</dt>

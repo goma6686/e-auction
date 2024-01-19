@@ -1,4 +1,4 @@
-<thead>
+<thead  class="table-dark">
     <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
