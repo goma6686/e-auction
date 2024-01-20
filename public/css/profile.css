@@ -1,105 +1,53 @@
-:root {
-    --custom-carousel-control-color: #000000; /* Your custom color here */
+.profile-header {
+    position: relative;
+    overflow: hidden;
 }
 
-html, body {
-    background-color:rgb(229, 233, 233);
+.profile-header .profile-header-cover {
+    background-color: #212529;
+    background-position: center;
+    opacity: 90%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
-#offcanvaslink {
+.profile-header .profile-header-content {
     color: #fff;
+    padding: 2em;
+}
+/*profile picture*/
+.profile-header-img {
+    float: left;
+    width: 10em;
+    height: 10em;
+    margin-bottom: 2em;
+    position: relative;
 }
 
-@media (min-width: 768px) {
-    #root {
-        margin-bottom: 2em;
-        margin-top: 2em;
-        margin-left: 5em;
-        margin-right: 5em;
-    }
-} 
-
-@media (max-width: 767px) {
-    #root {
-        margin: 1em;
-    }
-} 
-
-#editing {
-    margin-left: 20em;
-    margin-right: 20em;
+.profile-header-img img {
+    max-width: 100%
 }
 
-.breadcrumb-item > a {
-    color: #fff;
-    text-decoration: none;
+.profile-header-info h4 {
+    font-weight: 500;
+    color: #fff
 }
 
-.breadcrumb-item > a:hover {
-    color: #0748c2;
-    text-decoration: none;
-}
-.nav-pills .nav-link.active {
-    background-color:#212529;
-    color: white;
+.profile-header .profile-header-content,
+.profile-header {
+    position: relative
 }
 
-.nav-pills .nav-link {
-    color: #212529;
+.profile-header .profile-header-tab .profile-items {
+    background: #fff;
+    list-style-type: none;
+    white-space: nowrap;
+    border-radius: 0
 }
 
-.carousel-control-prev,
-.carousel-control-next,
-.carousel-control-prev:hover,
-.carousel-control-next:hover  {
-    color: var(--custom-carousel-control-color);
-    opacity: 1;
-    font-size: larger;
+.hiddenRow {
+    padding: 0 !important;
 }
-
-.carousel-control-prev {
-    margin-left: 20%;
-}
-
-.carousel-control-next {
-    margin-right: 20%;
-}
-
-#categories {
-    justify-content: center;
-}
-
-#category-card {
-    width: 10rem;
-}
-
-.card {
-    color: #000000;
-    border: #000000 1px solid;
-    word-wrap: break-word;
-}
-
-#card-footer {
-    color: red;
-}
-
-
-#home {
-  width: 100%;
-}
-
-#list-image{
-    width: auto;
-    height: 15vw;
-    -o-object-fit: cover;
-       object-fit: cover;
-}
-
-.icon-active {
-    color: red;
-}
-
-.icon-not-active {
-    color: rgb(143, 141, 141);
-}
-

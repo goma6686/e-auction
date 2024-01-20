@@ -12,10 +12,10 @@
     </header>
         @if (Route::currentRouteName() !== 'welcome')
         <main id="root" class="row grid-row">
-            <div class="sidebar col-sm-2" id="large">
+            <div class="sidebar col-2" id="large">
                 @yield('sidebar')
             </div>
-            <div class="content col-sm-9">
+            <div class="content col">
                 @yield('content')
             </div>
         </main>

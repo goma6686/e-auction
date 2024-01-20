@@ -20,11 +20,22 @@ html, body {
     #root {
         margin: 1em;
     }
+
+    #item-image {
+        max-width: 70%;
+    }
 }
 
 @media (min-width: 992px) {
     #below-large {
         display: none;
+    }
+
+    #root {
+        margin-bottom: 2em;
+        margin-top: 2em;
+        margin-left: 5em;
+        margin-right: 5em;
     }
 } 
 
@@ -38,14 +49,40 @@ html, body {
     #mobile {
         display: none;
     }
+
+    .col-sm-9 {
+        width: 100%;
+    }
 } 
 
 @media (max-width: 576px) {
     #non-mobile {
         display: none;
     }
-} 
+}
 
+#editing {
+    margin-left: 20em;
+    margin-right: 20em;
+}
+
+.breadcrumb-item > a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.breadcrumb-item > a:hover {
+    color: #0748c2;
+    text-decoration: none;
+}
+.nav-pills .nav-link.active {
+    background-color:#212529;
+    color: white;
+}
+
+.nav-pills .nav-link {
+    color: #212529;
+}
 
 .carousel-control-prev,
 .carousel-control-next,
@@ -56,25 +93,26 @@ html, body {
     font-size: larger;
 }
 
-h2 {
-    text-align: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+.carousel-control-prev {
+    margin-left: 20%;
+}
+
+.carousel-control-next {
+    margin-right: 20%;
 }
 
 #categories {
     justify-content: center;
 }
 
-#item-card {
-    width: 25rem;
-    margin: 1rem;
-}
-
 #category-card {
     width: 10rem;
 }
 
+#item-card {
+    width: 25rem;
+    margin: 1rem;
+}
 .card {
     color: #000000;
     border: #000000 1px solid;
@@ -90,6 +128,12 @@ h2 {
   width: 100%;
 }
 
+#list-image{
+    width: auto;
+    height: 15vw;
+    -o-object-fit: cover;
+       object-fit: cover;
+}
 
 .icon-active {
     color: red;
@@ -97,4 +141,10 @@ h2 {
 
 .icon-not-active {
     color: rgb(143, 141, 141);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }

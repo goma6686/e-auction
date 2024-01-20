@@ -6,17 +6,14 @@ html, body {
     background-color:rgb(229, 233, 233);
 }
 
-#offcanvaslink {
-    color: #fff;
-}
-
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     #root {
         margin-bottom: 2em;
         margin-top: 2em;
         margin-left: 5em;
         margin-right: 5em;
     }
+    
 } 
 
 @media (max-width: 767px) {
@@ -29,9 +26,38 @@ html, body {
     }
 }
 
-@media (min-width: 576px){
+@media (min-width: 992px) {
+    #below-large {
+        display: none;
+    }
+
+    #root {
+        margin-bottom: 2em;
+        margin-top: 2em;
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+} 
+
+@media (max-width: 991px) {
+    #large {
+        display: none;
+    }
+} 
+
+@media (min-width: 577px) {
+    #mobile {
+        display: none;
+    }
+
     .col-sm-9 {
         width: 100%;
+    }
+} 
+
+@media (max-width: 576px) {
+    #non-mobile {
+        display: none;
     }
 }
 
@@ -83,6 +109,10 @@ html, body {
     width: 10rem;
 }
 
+#item-card {
+    width: 25rem;
+    margin: 1rem;
+}
 .card {
     color: #000000;
     border: #000000 1px solid;
@@ -111,4 +141,10 @@ html, body {
 
 .icon-not-active {
     color: rgb(143, 141, 141);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
