@@ -1,9 +1,10 @@
 @extends('layouts.form')
 
 @section('content')
-<div id="editing" class="py-12">
+<div class="py-12 row">
     <h1 class="latest text-center mb-2">Editing: {{ $auction->title }}</h1>
-        <form enctype="multipart/form-data" method="POST" action="{{ route('update-auction', ['uuid' => $auction->uuid, 'route' => $route]) }}">
+    <div class="col-md-2 col-lg-2"></div>    
+    <form class="col px-5" enctype="multipart/form-data" method="POST" action="{{ route('update-auction', ['uuid' => $auction->uuid, 'route' => $route]) }}">
             @csrf
             <div class="form-group pt-4">
                 <label for="title">Title</label>
@@ -75,6 +76,7 @@
             @endif
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+    <div class="col-md-2 col-lg-2"></div>
 </div>
 <script type="text/javascript">
     config = {

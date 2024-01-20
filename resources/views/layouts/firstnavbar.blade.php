@@ -11,6 +11,7 @@
         @if (Route::currentRouteName() !== 'home')
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/home">All</a></li>
               @foreach ($categories as $category)
                 <li class="breadcrumb-item"><a href="{{ route('home', ['category' => $category->category]) }}">{{$category->category}}</a></li>
               @endforeach
@@ -84,6 +85,7 @@
         <div class="offcanvas-body">
           <div class="flex-grow-1 justify-content-center">
               <ul class=" navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="text-decoration-none" href="/home">ALL</a></li>
                 @foreach ($categories as $category)
                   <li class="nav-item"><a class="text-decoration-none" href="{{ route('home', ['category' => $category->category]) }}">{{$category->category}}</a></li>
                 @endforeach

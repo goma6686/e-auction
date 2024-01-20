@@ -61,11 +61,6 @@ html, body {
     }
 }
 
-#editing {
-    margin-left: 20em;
-    margin-right: 20em;
-}
-
 .breadcrumb-item > a {
     color: #fff;
     text-decoration: none;

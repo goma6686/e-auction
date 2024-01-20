@@ -14,7 +14,6 @@
                 @yield('content')
             </div>
         </main>
-    </main>
     @livewireScripts
     @vite(['resources/js/app.js'])
 </body>
