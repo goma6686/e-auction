@@ -3,7 +3,7 @@
       <button class="navbar-toggler flex-grow-sm-1 flex-grow-0 me-2" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand flex-grow-1" id="large" href="/">
+      <a class="navbar-brand flex-grow-1" id="large"  @if (Route::currentRouteName() !== 'home') href="/home" @else href="/" @endif>
         <i class="fa fa-superpowers" aria-hidden="true"></i> <!-- Icon -->
             GoAuction
       </a>
