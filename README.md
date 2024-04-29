@@ -40,3 +40,15 @@ to think of necessary tasks to create the system.
 - MySQL v8.0
 - HTML/CSS
 - Javascript
+
+## Database schema
+
+![database schema](https://github.com/goma6686/e-auction/blob/master/public/images/duomba.png)
+
+## Use Case diagram
+
+![Use Case diagram](https://github.com/goma6686/e-auction/blob/master/public/images/UseCase.png)
+
+## Home page
+
+![home page](https://github.com/goma6686/e-auction/blob/master/public/images/welcome.PNG)
